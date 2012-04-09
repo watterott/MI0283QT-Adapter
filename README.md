@@ -14,6 +14,11 @@ Adapter Board with 2.8" TFT-Display und Touch-Panel.
  * 3V3 - 5V tolerant IOs
 
 
+## Hardware
 [Connecting Adapter to Arduino Uno](https://github.com/watterott/MI0283QT-Adapter/raw/master/img/connecting-uno.jpg)
 
 [Connecting Adapter to Arduino Mega](https://github.com/watterott/MI0283QT-Adapter/raw/master/img/connecting-mega.jpg)
+
+
+## Software
+[Arduino Library + Examples](https://github.com/watterott/mSD-Shield/downloads)
