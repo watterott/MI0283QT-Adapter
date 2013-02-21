@@ -7,7 +7,7 @@ Adapter Board with 2.8" TFT-Display und Touch-Panel.
 
 
 ## Features
- * Multi-Inno MI0283QT 2.8" TFT-Display with Touch-Panel (240x320, 262K colors)
+ * Multi-Inno MI0283QT2/MI0283QT9A 2.8" TFT-Display with Touch-Panel (240x320, 262K colors)
  * TI ADS7846 Touch-Controller
  * Interface: SPI (Display + Touch-Controller)
  * Backlight dimmable (PWM)
