@@ -3,7 +3,7 @@ Adapter Board with 2.8" TFT-Display und Touch-Panel.
 
 <http://www.watterott.com/en/MI0283QT-2-Adapter>
 
-![MI0283QT-Adapter](https://github.com/watterott/MI0283QT-Adapter/raw/master/img/mi0283qt-adapter.jpg)
+![MI0283QT-Adapter](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/mi0283qt-adapter.jpg)
 
 
 ## Features
@@ -15,10 +15,14 @@ Adapter Board with 2.8" TFT-Display und Touch-Panel.
 
 
 ## Hardware
-[Connecting Adapter to Arduino Uno](https://github.com/watterott/MI0283QT-Adapter/raw/master/img/connecting-uno.jpg)
+[Connecting Adapter to Arduino Uno](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/connecting-uno.jpg)
 
-[Connecting Adapter to Arduino Mega](https://github.com/watterott/MI0283QT-Adapter/raw/master/img/connecting-mega.jpg)
+[Connecting Adapter to Arduino Mega](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/connecting-mega.jpg)
 
 
 ## Software
 [Arduino Library + Examples](https://github.com/watterott/mSD-Shield/tree/master/src)
+
+
+## Projects
+[Projects using the MI0283QT-Adapter](https://github.com/watterott/MI0283QT-Adapter/blob/master/Projects.md)
