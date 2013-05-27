@@ -1,23 +1,31 @@
 # MI0283QT-Adapter
 Adapter Board with 2.8" TFT-Display und Touch-Panel.
 
-<http://www.watterott.com/en/MI0283QT-2-Adapter>
+http://www.watterott.com/en/MI0283QT-2-Adapter
+
+http://www.watterott.com/en/MI0283QT-Adapter-v2
 
 ![MI0283QT-Adapter](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/mi0283qt-adapter.jpg)
 
 
-## Features
-* Multi-Inno MI0283QT2/MI0283QT9A 2.8" TFT-Display with Touch-Panel (240x320, 262K colors)
+## Features MI0283QT-Adapter v1
+* Multi-Inno MI0283QT2 or MI0283QT9A 2.8" TFT-Display with Touch-Panel (240x320, 262K colors)
 * TI ADS7846 Touch-Controller
 * Interface: SPI (Display + Touch-Controller)
 * Backlight dimmable (PWM)
 * 3V3 - 5V tolerant IOs
 
 
-## Hardware
-[Connecting Adapter to Arduino Uno](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/connecting-uno.jpg)
+## Features MI0283QT-Adapter v2
+* Multi-Inno MI0283QT9 2.8" TFT-Display with Touch-Panel (240x320, 262K colors)
+* NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
+* Interface: UART, I2C, SPI
+* Backlight dimmable via interface
+* 3V3 - 5V tolerant IOs
 
-[Connecting Adapter to Arduino Mega](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/connecting-mega.jpg)
+
+## Hardware
+[Connecting Adapter to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
 
 
 ## Software
