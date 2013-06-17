@@ -1,4 +1,4 @@
-# Connecting MI0283QT-2/MI0283QT-9A Adapter to Arduino
+# Connecting MI0283QT Adapter v1 to Arduino
 ```
 Signal  Display  Uno  Mega  Leonardo
 ----------------------------------------------
@@ -13,7 +13,7 @@ ADS-CS     11      6     6     6
 ```
 
 
-# Connecting MI0283QT-9 Adapter v2 to Arduino
+# Connecting MI0283QT Adapter v2 to Arduino
 
 ## SPI/SSI
 ```
@@ -24,7 +24,7 @@ GND       1-2    GND   GND   GND   (ISP Pin 6)
 RST         6      8     8     8
 CS          7      7     7     7
 SDI/MOSI    8     11    51    16   (ISP Pin 4)
-SDI/MISO    9     12    50    14   (ISP Pin 1)
+SDO/MISO    9     12    50    14   (ISP Pin 1)
 SCL/SCK    10     13    52    15   (ISP Pin 3)
 ```
 

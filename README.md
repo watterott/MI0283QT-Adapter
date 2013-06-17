@@ -21,16 +21,18 @@ http://www.watterott.com/en/MI0283QT-Adapter-v2
 * NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
 * Interface: UART, I2C, SPI
 * Backlight dimmable via interface
+* Pin-compatible with MI0283QT-Adapter v1
 * 3V3 - 5V tolerant IOs
 
 
 ## Hardware
-[Connecting Adapter to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
+* [Connecting Adapter to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
 
 
 ## Software
-[Arduino Library + Examples](https://github.com/watterott/mSD-Shield/tree/master/src)
+* [Arduino Library + Examples](https://github.com/watterott/mSD-Shield/tree/master/src)
+* [Firmware](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw)
 
 
 ## Projects
-[Projects using the MI0283QT-Adapter](https://github.com/watterott/MI0283QT-Adapter/blob/master/Projects.md)
+* [Projects using the MI0283QT-Adapter](https://github.com/watterott/MI0283QT-Adapter/blob/master/Projects.md)
