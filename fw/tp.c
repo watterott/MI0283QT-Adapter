@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "cmsis/LPC11xx.h"
-#include "main.h"
 #include "settings.h"
 #include "lcd.h"
 #include "lcd_mi0283qt9.h"
@@ -10,26 +9,22 @@
 #ifdef TP_SUPPORT
 
 
-#define SET_DATA(port, pin, d)    { IOCON_SETRPIN(port, pin, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL); \
+#define SET_DATA(port, pin, d)    { IOCON_SETRPIN(port, pin, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL); \
                                     GPIO_PORT(port)->DIR |= (1<<pin); \
                                     GPIO_PORT(port)->MASKED_ACCESS[1<<pin] = d<<pin; }
-#define SET_HIZ(port, pin)        { IOCON_SETRPIN(port, pin, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL); \
+#define SET_HIZ(port, pin)        { IOCON_SETRPIN(port, pin, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL); \
                                     GPIO_PORT(port)->DIR     &= ~(1<<pin); \
                                     GPIO_PORT(port)->DATA    &= ~(1<<pin); }
-#define SET_HIZUP(port, pin)      { IOCON_SETRPIN(port, pin, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL); \
+#define SET_HIZUP(port, pin)      { IOCON_SETRPIN(port, pin, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); \
                                     GPIO_PORT(port)->DIR     &= ~(1<<pin); \
                                     GPIO_PORT(port)->DATA    &= ~(1<<pin); }
-#define SET_HIZDOWN(port, pin)    { IOCON_SETRPIN(port, pin, IOCON_PIO | IOCON_PULLDOWN | IOCON_DIGITAL); \
+#define SET_HIZDOWN(port, pin)    { IOCON_SETRPIN(port, pin, IOCON_R_PIO | IOCON_PULLDOWN | IOCON_DIGITAL); \
                                     GPIO_PORT(port)->DIR     &= ~(1<<pin); \
                                     GPIO_PORT(port)->DATA    &= ~(1<<pin); }
-#define SET_ADC(port, pin)        { IOCON_SETRPIN(port, pin, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG); \
+#define SET_ADC(port, pin)        { IOCON_SETRPIN(port, pin, IOCON_R_ADC | IOCON_NOPULL | IOCON_ANALOG); \
                                     GPIO_PORT(port)->DIR     &= ~(1<<pin); \
                                     GPIO_PORT(port)->DATA    &= ~(1<<pin); }
 
-#define ADC_READ(chn, x)          { LPC_ADC->CR |= (1<<chn) | (1<<24);    \
-                                    while(!(LPC_ADC->DR[chn] & (1<<31))); \
-                                    x = ((LPC_ADC->DR[chn]>>6) & 0x3FE);  \
-                                    LPC_ADC->CR &= ~((1<<chn) | (1<<24)); } //read ADC channel and remove LSB (0x3FE)
 
 #define XP_DATA(x)      SET_DATA( XP_PORT, XP_PIN, x)
 #define XP_HIZUP()      SET_HIZUP(XP_PORT, XP_PIN)
@@ -253,8 +248,8 @@ void tp_read(void)
     YM_ADC();   //adc
     XP_DATA(1); //Vcc
     XM_DATA(0); //GND
-    ADC_READ(YM_AD, x1);
-    ADC_READ(YM_AD, x2);
+    ADC_READ(YM_AD, x1); x1 &= 0x3FE; //remove last bit
+    ADC_READ(YM_AD, x2); x2 &= 0x3FE; //remove last bit
 
     if(x1 && (x1 == x2))
     {
@@ -263,8 +258,8 @@ void tp_read(void)
       XM_ADC();   //adc
       YP_DATA(1); //Vcc
       YM_DATA(0); //GND
-      ADC_READ(XM_AD, y1);
-      ADC_READ(XM_AD, y2);
+      ADC_READ(XM_AD, y1); y1 &= 0x3FE; //remove last bit
+      ADC_READ(XM_AD, y2); y2 &= 0x3FE; //remove last bit
 
       if(y1 && (y1 == y2))
       {
@@ -305,13 +300,6 @@ void __attribute__((optimize("Os"))) tp_init(void)
   XM_HIZUP(); //hiZ + pull-up
   YP_HIZUP(); //hiZ + pull-up
   YM_HIZUP(); //hiZ + pull-up
-
-  //init adc
-  LPC_SYSCON->SYSAHBCLKCTRL |= (1<<13);
-  LPC_ADC->CR = (((sysclock(0)/4000000UL)-1)<< 8) | //4MHz
-                                          (0<<16) | //burst off
-                                        (0x0<<17) | //10bit
-                                        (0x0<<24);  //stop
 
   return;
 }

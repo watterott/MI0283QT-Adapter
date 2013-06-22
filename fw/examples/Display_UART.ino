@@ -83,7 +83,7 @@ void setup()
   mySerial.begin(9600);
   digitalWrite(cs_pin, LOW);
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   mySerial.write(CMD_VERSION);
   while(mySerial.available() < 4); //wait for data
@@ -94,7 +94,7 @@ void setup()
   }
   Serial.println("");
 
-  //get display features
+  //get features
   Serial.print("features: ");
   mySerial.write(CMD_FEATURES);
   while(mySerial.available() < 1); //wait for data
@@ -106,6 +106,21 @@ void setup()
     if(c & FEATURE_ENC){ Serial.print("ENC "); }
     if(c & FEATURE_NAV){ Serial.print("NAV "); }
   }
+  Serial.println("");
+
+  //get width and height
+  Serial.print("width/height: ");
+  mySerial.write(CMD_LCD_WIDTH);
+  while(mySerial.available() < 2); //wait for data
+  x  = mySerial.read()<<8;
+  x |= mySerial.read()<<0;
+  Serial.print(x, DEC);
+  Serial.print("/");
+  mySerial.write(CMD_LCD_HEIGHT);
+  while(mySerial.available() < 2); //wait for data
+  y  = mySerial.read()<<8;
+  y |= mySerial.read()<<0;
+  Serial.print(y, DEC);
   Serial.println("");
 
   //backlight

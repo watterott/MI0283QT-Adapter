@@ -76,7 +76,7 @@ void setup()
   mySerial.begin(9600);
   digitalWrite(cs_pin, LOW);
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   mySerial.write(CMD_VERSION);
   while(mySerial.available() < 4); //wait for data
@@ -105,6 +105,7 @@ void setup()
   mySerial.write(CMD_TEST);
   wait_for_input();
   mySerial.write((unsigned char)0x00); //stop test
+  while(mySerial.available() < 1); //wait for response
   mySerial.flush();
 
   delay(500); //wait 500ms (for exit test program)
@@ -114,6 +115,13 @@ void setup()
   mySerial.write(CMD_LCD_CLEARBG);
 
   wait_for_input();
+
+  //enable touchpanel
+  Serial.println("touch on...");
+  mySerial.write(CMD_CTRL);
+  mySerial.write(CMD_CTRL_FEATURES);
+  mySerial.write(FEATURE_TP);
+
   Serial.println("Press Touchpanel!");
 }
 

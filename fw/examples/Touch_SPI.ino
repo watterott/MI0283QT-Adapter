@@ -62,7 +62,7 @@ void setup()
   SPI.setDataMode(SPI_MODE3); //SPI_MODE3
   SPI.begin(); //sets SS/CS high
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_VERSION);
@@ -85,8 +85,9 @@ void setup()
   Serial.println("calibration...");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_TP_CALIBRATE);
-  digitalWrite(cs_pin, HIGH);
   wait_for_input();
+  SPI.transfer(0xFF); //read response
+  digitalWrite(cs_pin, HIGH);
   //SPI.flush();
 
   delay(500); //wait 500ms (for exit calibration)
@@ -99,6 +100,8 @@ void setup()
   wait_for_input();
   digitalWrite(cs_pin, LOW);
   SPI.transfer(0x00); //stop test
+  delay(1);
+  SPI.transfer(0xFF); //read response
   digitalWrite(cs_pin, HIGH);
   //SPI.flush();
 
@@ -111,6 +114,15 @@ void setup()
   digitalWrite(cs_pin, HIGH);
 
   wait_for_input();
+
+  //enable touchpanel
+  Serial.println("touch on...");
+  digitalWrite(cs_pin, LOW);
+  SPI.transfer(CMD_CTRL);
+  SPI.transfer(CMD_CTRL_FEATURES);
+  SPI.transfer(FEATURE_TP);
+  digitalWrite(cs_pin, HIGH);
+
   Serial.println("Press Touchpanel!");
 }
 

@@ -1,5 +1,9 @@
 # How to update the Firmware?
 
+## Firmware - Hex Files
+* [GLCD-Shield](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_glcdshield.hex)
+* [MI0283QT Adapter v2](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9.hex)
+
 
 ## LPCSP
 The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan.org/works/sp78k/report_e.html)

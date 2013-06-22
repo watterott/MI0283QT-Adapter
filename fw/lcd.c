@@ -2,7 +2,6 @@
 #include <string.h>
 #include "cmsis/LPC11xx.h"
 #include "settings.h"
-#include "main.h"
 #include "lcd.h"
 #include "lcd_mi0283qt9.h"
 #include "lcd_ug12d228aa.h"

@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include "cmsis/LPC11xx.h"
 #include "cmsis/system_LPC11xx.h"
-#include "main.h"
 #include "settings.h"
+#include "main.h"
 #include "iap.h"
 #include "cmd.h"
 #include "interface.h"
@@ -17,17 +17,14 @@
 
 uint8_t global_buffer[FLASH_SECTOR_BYTES]; //see iap.h
 volatile uint32_t ms_ticks=0;
-#ifdef ENC_SUPPORT
+uint32_t features=0;
 volatile uint32_t enc_sw=0;
 volatile int32_t enc_delta=0;
 uint32_t enc_last=0;
-#endif
-#ifdef NAV_SUPPORT
 volatile uint32_t nav_sw=0;
 volatile int32_t nav_hdelta=0; //left-right
 volatile int32_t nav_vdelta=0; //up-down
 uint32_t nav_last=0;
-#endif
 
 typedef struct
 {
@@ -46,128 +43,126 @@ SETTINGS *usersettings = (SETTINGS*)(FLASH_BYTES-128); //last 128 bytes are for 
 
 void SysTick_Handler(void) //1ms
 {
+  static uint32_t enc_t=0, enc_sw_t=0;
+  static uint32_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
+  uint32_t pin, n, dif;
+
   ms_ticks++;
 
-#ifdef ENC_SUPPORT
-  static uint32_t enc_t=0, enc_sw_t=0;
-  uint32_t enc, n, dif;
-
-  if(++enc_t == 5) //5ms
+  if(features & FEATURE_ENC)
   {
-    enc_t = 0;
+    if(++enc_t == 5) //5ms
+    {
+      enc_t = 0;
 
-    //get pin state
-    enc = GPIO_GETPORT(ENC_PORT, (1<<ENC_SW)|(1<<ENC_A)|(1<<ENC_B));
+      //get pin state
+      pin = GPIO_GETPORT(ENC_PORT, (1<<ENC_SW)|(1<<ENC_A)|(1<<ENC_B));
  
-    //check encoder phases
-    n = 0;
-    if(enc & (1<<ENC_A))
-    {
-      n = 3;
-    }
-    if(enc & (1<<ENC_B))
-    {
-      n ^= 1; //convert gray to binary
-    }
-    dif = enc_last - n; //difference last - new
-    if(dif & 1) //bit 0 = value (1)
-    {               
-      enc_last = n; // store new as next last
-      enc_delta += (dif & 2) - 1; //bit 1 = direction (+/-)
-    }
+      //check encoder phases
+      n = 0;
+      if(pin & (1<<ENC_A))
+      {
+        n = 3;
+      }
+      if(pin & (1<<ENC_B))
+      {
+        n ^= 1; //convert gray to binary
+      }
+      dif = enc_last - n; //difference last - new
+      if(dif & 1) //bit 0 = value (1)
+      {               
+        enc_last = n; // store new as next last
+        enc_delta += (dif & 2) - 1; //bit 1 = direction (+/-)
+      }
 
-    //check encoder switch
-    if((enc & (1<<ENC_SW)) == 0)
-    {
-      enc_sw_t++;
-      if(enc_sw_t >= (1000/5)) //1000ms
+      //check encoder switch
+      if((pin & (1<<ENC_SW)) == 0)
       {
-        enc_sw |= 0x02;
+        enc_sw_t++;
+        if(enc_sw_t >= (1000/5)) //1000ms
+        {
+          enc_sw |= 0x02;
+        }
+        if(enc_sw_t >= (100/5)) //100ms
+        {
+          enc_sw |= 0x01;
+        }
       }
-      if(enc_sw_t >= (100/5)) //100ms
+      else
       {
-        enc_sw |= 0x01;
+        enc_sw_t = 0;
       }
-    }
-    else
-    {
-      enc_sw_t = 0;
     }
   }
-#endif //ENC_SUPPORT
 
-#ifdef NAV_SUPPORT
-  static uint32_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
-  uint32_t nav;
-
-  if(++nav_t == 25) //25ms
+  if(features & FEATURE_NAV)
   {
-    nav_t = 0;
+    if(++nav_t == 25) //25ms
+    {
+      nav_t = 0;
 
-    //get pin state
-    nav = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D)) & nav_last;
+      //get pin state
+      pin       = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
+      nav_last  = pin;
+      pin      &= nav_last;
 
-    //check nav switches
-    if((nav & (1<<NAV_C)) == 0) //right
-    {
-      nav_sw |= 0x10;
-      nav_hdelta += inc_h;
-      inc_h = 0;
-    }
-    else if((nav & (1<<NAV_A)) == 0) //left
-    {
-      nav_sw |= 0x20;
-      nav_hdelta -= inc_h;
-      inc_h = 0;
-    }
-    else
-    {
-      inc_h = 1;
-    }
-
-    if((nav & (1<<NAV_D)) == 0) //up
-    {
-      nav_sw |= 0x40;
-      nav_vdelta += inc_v;
-      inc_v = 0;
-    }
-    else if((nav & (1<<NAV_B)) == 0) //down
-    {
-      nav_sw |= 0x80;
-      nav_vdelta -= inc_v;
-      inc_v = 0;
-    }
-    else
-    {
-      inc_v = 1;
-    }
-
-    if((nav & (1<<NAV_SW)) == 0)
-    {
-      nav_sw_t++;
-      if(nav_sw_t >= (1000/25)) //1000ms
+      //check nav switches
+      if((pin & (1<<NAV_C)) == 0) //right
       {
-        nav_sw |= 0x02;
+        nav_sw |= 0x10;
+        nav_hdelta += inc_h;
+        inc_h = 0;
       }
-      if(nav_sw_t >= (100/25)) //100ms
+      else if((pin & (1<<NAV_A)) == 0) //left
       {
-        nav_sw |= 0x01;
+        nav_sw |= 0x20;
+        nav_hdelta -= inc_h;
+        inc_h = 0;
+      }
+      else
+      {
+        inc_h = 1;
+      }
+
+      if((pin & (1<<NAV_D)) == 0) //up
+      {
+        nav_sw |= 0x40;
+        nav_vdelta += inc_v;
+        inc_v = 0;
+      }
+      else if((pin & (1<<NAV_B)) == 0) //down
+      {
+        nav_sw |= 0x80;
+        nav_vdelta -= inc_v;
+        inc_v = 0;
+      }
+      else
+      {
+        inc_v = 1;
+      }
+
+      if((pin & (1<<NAV_SW)) == 0)
+      {
+        nav_sw_t++;
+        if(nav_sw_t >= (1000/25)) //1000ms
+        {
+          nav_sw |= 0x02;
+        }
+        if(nav_sw_t >= (100/25)) //100ms
+        {
+          nav_sw |= 0x01;
+        }
+      }
+      else
+      {
+        nav_sw_t = 0;
       }
     }
-    else
-    {
-      nav_sw_t = 0;
-    }
-
-    nav_last = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
   }
-#endif //NAV_SUPPORT
 
   return;
 }
 
-
-#ifdef ENC_SUPPORT
 
 //Rotary Encoder routine by Peter Dannegger
 //http://www.mikrocontroller.net/articles/Drehgeber
@@ -209,9 +204,9 @@ uint32_t enc_getsw(void)
 void enc_init(void)
 {
   //GPIO_PORT(ENC_PORT)->DIR &= (1<<ENC_SW)|(1<<ENC_A)|(1<<ENC_B);
-  IOCON_SETRPIN(ENC_PORT, ENC_SW, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETRPIN(ENC_PORT, ENC_A, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETRPIN(ENC_PORT, ENC_B, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(ENC_PORT, ENC_SW, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(ENC_PORT, ENC_A,  IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(ENC_PORT, ENC_B,  IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
 
   if(GPIO_GETPIN(ENC_PORT, ENC_A))
   {
@@ -227,10 +222,6 @@ void enc_init(void)
   return;
 }
 
-#endif //ENC_SUPPORT
-
-
-#ifdef NAV_SUPPORT
 
 int32_t nav_gethdelta(void)
 {
@@ -268,21 +259,81 @@ uint32_t nav_getsw(void)
 void nav_init(void)
 {
   //GPIO_PORT(NAV_PORT)->DIR &= (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D);
-  IOCON_SETRPIN(NAV_PORT, NAV_SW, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETRPIN(NAV_PORT, NAV_A, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETRPIN(NAV_PORT, NAV_B, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETPIN(NAV_PORT, NAV_C, (0<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
-  IOCON_SETRPIN(NAV_PORT, NAV_D, (1<<0)|IOCON_PULLUP|IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(NAV_PORT, NAV_SW, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(NAV_PORT, NAV_A,  IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(NAV_PORT, NAV_B,  IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETPIN(NAV_PORT,  NAV_C,  IOCON_PIO   | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
+  IOCON_SETRPIN(NAV_PORT, NAV_D,  IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL); //GPIO with pull-up
 
   nav_sw = 0;
   nav_hdelta = 0;
   nav_vdelta = 0;
-  nav_last = 0xFFFFFFFFUL;
+  nav_last = 0;
 
   return;
 }
 
-#endif //NAV_SUPPORT
+
+uint32_t ldr_read(void)
+{
+  static uint32_t last;
+  uint32_t v1, v2;
+
+  //set AD4 to output and high
+  IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+  GPIO_SETPIN(ADC_PORT, ADC_4);
+  GPIO_PORT(ADC_PORT)->DIR |= (1<<ADC_4);
+
+  //read AD5
+  IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+  ADC_READ(5, v1);
+  ADC_READ(5, v2);
+  //IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+
+  //set AD4 to low
+  GPIO_CLRPIN(ADC_PORT, ADC_4);
+
+  if(v1 == v2)
+  {
+         if(v1 > 800) v1 = 100;
+    else if(v1 > 100) v1 /= 8;
+    else              v1 = 10;
+    set_pwm(v1);
+  }
+  else
+  {
+    v1 = 0;
+  }
+
+  return v1;
+}
+
+
+uint32_t adc_read(uint32_t chn)
+{
+  uint32_t v=0;
+
+  switch(chn)
+  {
+    case 4:
+      IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_ADC | IOCON_NOPULL | IOCON_ANALOG);
+      ADC_READ(chn, v);
+      IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL);
+      break;
+    case 5:
+      IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+      ADC_READ(chn, v);
+      IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
+      break;
+    case 7:
+      IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+      ADC_READ(chn, v);
+      IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
+      break;
+  }
+
+  return v;
+}
 
 
 uint32_t get_ms(void)
@@ -379,7 +430,6 @@ uint32_t __attribute__((optimize("Os"))) sysclock(uint32_t clock)
       pllctrl   = (0x2<<0) | (0x1<<5);
       break;
   }
-  LPC_TMR16B1->PC = 0; //reset prescale counter for backlight PWM
 
   DISABLE_IRQ();
 
@@ -429,10 +479,7 @@ uint32_t __attribute__((optimize("Os"))) sysclock(uint32_t clock)
     LPC_SYSCON->PDRUNCFG |= (1<<5); //disable SYS osc
   }
 
-  //re-init systick timer
-  SysTick_Config(sysclock(0) / 1000); //1000 Hz
-
-  //set prescale for backlight PWM
+  //set prescaler for backlight PWM
   if(current_clock >= 40000000UL)
   {
     LPC_TMR16B1->PR = 2; //div 4
@@ -443,19 +490,20 @@ uint32_t __attribute__((optimize("Os"))) sysclock(uint32_t clock)
   }
   else
   {
-    LPC_TMR16B1->PR = 0; //no prescale
+    LPC_TMR16B1->PR = 0; //no prescaler
   }
-  LPC_TMR16B1->PC = 0; //reset prescale counter
+  LPC_TMR16B1->PC = 0; //reset prescaler
 
-  ENABLE_IRQ();
+  //set prescaler for adc
+  LPC_ADC->CR = (((current_clock/4000000UL)-1)<<8) | (LPC_ADC->CR&0xFFFF00FF);  //stop
 
-  //re-init tp (adc)
-#ifdef TP_SUPPORT
-  tp_init();
-#endif
+  //re-init systick timer
+  SysTick_Config(current_clock / 1000); //1000 Hz
 
   //re-init interface
   if_init(INTERFACE_RESET);
+
+  ENABLE_IRQ();
 
   return current_clock;
 }
@@ -486,7 +534,7 @@ void __attribute__((optimize("Os"))) init(void)
   #define AHB_I2C    (1<< 5)
   #define AHB_UART   (1<<12)
   #define AHB_ADC    (1<<13)
-  LPC_SYSCON->SYSAHBCLKCTRL = 0x1F | AHB_CT16B1 | AHB_GPIO | AHB_IOCON; //CT16 = PWM for backlight
+  LPC_SYSCON->SYSAHBCLKCTRL = 0x1F | AHB_CT16B1 | AHB_GPIO | AHB_IOCON | AHB_ADC; //CT16 = PWM for backlight
 
   //init pins
   GPIO_PORT(SS_PORT)->DIR &= (1<<SS_PIN);
@@ -511,6 +559,12 @@ void __attribute__((optimize("Os"))) init(void)
   LPC_TMR16B1->PWMC = (1<<0); //PWM chn 0 on
   LPC_TMR16B1->EMR  = (1<<0)|(2<<4); //enable PIO1_9/CT16B1MAT0
   LPC_TMR16B1->TCR  = (1<<0); //enable timer
+
+  //init adc
+  LPC_ADC->CR = (((sysclock(0)/4000000UL)-1)<< 8) | //4MHz
+                                          (0<<16) | //burst off
+                                        (0x0<<17) | //10bit
+                                        (0x0<<24);  //stop
 
   //init systick timer
   ms_ticks = 0;
@@ -561,6 +615,8 @@ void __attribute__((optimize("Os"))) cmd_tp_calibrate(uint32_t fgcolor, uint32_t
   uint32_t i;
   CAL_POINT lcd_points[3] = {CAL_POINT1, CAL_POINT2, CAL_POINT3}; //calibration point postions
   CAL_POINT tp_points[3];
+
+  tp_init(); //enable touch
 
   do
   {
@@ -620,18 +676,16 @@ void __attribute__((optimize("Os"))) cmd_tp_calibrate(uint32_t fgcolor, uint32_t
 
 void __attribute__((optimize("Os"))) cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
 {
-  uint32_t c=1;
+  uint32_t c=1, f_save=features;
   char tmp[32];
 #ifdef TP_SUPPORT
   uint32_t x, y, z, last_x=0, last_y=0;
-#endif
-#ifdef ENC_SUPPORT
-  int32_t pos=0;
+#else
   uint32_t sw=0;
-#endif
-#ifdef NAV_SUPPORT
-  int32_t hpos=0, vpos=0;
-  uint32_t sw=0;
+  int32_t pos=0, hpos=0, vpos=0;
+
+  enc_init();
+  features = FEATURE_ENC;
 #endif
 
   lcd_fillrect(0,                   0, (LCD_WIDTH-1)/3,     LCD_HEIGHT-1, RGB(255,0,0));
@@ -680,55 +734,62 @@ void __attribute__((optimize("Os"))) cmd_lcd_test(uint32_t fgcolor, uint32_t bgc
     {
       GPIO_CLRPIN(LED_PORT, LED_PIN); //LED off
     }
-#endif //TP_SUPPORT
 
-#ifdef ENC_SUPPORT
-    pos += enc_getdelta();
-    sprintf(tmp, "Pos: %i  ", pos);
-    lcd_drawtext(2, 12, tmp, 0, fgcolor, bgcolor, 1);
-    sw = enc_getsw();
+    if(features & FEATURE_LDR)
+    {
+      x = ldr_read();
+      if(x)
+      {
+        sprintf(tmp, "LDR %03i", x);
+        lcd_drawtext(12, 12, tmp, 0, fgcolor, bgcolor, 1);
+      }
+    }
+
+#else //TP_SUPPORT
+    if(features == FEATURE_ENC)
+    {
+      pos += enc_getdelta();
+      sprintf(tmp, "%03i", pos);
+      sw = enc_getsw();
+    }
+    else //if(features == FEATURE_NAV)
+    {
+      hpos += nav_gethdelta();
+      vpos += nav_getvdelta();
+      sprintf(tmp, "%03i %03i", hpos, vpos);
+      sw = nav_getsw();
+    }
+    lcd_drawtext(5, 12, tmp, 0, fgcolor, bgcolor, 1);
     if(sw)
     {
-      if(sw & 0x01)
-      {
-        lcd_drawtext(2, 22, "press", 0, fgcolor, bgcolor, 1);
-      }
+      GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
       if(sw & 0x02)
       {
-        lcd_drawtext(2, 22, "long press", 0, fgcolor, bgcolor, 1);
+        if(features == FEATURE_ENC)
+        {
+          lcd_drawtext(5, 32, "NAV", 0, fgcolor, bgcolor, 1);
+          nav_init();
+          features = FEATURE_NAV;
+        }
+        else //if(features == FEATURE_NAV)
+        {
+          lcd_drawtext(5, 32, "ENC", 0, fgcolor, bgcolor, 1);
+          enc_init();
+          features = FEATURE_ENC;
+        }
+        delay_ms(500);
+        while(enc_getsw() || nav_getsw());
       }
-      GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
+      else if(sw & 0x01)
+      {
+        lcd_drawtext(5, 22, "press", 0, fgcolor, bgcolor, 1);
+      }
     }
     else
     {
       GPIO_CLRPIN(LED_PORT, LED_PIN); //LED off
     }
-#endif //ENC_SUPPORT
-
-#ifdef NAV_SUPPORT
-    hpos += nav_gethdelta();
-    vpos += nav_getvdelta();
-    sprintf(tmp, "Pos: %i %i  ", hpos, vpos);
-    lcd_drawtext(2, 12, tmp, 0, fgcolor, bgcolor, 1);
-    sw = nav_getsw();
-    if(sw)
-    {
-      if(sw & 0x01)
-      {
-        lcd_drawtext(2, 22, "press", 0, fgcolor, bgcolor, 1);
-      }
-      if(sw & 0x02)
-      {
-        lcd_drawtext(2, 22, "long press", 0, fgcolor, bgcolor, 1);
-      }
-      GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
-    }
-    else
-    {
-      GPIO_CLRPIN(LED_PORT, LED_PIN); //LED off
-    }
-#endif //NAV_SUPPORT
-
+#endif
     if(if_available())
     {
       c = if_read8();
@@ -739,47 +800,51 @@ void __attribute__((optimize("Os"))) cmd_lcd_test(uint32_t fgcolor, uint32_t bgc
 
   lcd_clear(bgcolor);
 
+  features = f_save;
+
   return;
 }
 
 
-void cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
+void __attribute__((optimize("Os"))) cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
 {
-  uint32_t x=2, y=2, c=1;
+  uint32_t x=2, y=2, c;
 
   lcd_clear(bgcolor);
 
   do
   {
-    if(if_available())
+    if(if_available() == 0)
     {
-      c = if_read8();
-      switch(c)
-      {
-        case '\n':
-        case '\r':
-          if(x>0)
-          {
-            x  = 2;
-            y += FONT_HEIGHT*size;
-          }
-          break;
-        case '\t':
-          break;
-        default:
-          x = lcd_drawchar(x, y, c, size, fgcolor, bgcolor, 1);
-          break;
-      }
-      if(x >= lcd_getwidth())
-      {
-        x = 2;
-        y += FONT_HEIGHT*size;
-      }
-      if((y+FONT_HEIGHT*size) >= lcd_getheight())
-      {
-        y = 2;
-        lcd_clear(bgcolor);
-      }
+      continue;
+    }
+
+    c = if_read8();
+    switch(c)
+    {
+      case '\n':
+      case '\r':
+        if(x > 0)
+        {
+          x  = 2;
+          y += FONT_HEIGHT*size;
+        }
+        break;
+      case '\t':
+        c = ' ';
+      default:
+        x = lcd_drawchar(x, y, c, size, fgcolor, bgcolor, 1);
+        break;
+    }
+    if(x >= lcd_getwidth())
+    {
+      x = 2;
+      y += FONT_HEIGHT*size;
+    }
+    if((y+FONT_HEIGHT*size) >= lcd_getheight())
+    {
+      y = 2;
+      lcd_clear(bgcolor);
     }
   }while(c != 0);
 
@@ -1177,7 +1242,7 @@ int main(void)
 {
   uint32_t a, b, c, d, e, color, fgcolor=RGB(0,0,0), bgcolor=RGB(255,255,255), led_power=DEFAULT_POWER;
 #ifdef TP_SUPPORT
-  uint32_t tp_ticks=0, tp_int=0;
+  uint32_t tp_t=0, tp_int=0, ldr_t;
   CAL_MATRIX *m;
 #endif
 
@@ -1187,19 +1252,21 @@ int main(void)
   //init lcd
   lcd_init();
 
-  //init touch panel
+  //init touch panel, encoder, nav switch
 #ifdef TP_SUPPORT
-  tp_init();
-#endif
-
-  //init encoder
-#ifdef ENC_SUPPORT
-  enc_init();
-#endif
-
-  //init nav switch
-#ifdef NAV_SUPPORT
-  nav_init();
+  if(features & FEATURE_TP)
+  {
+    tp_init();
+  }
+#else
+  if(features & FEATURE_ENC)
+  {
+    enc_init();
+  }
+  if(features & FEATURE_NAV)
+  {
+    nav_init();
+  }
 #endif
 
   //set system clock
@@ -1257,11 +1324,7 @@ int main(void)
 
 
 //set_pwm(50);
-//lcd_clear(bgcolor);
-//cmd_tp_calibrate(fgcolor, bgcolor);
 //cmd_lcd_test(fgcolor, bgcolor);
-//if_init(INTERFACE_I2C);
-//if_writestr("GO...");
 
 
   //cmd loop
@@ -1269,19 +1332,34 @@ int main(void)
   {
 #ifdef TP_SUPPORT
     //read touch panel
-    if((get_ms() - tp_ticks) >= tp_int)
+    if(features & FEATURE_TP)
     {
-      tp_ticks = get_ms();
-      tp_read();
+      if((get_ms() - tp_t) >= tp_int)
+      {
+        tp_t = get_ms();
+        tp_read();
+      }
+      if(if_available() == 0)
+      {
+        tp_int = 10; //10ms
+        continue;
+      }
+      else
+      {
+        tp_int = 50; //50ms (slow down tp read when data is available)
+      }
     }
-    if(if_available() == 0)
+
+    if(features & FEATURE_LDR)
     {
-      tp_int = 10; //10ms
-      continue;
-    }
-    else
-    {
-      tp_int = 50; //50ms (slow down tp read when data is available)
+     if(if_available() == 0)
+     {
+       if((get_ms() - ldr_t) >= 1000) //every second
+        {
+          ldr_t = get_ms();
+          ldr_read();
+        }
+      }
     }
 #endif
 
@@ -1310,11 +1388,8 @@ int main(void)
         a = FEATURE_LCD;
 #ifdef TP_SUPPORT
         a |= FEATURE_TP;
-#endif
-#ifdef ENC_SUPPORT
+#else
         a |= FEATURE_ENC;
-#endif
-#ifdef NAV_SUPPORT
         a |= FEATURE_NAV;
 #endif
         if_write8(a);
@@ -1328,6 +1403,16 @@ int main(void)
           case CMD_CTRL_BAUDRATE:  uart_setbaudrate(if_read32());  break;
           case CMD_CTRL_ADDRESS:   i2c_setaddress(if_read8());     break;
           case CMD_CTRL_SYSCLOCK:  sysclock(if_read8()*1000000UL); break;
+          case CMD_CTRL_FEATURES:
+            a = if_read8();
+#ifdef TP_SUPPORT
+            if(a & FEATURE_TP) { tp_init();  };
+#else
+            if(a & FEATURE_ENC){ enc_init(); };
+            if(a & FEATURE_NAV){ nav_init(); };
+#endif
+            features = a;
+            break;
         }
         break;
       case CMD_PIN:
@@ -1734,8 +1819,7 @@ int main(void)
         if_write8(CMD_TP_CALIBRATE);
         if_flush();
         break;
-/*
-      case CMD_TP_GETMATRIX:
+/*    case CMD_TP_GETMATRIX:
         m = tp_getmatrix();
         if_write32(m->a); //1
         if_write32(m->b); //2
@@ -1758,11 +1842,9 @@ int main(void)
         {
           tp_setmatrix(a, b, c, d, e, f, g);
         }
-        break;
-*/
-#endif //TP_SUPPORT
+        break; */
+#else //TP_SUPPORT
 
-#ifdef ENC_SUPPORT
       case CMD_ENC_POS:
         if_write8(enc_getdelta());
         if_write8(enc_getsw());
@@ -1784,9 +1866,7 @@ int main(void)
         if_write8(enc_getsw());
         if_flush();
         break;
-#endif //ENC_SUPPORT
 
-#ifdef NAV_SUPPORT
       case CMD_NAV_POS:
         if_write8(nav_gethdelta());
         if_write8(nav_getvdelta());
@@ -1811,7 +1891,7 @@ int main(void)
         if_write8(nav_getsw());
         if_flush();
         break;
-#endif //NAV_SUPPORT
+#endif
     }
   }
 

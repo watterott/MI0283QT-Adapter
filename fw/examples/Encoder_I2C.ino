@@ -31,7 +31,7 @@ void setup()
   //init Wire lib
   Wire.begin();
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(CMD_VERSION);
@@ -60,6 +60,7 @@ void setup()
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(0x00); //stop test
   Wire.endTransmission();
+  delay(1);
   Wire.flush();
 
   delay(500); //wait 500ms (for exit test program)
@@ -71,6 +72,15 @@ void setup()
   Wire.endTransmission();
 
   wait_for_input();
+
+  //enable rotary encoder
+  Serial.println("encoder on...");
+  Wire.beginTransmission(I2C_ADDR);
+  Wire.write(CMD_CTRL);
+  Wire.write(CMD_CTRL_FEATURES);
+  Wire.write(FEATURE_ENC);
+  Wire.endTransmission();
+
   Serial.println("Move Rotary Encoder!");
 }
 

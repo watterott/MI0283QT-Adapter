@@ -15,7 +15,7 @@ enum _COMMANDS
   CMD_NOP2 = 0x00,           //NOP / poll
   CMD_VERSION,               //get firmware version (4bytes "x.xx")
   CMD_TEST,                  //start test program
-  CMD_FEATURES,              //get features (_CMDFEATURES)
+  CMD_FEATURES,              //get available features (_CMDFEATURES)
   CMD_CTRL,                  //control options (_CTRLOPTIONS)
   CMD_PIN,                   //pin mode/config
   CMD_ADC,                   //read ADC pin
@@ -23,18 +23,18 @@ enum _COMMANDS
   //display commands
   CMD_LCD_LED = 0x10,        //set backlight: power (1byte 0-100%)
   CMD_LCD_RESET,             //reset display
-  CMD_LCD_POWER,             //display panel power: power (0=off, 1=on)
-  CMD_LCD_RAWCMD,            //send raw command to display
-  CMD_LCD_RAWDAT,            //send raw data to display
+  CMD_LCD_POWER,             //display panel power: power (1byte 0=off, 1=on)
+  CMD_LCD_RAWCMD,            //send raw command to display (1byte)
+  CMD_LCD_RAWDAT,            //send raw data to display (1byte)
 
   CMD_LCD_ORIENTATION = 0x20,//orientation (0=0 9=90 18=180 27=270)
   CMD_LCD_WIDTH,             //get display width (always 16bit -> 2byte)
   CMD_LCD_HEIGHT,            //get display height (always 16bit -> 2byte)
-  CMD_LCD_INVERT,            //invert (1byte 0=off, x=on)
+  CMD_LCD_INVERT,            //invert (1byte 0=off, 1=on)
   CMD_LCD_FGCOLOR,           //set foreground color (2byte: RGB565)
   CMD_LCD_BGCOLOR,           //set background color (2byte: RGB565)
   CMD_LCD_TERMINAL,          //start terminal mode
-  CMD_LCD_DRAWIMAGE,         //draw image: x0, y0, w, h, color mode, color...
+  CMD_LCD_DRAWIMAGE,         //draw image: x0, y0, w, h, color_mode, color...
 
   CMD_LCD_CLEAR,             //clear display: color
   CMD_LCD_CLEARFG,           //clear display (fg color)
@@ -102,7 +102,7 @@ enum _COMMANDS
   CMD_TP_Z,                  //get current pressure
   CMD_TP_WAITPRESS,          //wait till press and get position (x, y) after press
   CMD_TP_WAITRELEASE,        //wait till release and get position (x, y) after release
-  CMD_TP_WAITMOVE,           //get direction (1byte: 1=x-, 2=x+, 4=y-, 8=y+) after move
+  CMD_TP_WAITMOVE,           //wait till move and get direction (1byte: 0x01=x-, 0x02=x+, 0x04=y-, 0x08=y+) after move
   CMD_TP_CALIBRATE,          //calibrate touch panel (will not be saved to flash)
 
   //rotary encoder commands
@@ -125,6 +125,7 @@ enum _CMDFEATURES
   FEATURE_TP  = 0x02, //touch panel
   FEATURE_ENC = 0x04, //rotary encoder
   FEATURE_NAV = 0x08, //navigation switch
+  FEATURE_LDR = 0x10, //light sensor (LDR)
 };
 
 
@@ -144,6 +145,7 @@ enum _CTRLOPTIONS
   CMD_CTRL_BAUDRATE,    //UART baud rate (4byte = 32bit)
   CMD_CTRL_ADDRESS,     //I2C address (1byte)
   CMD_CTRL_SYSCLOCK,    //in MHz (1byte)
+  CMD_CTRL_FEATURES,    //enable/disable features
 };
 
 

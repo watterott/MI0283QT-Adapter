@@ -27,7 +27,7 @@ void write_pos(uint16_t i)
 
 void setup()
 {
-  uint16_t x, y, w, h;
+  uint16_t x=0, y=0, w=0, h=0;
 
   //init Serial lib
   Serial.begin(9600);
@@ -38,7 +38,7 @@ void setup()
   //init Wire lib
   Wire.begin();
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(CMD_VERSION);
@@ -51,7 +51,7 @@ void setup()
   }
   Serial.println("");
 
-  //get display features
+  //get features
   Serial.print("features: ");
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(CMD_FEATURES);
@@ -65,6 +65,31 @@ void setup()
     if(c & FEATURE_ENC){ Serial.print("ENC "); }
     if(c & FEATURE_NAV){ Serial.print("NAV "); }
   }
+  Serial.println("");
+
+  //get width and height
+  Serial.print("width/height: ");
+  Wire.beginTransmission(I2C_ADDR);
+  Wire.write(CMD_LCD_WIDTH);
+  Wire.endTransmission();
+  Wire.requestFrom(I2C_ADDR, 2); //request 2 bytes
+  if(Wire.available())
+  { 
+    x  = Wire.read()<<8;
+    x |= Wire.read()<<0;
+  }
+  Serial.print(x, DEC);
+  Serial.print("/");
+  Wire.beginTransmission(I2C_ADDR);
+  Wire.write(CMD_LCD_HEIGHT);
+  Wire.endTransmission();
+  Wire.requestFrom(I2C_ADDR, 2); //request 2 bytes
+  if(Wire.available())
+  { 
+    y  = Wire.read()<<8;
+    y |= Wire.read()<<0;
+  }
+  Serial.print(y, DEC);
   Serial.println("");
 
   //backlight

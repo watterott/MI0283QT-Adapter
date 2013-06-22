@@ -64,7 +64,7 @@ void setup()
   SPI.setDataMode(SPI_MODE3); //SPI_MODE3
   SPI.begin(); //sets SS/CS high
 
-  //get display firmware version
+  //get display version
   Serial.print("version: ");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_VERSION);
@@ -91,6 +91,8 @@ void setup()
   wait_for_input();
   digitalWrite(cs_pin, LOW);
   SPI.transfer(0x00); //stop test
+  delay(1);
+  SPI.transfer(0xFF); //read response
   digitalWrite(cs_pin, HIGH);
   //SPI.flush();
 
@@ -103,6 +105,15 @@ void setup()
   digitalWrite(cs_pin, HIGH);
 
   wait_for_input();
+
+  //enable rotary encoder
+  Serial.println("encoder on...");
+  digitalWrite(cs_pin, LOW);
+  SPI.transfer(CMD_CTRL);
+  SPI.transfer(CMD_CTRL_FEATURES);
+  SPI.transfer(FEATURE_ENC);
+  digitalWrite(cs_pin, HIGH);
+
   Serial.println("Move Rotary Encoder!");
 }
 

@@ -1,8 +1,9 @@
 # Display Firmware
+**Documentation for Firmware v0.02 and greater.**
 
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
-To activate SPI or UART set CS+MOSI or CS + RX to low after a reset or on power-up for 20ms.
+To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up (for about 20 ms).
 
 **SPI activation:**
 
@@ -31,9 +32,10 @@ Parameters have a 8 bit width, expect *color values* (RGB565) and *position valu
 
 Commands that end with *FG* or *BG* need no color value.
 
-Example: *CMD_LCD_CLEAR* has as parameter a 2 byte color values and *CMD_LCD_CLEARFG* fills the screen with the foreground color and *CMD_LCD_CLEARBG* with the background color.
+Example: *CMD_LCD_CLEAR* has as parameter a 2 byte color value and *CMD_LCD_CLEARFG* fills the screen with the foreground color and *CMD_LCD_CLEARBG* with the background color.
 
-### General
+
+### General Commands
 
     CMD_NOP1
     CMD_NOP2
@@ -49,11 +51,12 @@ Start the test program. To exit send *0* and the board responses with *CMD_TEST*
 Get features. Returns 1 byte with FEATURE_LCD, FEATURE_TP, FEATURE_ENC or FEATURE_NAV set.
 
     CMD_CTRL
-      CMD_CTRL_SAVE      //Save current settings to flash
-      CMD_CTRL_INTERFACE //Set Interface (Parameter: 1 byte)
-      CMD_CTRL_BAUDRATE  //Set UART baud rate (Parameter: 4 bytes = 32 bit)
-      CMD_CTRL_ADDRESS   //Set I2C address (Parameter: 1 byte)
-      CMD_CTRL_SYSCLOCK  //Set system clock in MHz (Parameter: 1 byte)
+      CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, fg color, bg color, touchpanel calibration).
+      CMD_CTRL_INTERFACE //Set interface. Parameter: 1 byte (INTERFACE_UART, INTERFACE_I2C, INTERFACE_SPI)
+      CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
+      CMD_CTRL_ADDRESS   //Set I2C address. Parameter: 1 byte
+      CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12,16,24,32,36,48)
+      CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV)
 General system settings/options. There is no return value.
 
     CMD_PIN
@@ -62,7 +65,8 @@ Planned function...
     CMD_ADC
 Planned function...
 
-### Display
+
+### Display Commands
 
     CMD_LCD_LED
 Set display backlight power. Parameter: 1 byte (0-100)
@@ -166,14 +170,15 @@ Fill ellipse. Parameter: x0, y0, radius_x, radius_y, [color]
     CMD_LCD_DRAWTEXT
     CMD_LCD_DRAWTEXTFG
     CMD_LCD_DRAWTEXTBG
-Draw text. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0x80=clear), length, text
+Draw text. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0x80=clear background), length, text
 
     CMD_LCD_DRAWSTRING
     CMD_LCD_DRAWSTRINGFG
     CMD_LCD_DRAWSTRINGBG
-Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0x80=clear), text (end with 0x00)
+Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0x80=clear background), text (end with 0x00)
 
-### Touch-Panel
+
+### Touch-Panel Commands
 
     CMD_TP_POS
 Get last position and pressure. Returns x, y, z.
@@ -199,7 +204,7 @@ Wait till move and get direction after move. Returns 1 byte (0x01=x-, 0x02=x+, 0
     CMD_TP_CALIBRATE
 Calibrate touch panel. This will not save the calibration data to flash (see *CMD_CTRL_SAVE*). Returns *CMD_TP_CALIBRATE* after the calibration is completed or when *0* is sent to exit.
 
-### Rotary-Encoder
+### Rotary-Encoder Commands
 
     CMD_ENC_POS
 Get position and switch state. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x02=long press).
@@ -213,7 +218,8 @@ Wait till press. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x0
     CMD_ENC_WAITRELEASE
 Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x02=long press).
 
-### Navigation-Switch
+
+### Navigation-Switch Commands
 
     CMD_NAV_POS
 Get position and switch state. Returns 3 bytes: left-right position (-127...+127), down-up position (-127...+127), state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down).

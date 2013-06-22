@@ -46,7 +46,7 @@ void write_pos(uint16_t i)
 
 void setup()
 {
-  uint16_t i, x, y, w, h;
+  uint16_t i=0, x=0, y=0, w=0, h=0;
 
    //init pins
   pinMode(rst_pin, OUTPUT);

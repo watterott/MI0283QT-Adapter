@@ -71,7 +71,7 @@ void setup()
   SPI.setDataMode(SPI_MODE3); //SPI_MODE3
   SPI.begin(); //sets SS/CS high
 
-  //get display firmware version
+  //get firmware version
   Serial.print("version: ");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_VERSION);
@@ -83,7 +83,7 @@ void setup()
   Serial.println("");
   digitalWrite(cs_pin, HIGH);
 
-  //get display features
+  //get features
   Serial.print("features: ");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_FEATURES);
@@ -93,6 +93,23 @@ void setup()
   if(c & FEATURE_TP) { Serial.print("TP ");  }
   if(c & FEATURE_ENC){ Serial.print("ENC "); }
   if(c & FEATURE_NAV){ Serial.print("NAV "); }
+  Serial.println("");
+  digitalWrite(cs_pin, HIGH);
+
+  //get width and height
+  Serial.print("width/height: ");
+  digitalWrite(cs_pin, LOW);
+  SPI.transfer(CMD_LCD_WIDTH);
+  delay(1);
+  x  = SPI.transfer(0xFF)<<8;
+  x |= SPI.transfer(0xFF)<<0;
+  Serial.print(x, DEC);
+  Serial.print("/");
+  SPI.transfer(CMD_LCD_HEIGHT);
+  delay(1);
+  y  = SPI.transfer(0xFF)<<8;
+  y |= SPI.transfer(0xFF)<<0;
+  Serial.print(y, DEC);
   Serial.println("");
   digitalWrite(cs_pin, HIGH);
 
