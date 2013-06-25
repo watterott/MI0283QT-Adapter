@@ -6,7 +6,7 @@ Display Firmware
 
 Documentation
 -------------
-  See docu.md
+  See docu/README.md and update_guide/README.md
 
 
 Third party software

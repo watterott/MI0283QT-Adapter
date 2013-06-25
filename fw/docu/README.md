@@ -3,7 +3,7 @@
 
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
-To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up (for about 20 ms).
+To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up (for about 500 ms).
 
 **SPI activation:**
 
@@ -12,7 +12,7 @@ To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up
     RST high
     CS low
     MOSI low
-    wait 20 ms
+    wait 500 ms
     CS high
 
 **UART activation:**
@@ -22,7 +22,7 @@ To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up
     RST high
     CS low
     RX low
-    wait 20 ms
+    wait 500 ms
     CS high
 
 
@@ -56,7 +56,7 @@ Get features. Returns 1 byte with FEATURE_LCD, FEATURE_TP, FEATURE_ENC or FEATUR
       CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
       CMD_CTRL_ADDRESS   //Set I2C address. Parameter: 1 byte
       CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12,16,24,32,36,48)
-      CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV)
+      CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV, FEATURE_LDR)
 General system settings/options. There is no return value.
 
     CMD_PIN
@@ -85,6 +85,7 @@ Send raw data to the display controller. Parameter: 1 byte
     
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
+![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.svg)
 
     CMD_LCD_WIDTH
 Get display width. Returns always 2 bytes = 16 bit.
@@ -120,12 +121,12 @@ Draw pixel. Parameter: x0, y0, [color]
     CMD_LCD_DRAWLINE
     CMD_LCD_DRAWLINEFG
     CMD_LCD_DRAWLINEBG
-Draw Line. Parameter: x0, y0, x1, y1, [color]
+Draw line. Parameter: x0, y0, x1, y1, [color]
 
     CMD_LCD_DRAWLINES
     CMD_LCD_DRAWLINESFG
     CMD_LCD_DRAWLINESBG
-Draw Lines. Parameter: [color], n, x0, y0...xn, yn
+Draw lines. Parameter: [color], n, x0, y0...xn, yn
 
     CMD_LCD_DRAWRECT
     CMD_LCD_DRAWRECTFG
@@ -180,6 +181,8 @@ Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0
 
 ### Touch-Panel Commands
 
+Note: To activate the touch panel use *CMD_CTRL_FEATURES* and set *FEATURE_TP*.
+
     CMD_TP_POS
 Get last position and pressure. Returns x, y, z.
 
@@ -204,7 +207,10 @@ Wait till move and get direction after move. Returns 1 byte (0x01=x-, 0x02=x+, 0
     CMD_TP_CALIBRATE
 Calibrate touch panel. This will not save the calibration data to flash (see *CMD_CTRL_SAVE*). Returns *CMD_TP_CALIBRATE* after the calibration is completed or when *0* is sent to exit.
 
+
 ### Rotary-Encoder Commands
+
+Note: To activate the rotary encoder use *CMD_CTRL_FEATURES* and set *FEATURE_ENC*.
 
     CMD_ENC_POS
 Get position and switch state. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x02=long press).
@@ -220,6 +226,8 @@ Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0
 
 
 ### Navigation-Switch Commands
+
+Note: To activate the navigation switch use *CMD_CTRL_FEATURES* and set *FEATURE_NAV*.
 
     CMD_NAV_POS
 Get position and switch state. Returns 3 bytes: left-right position (-127...+127), down-up position (-127...+127), state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down).

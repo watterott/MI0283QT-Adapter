@@ -49,7 +49,7 @@ void setup()
   digitalWrite(rst_pin, HIGH);
   digitalWrite(cs_pin, LOW);
   digitalWrite(mosi_pin, LOW); //cs+mosi low -> SPI
-  delay(20);
+  delay(500);
   digitalWrite(cs_pin, HIGH);
   // via default interface (I2C)
   Wire.begin();

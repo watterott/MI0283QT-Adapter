@@ -30,8 +30,13 @@ http://www.watterott.com/en/MI0283QT-Adapter-v2
 
 
 ## Software
-* [Arduino Library + Examples](https://github.com/watterott/mSD-Shield/tree/master/src)
-* [Firmware](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw)
+* MI0283QT-Adapter v1
+ * [Arduino Library + Examples](https://github.com/watterott/mSD-Shield/tree/master/src)
+* MI0283QT-Adapter v2
+  * [Firmware](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw)
+  * [Update Guide](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/update_guide)
+  * [Arduino Examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/examples)
+  * [Command Description](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/docu)
 
 
 ## Projects

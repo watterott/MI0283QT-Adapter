@@ -1,0 +1,55 @@
+<svg stroke-linejoin="round" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" height="177" width="283" version="1.1" viewBox="-9.18485e-015 -50 80 50.000001" fill="none">
+<path d="m13-44,10,0" stroke-width="0.25" stroke="#000"/>
+<path d="m13-44,0,10" stroke-width="0.25" stroke="#000"/>
+<path d="m69-44-10,0" stroke-width="0.25" stroke="#000"/>
+<path d="m69-44,0,10" stroke-width="0.25" stroke="#000"/>
+<path d="m13-6,0-10" stroke-width="0.25" stroke="#000"/>
+<path d="m13-6,10,0" stroke-width="0.25" stroke="#000"/>
+<path d="m69-6-10,0" stroke-width="0.25" stroke="#000"/>
+<path d="m69-6,0-10" stroke-width="0.25" stroke="#000"/>
+<path d="m23-44-2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m23-44-2,1" stroke-width="0.25" stroke="#000"/>
+<path d="m13-34-1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m13-34,1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m13-16-1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m13-16,1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m23-6-2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m23-6-2,1" stroke-width="0.25" stroke="#000"/>
+<path d="m59-44,2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m59-44,2,1" stroke-width="0.25" stroke="#000"/>
+<path d="m69-34-1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m69-34,1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m69-16-1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m69-16,1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m59-6,2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m59-6,2,1" stroke-width="0.25" stroke="#000"/>
+<path d="m14.5-44,1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m14.5-46,1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m69-41.5,2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m71-41.5-2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m66.5-6,1,2" stroke-width="0.25" stroke="#000"/>
+<path d="m66.5-4,1-2" stroke-width="0.25" stroke="#000"/>
+<path d="m11-8.5,2,1" stroke-width="0.25" stroke="#000"/>
+<path d="m11-7.5,2-1" stroke-width="0.25" stroke="#000"/>
+<path d="m11-42.5,1,0.5" stroke-width="0.25" stroke="#000"/>
+<path d="m11-41.5,1-0.5" stroke-width="0.25" stroke="#000"/>
+<path d="m12-42,1,0" stroke-width="0.25" stroke="#000"/>
+<path d="m66.5-46,0.5,1" stroke-width="0.25" stroke="#000"/>
+<path d="m67-45,0.5-1" stroke-width="0.25" stroke="#000"/>
+<path d="m67-45,0,1" stroke-width="0.25" stroke="#000"/>
+<path d="m71-8.5-1,0.5" stroke-width="0.25" stroke="#000"/>
+<path d="m70-8,1,0.5" stroke-width="0.25" stroke="#000"/>
+<path d="m70-8-1,0" stroke-width="0.25" stroke="#000"/>
+<path d="m14.5-4,0.5-1" stroke-width="0.25" stroke="#000"/>
+<path d="m15-5,0.5,1" stroke-width="0.25" stroke="#000"/>
+<path d="m15-5,0-1" stroke-width="0.25" stroke="#000"/>
+<text style="letter-spacing:0px;word-spacing:0px;" font-weight="normal" xml:space="preserve" font-size="11.28888893px" font-style="normal" y="-38.068901" x="14.765734" font-family="Sans" line-height="125%" fill="#000000"><tspan font-weight="normal" font-size="5.64444447px" font-style="normal" font-stretch="normal" font-variant="normal" y="-38.068901" x="14.765734" font-family="Arial">0</tspan></text>
+<text style="letter-spacing:0px;word-spacing:0px;" font-weight="normal" xml:space="preserve" transform="matrix(0,1,-1,0,0,0)" font-size="11.28888893px" font-style="normal" y="-63.068901" x="-42.011002" font-family="Sans" line-height="125%" fill="#000000"><tspan font-weight="normal" font-size="5.64444447px" font-style="normal" font-stretch="normal" font-variant="normal" y="-63.068901" x="-42.011002" font-family="Arial">90</tspan></text>
+<text style="letter-spacing:0px;word-spacing:0px;" font-weight="normal" xml:space="preserve" font-size="11.28888893px" font-style="normal" y="-41.539169" x="38.196999" font-family="Sans" line-height="125%" fill="#000000"><tspan font-weight="normal" font-size="5.64444447px" font-style="normal" font-stretch="normal" font-variant="normal" y="-41.539169" x="38.196999" font-family="Arial"/></text>
+<text style="letter-spacing:0px;word-spacing:0px;" font-weight="normal" xml:space="preserve" transform="scale(-1,-1)" font-size="11.28888893px" font-style="normal" y="12.056943" x="-67.652931" font-family="Sans" line-height="125%" fill="#000000"><tspan font-weight="normal" font-size="5.64444447px" font-style="normal" font-stretch="normal" font-variant="normal" y="12.056943" x="-67.652931" font-family="Arial">180</tspan></text>
+<text style="letter-spacing:0px;word-spacing:0px;" font-weight="normal" xml:space="preserve" transform="matrix(0,-1,1,0,0,0)" font-size="11.28888893px" font-style="normal" y="19.056944" x="7.8346343" font-family="Sans" line-height="125%" fill="#000000"><tspan font-weight="normal" font-size="5.64444447px" font-style="normal" font-stretch="normal" font-variant="normal" y="19.056944" x="7.8346343" font-family="Arial">270</tspan></text>
+<rect height="49.7" width="79.8" stroke="#000" y="-49.9" x="0.125" stroke-width="0.25" fill="none"/>
+<rect height="43.7" width="61.7" stroke="#000" y="-46.9" x="10.1" stroke-width="0.299" fill="none"/>
+<rect height="19.7" width="3.74" stroke="#808080" y="-34.9" x="3.13" stroke-width="0.265" fill="none"/>
+<rect stroke-linejoin="round" height="19.8" width="1.81" stroke="#808080" stroke-linecap="round" y="-34.9" x="75.1" stroke-width="0.185" fill="none"/>
+</svg>
