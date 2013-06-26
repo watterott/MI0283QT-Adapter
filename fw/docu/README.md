@@ -48,7 +48,7 @@ Get firmware version. Returns 4 bytes, for example "0.12".
 Start the test program. To exit send *0* and the board responses with *CMD_TEST*.
 
     CMD_FEATURES
-Get features. Returns 1 byte with FEATURE_LCD, FEATURE_TP, FEATURE_ENC or FEATURE_NAV set.
+Get features. Returns 1 byte with FEATURE_LCD, FEATURE_TP, FEATURE_ENC, FEATURE_NAV and/or FEATURE_LDR set.
 
     CMD_CTRL
       CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, fg color, bg color, touchpanel calibration).
@@ -85,7 +85,7 @@ Send raw data to the display controller. Parameter: 1 byte
     
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
-![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.svg)
+![Orientation dia](https://rawgithub.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.svg)
 
     CMD_LCD_WIDTH
 Get display width. Returns always 2 bytes = 16 bit.
@@ -233,7 +233,7 @@ Note: To activate the navigation switch use *CMD_CTRL_FEATURES* and set *FEATURE
 Get position and switch state. Returns 3 bytes: left-right position (-127...+127), down-up position (-127...+127), state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down).
 
     CMD_NAV_SW
-Get switch state. Returns 1byte: state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down)
+Get switch state. Returns 1 byte: state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down)
 
     CMD_NAV_WAITPRESS
 Wait till press. Returns 3 bytes: left-right position (-127...+127), down-up position (-127...+127), state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down).

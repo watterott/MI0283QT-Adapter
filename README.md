@@ -13,7 +13,8 @@ http://www.watterott.com/en/MI0283QT-Adapter-v2
 * TI ADS7846 Touch-Controller
 * Interface: SPI (Display + Touch-Controller)
 * Backlight dimmable (PWM)
-* 3V3 - 5V tolerant IOs
+* 3.3V - 5V tolerant IOs
+* Power: 3.3V - 5V
 
 
 ## Features MI0283QT-Adapter v2
@@ -23,6 +24,7 @@ http://www.watterott.com/en/MI0283QT-Adapter-v2
 * Backlight dimmable via interface
 * Pin-compatible with MI0283QT-Adapter v1
 * 3V3 - 5V tolerant IOs
+* Power: 3.3V - 5V
 
 
 ## Hardware
