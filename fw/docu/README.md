@@ -5,6 +5,12 @@
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
 To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up (for about 500 ms).
 
+**Default interface settings:**
+
+* I2C address: 0xA0 (max. 400 kHz)
+* SPI Mode 3: max. 4 MHz @ 48 MHz system clock (default)
+* UART: 9600 baud
+
 **SPI activation:**
 
     RST low
@@ -85,6 +91,7 @@ Send raw data to the display controller. Parameter: 1 byte
     
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
+
 ![Orientation dia](https://rawgithub.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.svg)
 
     CMD_LCD_WIDTH
@@ -182,6 +189,7 @@ Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0
 ### Touch-Panel Commands
 
 Note: To activate the touch panel use *CMD_CTRL_FEATURES* and set *FEATURE_TP*.
+      The touch panel will be checked in background continuously and the result can be read with the following commands.
 
     CMD_TP_POS
 Get last position and pressure. Returns x, y, z.
@@ -211,6 +219,7 @@ Calibrate touch panel. This will not save the calibration data to flash (see *CM
 ### Rotary-Encoder Commands
 
 Note: To activate the rotary encoder use *CMD_CTRL_FEATURES* and set *FEATURE_ENC*.
+      The encoder state will be checked in background continuously and the result can be read with the following commands.
 
     CMD_ENC_POS
 Get position and switch state. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x02=long press).
@@ -228,6 +237,7 @@ Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0
 ### Navigation-Switch Commands
 
 Note: To activate the navigation switch use *CMD_CTRL_FEATURES* and set *FEATURE_NAV*.
+      The switch will be checked in background continuously and the result can be read with the following commands.
 
     CMD_NAV_POS
 Get position and switch state. Returns 3 bytes: left-right position (-127...+127), down-up position (-127...+127), state (0x01=press, 0x02=long press, 0x10=right, 0x20=left, 0x40=up, 0x80=down).
