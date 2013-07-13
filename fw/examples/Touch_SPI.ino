@@ -10,7 +10,7 @@
 
 #define I2C_ADDR 0xA0
 
-int rst_pin  = 9;  //connect to RST from display
+int rst_pin  = 8;  //connect to RST from display
 int cs_pin   = 7;  //connect to CS from display
 int mosi_pin = 11; //Uno 11
 int miso_pin = 12; //Uno 12
@@ -47,7 +47,7 @@ void setup()
   digitalWrite(rst_pin, HIGH);
   digitalWrite(cs_pin, LOW);
   digitalWrite(mosi_pin, LOW); //cs+mosi low -> SPI
-  delay(500);
+  delay(800);
   digitalWrite(cs_pin, HIGH);
   // via default interface (I2C)
   Wire.begin();

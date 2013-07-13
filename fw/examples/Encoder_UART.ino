@@ -21,7 +21,7 @@
   8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
 */
 
-int rst_pin = 9; //connect to RST from display
+int rst_pin = 8; //connect to RST from display
 int cs_pin  = 7; //connect to CS from display
 int rx_pin  = 6; //connect to Tx from display
 int tx_pin  = 5; //connect to Rx from display
@@ -61,7 +61,7 @@ void setup()
   digitalWrite(rst_pin, HIGH);
   digitalWrite(cs_pin, LOW);
   digitalWrite(tx_pin, LOW); //cs+tx low -> UART
-  delay(500);
+  delay(800);
   digitalWrite(cs_pin, HIGH);
   // via default interface (I2C)
   Wire.begin();
