@@ -3,13 +3,15 @@
 
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
-To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up (for about 500 ms).
+To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up.
+The current interface can be saved as default with the software command ```CMD_CTRL_SAVE``` and changed with ```CMD_CTRL_INTERFACE```.
 
-**Default interface settings:**
+**Default settings:**
 
-* I2C address: 0xA0 (max. 400 kHz)
-* SPI Mode 3: max. 4 MHz @ 48 MHz system clock (default)
-* UART: 9600 baud
+* Default interface: I2C
+* I2C: address 0xA0, max. 400 kHz
+* SPI: Mode 3, max. 4 MHz @ 48 MHz system clock (default)
+* UART: 9600 baud (8N1)
 
 **SPI activation:**
 
@@ -18,7 +20,7 @@ To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up
     RST high
     CS low
     MOSI low
-    wait 500 ms
+    wait 800 ms
     CS high
 
 **UART activation:**
@@ -28,7 +30,7 @@ To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up
     RST high
     CS low
     RX low
-    wait 500 ms
+    wait 800 ms
     CS high
 
 
@@ -38,7 +40,7 @@ Parameters have a 8 bit width, expect *color values* (RGB565) and *position valu
 
 Commands that end with *FG* or *BG* need no color value.
 
-Example: *CMD_LCD_CLEAR* has as parameter a 2 byte color value and *CMD_LCD_CLEARFG* fills the screen with the foreground color and *CMD_LCD_CLEARBG* with the background color.
+Example: ```CMD_LCD_CLEAR``` has as parameter a 2 byte color value and ```CMD_LCD_CLEARFG``` fills the screen with the foreground color and ```CMD_LCD_CLEARBG``` with the background color.
 
 
 ### General Commands
@@ -54,7 +56,7 @@ Get firmware version. Returns 4 bytes, for example "0.12".
 Start the test program. To exit send *0* and the board responses with *CMD_TEST*.
 
     CMD_FEATURES
-Get features. Returns 1 byte with FEATURE_LCD, FEATURE_TP, FEATURE_ENC, FEATURE_NAV and/or FEATURE_LDR set.
+Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV``` and/or ```FEATURE_LDR``` set.
 
     CMD_CTRL
       CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, fg color, bg color, touchpanel calibration).
@@ -188,7 +190,7 @@ Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0
 
 ### Touch-Panel Commands
 
-Note: To activate the touch panel use *CMD_CTRL_FEATURES* and set *FEATURE_TP*.
+Note: To activate the touch panel use ```CMD_CTRL_FEATURES``` and set ```FEATURE_TP```.
       The touch panel will be checked in background continuously and the result can be read with the following commands.
 
     CMD_TP_POS
@@ -218,7 +220,7 @@ Calibrate touch panel. This will not save the calibration data to flash (see *CM
 
 ### Rotary-Encoder Commands
 
-Note: To activate the rotary encoder use *CMD_CTRL_FEATURES* and set *FEATURE_ENC*.
+Note: To activate the rotary encoder use ```CMD_CTRL_FEATURES``` and set ```FEATURE_ENC```.
       The encoder state will be checked in background continuously and the result can be read with the following commands.
 
     CMD_ENC_POS
@@ -236,7 +238,7 @@ Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0
 
 ### Navigation-Switch Commands
 
-Note: To activate the navigation switch use *CMD_CTRL_FEATURES* and set *FEATURE_NAV*.
+Note: To activate the navigation switch use ```CMD_CTRL_FEATURES``` and set ```FEATURE_NAV```.
       The switch will be checked in background continuously and the result can be read with the following commands.
 
     CMD_NAV_POS
