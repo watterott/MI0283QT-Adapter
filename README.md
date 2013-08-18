@@ -1,9 +1,9 @@
 # MI0283QT-Adapter
 Adapter Board with 2.8" TFT-Display und Touch-Panel.
 
-http://www.watterott.com/en/MI0283QT-2-Adapter
-
-http://www.watterott.com/en/MI0283QT-Adapter-v2
+Shop:
+[MI0283QT-Adapter v1](http://www.watterott.com/en/MI0283QT-2-Adapter), 
+[MI0283QT-Adapter v2](http://www.watterott.com/en/MI0283QT-Adapter-v2)
 
 ![MI0283QT-Adapter](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/mi0283qt-adapter.jpg)
 
