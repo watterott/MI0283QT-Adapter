@@ -1,5 +1,5 @@
 # Display Firmware
-**Documentation for Firmware v0.02 and greater.**
+**Documentation for Firmware v0.03 and greater.**
 
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
@@ -8,7 +8,8 @@ The current interface can be saved as default with the software command ```CMD_C
 
 **Default settings:**
 
-* Default interface: I2C
+* Interface: I2C
+* Byte order: big endian
 * I2C: address 0xA0, max. 400 kHz
 * SPI: Mode 3, max. 4 MHz @ 48 MHz system clock (default)
 * UART: 9600 baud (8N1)
@@ -32,6 +33,11 @@ The current interface can be saved as default with the software command ```CMD_C
     RX low
     wait 800 ms
     CS high
+
+
+## Examples
+
+* [Arduino examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/examples)
 
 
 ## Commands
@@ -59,10 +65,11 @@ Start the test program. To exit send *0* and the board responses with *CMD_TEST*
 Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV``` and/or ```FEATURE_LDR``` set.
 
     CMD_CTRL
-      CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, fg color, bg color, touchpanel calibration).
+      CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
       CMD_CTRL_INTERFACE //Set interface. Parameter: 1 byte (INTERFACE_UART, INTERFACE_I2C, INTERFACE_SPI)
       CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
       CMD_CTRL_ADDRESS   //Set I2C address. Parameter: 1 byte
+      CMD_CTRL_BYTEORDER //Set byte order. Parameter: 1 byte (0=big endian , 1=little endian)
       CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12,16,24,32,36,48)
       CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV, FEATURE_LDR)
 General system settings/options. There is no return value.
@@ -190,7 +197,7 @@ Draw string. Parameter: [fg_color], [bg_color], x0, y0, size_clear (0x7F=size, 0
 
 ### Touch-Panel Commands
 
-Note: To activate the touch panel use ```CMD_CTRL_FEATURES``` and set ```FEATURE_TP```.
+Note: To activate the touch panel use ```CMD_CTRL + CMD_CTRL_FEATURES``` and set ```FEATURE_TP```.
       The touch panel will be checked in background continuously and the result can be read with the following commands.
 
     CMD_TP_POS
@@ -215,12 +222,12 @@ Wait till release and get position after release. Returns x, y.
 Wait till move and get direction after move. Returns 1 byte (0x01=x-, 0x02=x+, 0x04=y-, 0x08=y+).
 
     CMD_TP_CALIBRATE
-Calibrate touch panel. This will not save the calibration data to flash (see *CMD_CTRL_SAVE*). Returns *CMD_TP_CALIBRATE* after the calibration is completed or when *0* is sent to exit.
+Calibrate touch panel. This will not save the calibration data to flash (see ```CMD_CTRL + CMD_CTRL_SAVE```). Returns ```CMD_TP_CALIBRATE``` after the calibration is completed or when *0* is sent to exit.
 
 
 ### Rotary-Encoder Commands
 
-Note: To activate the rotary encoder use ```CMD_CTRL_FEATURES``` and set ```FEATURE_ENC```.
+Note: To activate the rotary encoder use ```CMD_CTRL + CMD_CTRL_FEATURES``` and set ```FEATURE_ENC```.
       The encoder state will be checked in background continuously and the result can be read with the following commands.
 
     CMD_ENC_POS
@@ -238,7 +245,7 @@ Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0
 
 ### Navigation-Switch Commands
 
-Note: To activate the navigation switch use ```CMD_CTRL_FEATURES``` and set ```FEATURE_NAV```.
+Note: To activate the navigation switch use ```CMD_CTRL + CMD_CTRL_FEATURES``` and set ```FEATURE_NAV```.
       The switch will be checked in background continuously and the result can be read with the following commands.
 
     CMD_NAV_POS

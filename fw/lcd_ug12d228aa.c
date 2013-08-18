@@ -22,21 +22,23 @@
 uint32_t lcd_mode=0;
 
 
-void lcd_drawstop(void)
+/*
+__attribute__((always_inline)) __INLINE void lcd_drawstop(void)
 {
   //lcd_disable();
 
   return;
 }
+*/
 
 
-void lcd_draw(uint32_t color)
+__attribute__((always_inline)) __INLINE void lcd_draw(uint32_t color)
 {
   return lcd_wrdata16(color);
 }
 
 
-void lcd_drawstart(void)
+__attribute__((always_inline)) __INLINE void lcd_drawstart(void)
 {
   //lcd_enable();
 
@@ -46,7 +48,7 @@ void lcd_drawstart(void)
 }
 
 
-void lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
+__attribute__((always_inline)) __INLINE void lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
 {
   //lcd_enable();
 
@@ -139,7 +141,7 @@ uint32_t lcd_setbias(uint32_t o)
 }
 
 
-void __attribute__((optimize("Os"))) lcd_invert(uint32_t on)
+void lcd_invert(uint32_t on)
 {
   lcd_enable();
 /*
@@ -158,7 +160,7 @@ void __attribute__((optimize("Os"))) lcd_invert(uint32_t on)
 }
 
 
-void __attribute__((optimize("Os"))) lcd_power(uint32_t on)
+void lcd_power(uint32_t on)
 {
   lcd_enable();
 
@@ -183,9 +185,41 @@ void __attribute__((optimize("Os"))) lcd_power(uint32_t on)
 }
 
 
-void __attribute__((optimize("Os"))) lcd_reset(void)
+void lcd_reset(void)
 {
-  uint32_t i;
+  uint32_t c, i, j;
+  uint8_t initdata[] = 
+  {
+    0x40| 1, LCD_CMD_DISPLAY_OFF,
+    0xC0|20,
+    0x40| 1, LCD_CMD_STANDBY_OFF,
+    0xC0|20,
+    0x40| 2, LCD_CMD_OSC, 0x01,
+    0xC0|20,
+    0x40| 2, LCD_CMD_DCDC_AMP, 0x01,
+    0xC0|20,
+    0x40| 2, LCD_CMD_DCDC_AMP, 0x09,
+    0xC0|20,
+    0x40| 2, LCD_CMD_DCDC_AMP, 0x0B,
+    0xC0|20,
+    0x40| 2, LCD_CMD_DCDC_AMP, 0x0F,
+    0xC0|20,
+    0x40| 2, LCD_CMD_DRIVER_OUTPUT, 0x01, //0x01 0x04 0x07
+    0x40| 2, LCD_CMD_DCDC, 0x02, //0x02 0x03
+    0x40| 2, LCD_CMD_DCDC_CLOCKDIV, 0x02,  //0x02 0x03
+    0x40| 2, LCD_CMD_TEMP_COMP, 0x01,
+    0x40| 2, LCD_CMD_CONTRAST_CTRL1, 0xD0, //0xD0 0x55
+    0x40| 2, LCD_CMD_ADDR_MODE, 0x00, //0x00 0x10
+    0x40| 2, LCD_CMD_ROW_VECTOR_MODE, 0x0E,
+    0x40| 2, LCD_CMD_LINE_INVERSION, 0x0D,
+    0x40| 2, LCD_CMD_FRAME_FREQ_CTRL, 0x00,
+    0x40| 1, LCD_CMD_RGB565,
+    0x40| 2, LCD_CMD_ENTRY_MODE, 0x00,
+    0x40| 3, LCD_CMD_X_ADDR_AREA, 0x02+0, 0x02+LCD_WIDTH-1,
+    0x40| 3, LCD_CMD_Y_ADDR_AREA, 0x02+0, 0x02+LCD_HEIGHT-1,
+    0x40| 1, LCD_CMD_DISPLAY_ON,
+    0xC0|20,
+  };
 
   //init pins
   INIT_PINS();
@@ -198,56 +232,33 @@ void __attribute__((optimize("Os"))) lcd_reset(void)
 
   lcd_enable();
 
-  lcd_wrcmd8(LCD_CMD_DISPLAY_OFF);
-  delay_ms(20);
-  lcd_wrcmd8(LCD_CMD_STANDBY_OFF);
-  delay_ms(20);
+  //send init commands and data
+  for(i=0; i<sizeof(initdata);)
+  {
+    c = initdata[i++];
+    switch(c&0xC0)
+    {
+      case 0x40: //command
+        for(j=c&0x3F; j!=0; j--)
+        {
+          c = initdata[i++];
+          lcd_wrcmd8(c);
+        }
+        break;
 
-  //send init commands
-  lcd_wrcmd8(LCD_CMD_OSC);
-  lcd_wrcmd8(0x01);
-  delay_ms(20);
+      case 0x80: //data
+        for(j=c&0x3F; j!=0; j--)
+        {
+          c = initdata[i++];
+          lcd_wrdata8(c);
+        }
+        break;
 
-  lcd_wrcmd8(LCD_CMD_DCDC_AMP);
-  lcd_wrcmd8(0x01);
-  delay_ms(20);
-  lcd_wrcmd8(LCD_CMD_DCDC_AMP);
-  lcd_wrcmd8(0x09);
-  delay_ms(20);
-  lcd_wrcmd8(LCD_CMD_DCDC_AMP);
-  lcd_wrcmd8(0x0B);
-  delay_ms(20);
-  lcd_wrcmd8(LCD_CMD_DCDC_AMP);
-  lcd_wrcmd8(0x0F);
-  delay_ms(20);
-  lcd_wrcmd8(LCD_CMD_DRIVER_OUTPUT);
-  lcd_wrcmd8(0x01); //0x01 0x04 0x07
-  lcd_wrcmd8(LCD_CMD_DCDC);
-  lcd_wrcmd8(0x02); //0x02 0x03
-  lcd_wrcmd8(LCD_CMD_DCDC_CLOCKDIV);
-  lcd_wrcmd8(0x02); //0x02 0x03
-  lcd_wrcmd8(LCD_CMD_TEMP_COMP);
-  lcd_wrcmd8(0x01);
-  lcd_wrcmd8(LCD_CMD_CONTRAST_CTRL1);
-  lcd_wrcmd8(0xD0); //0xD0 0x55
-  lcd_wrcmd8(LCD_CMD_ADDR_MODE);
-  lcd_wrcmd8(0x00); //0x10 0x10
-  lcd_wrcmd8(LCD_CMD_ROW_VECTOR_MODE);
-  lcd_wrcmd8(0x0E);
-  lcd_wrcmd8(LCD_CMD_LINE_INVERSION);
-  lcd_wrcmd8(0x0D);
-  lcd_wrcmd8(LCD_CMD_FRAME_FREQ_CTRL);
-  lcd_wrcmd8(0x00);
-  lcd_wrcmd8(LCD_CMD_RGB565);
-  lcd_wrcmd8(LCD_CMD_ENTRY_MODE);
-  lcd_wrcmd8(0x00);
-
-  lcd_disable();
-
-  //set orientation
-  lcd_setbias(0);
-
-  lcd_enable();
+      case 0xC0: //delay
+        delay_ms(c&0x3F);
+        break;
+    }
+  }
 
   //clear display buffer
   lcd_drawstart();
@@ -257,17 +268,13 @@ void __attribute__((optimize("Os"))) lcd_reset(void)
   }
   lcd_drawstop();
 
-  //display on
-  lcd_wrcmd8(LCD_CMD_DISPLAY_ON);
-  delay_ms(20);
-
   lcd_disable();
 
   return;
 }
 
 
-void lcd_wrdata16(uint32_t data)
+__attribute__((always_inline)) __INLINE void lcd_wrdata16(uint32_t data)
 {
   //GPIO_SETPIN(LCD_PORT, RS_PIN); //data
 
@@ -285,7 +292,7 @@ void lcd_wrdata16(uint32_t data)
 }
 
 
-void lcd_wrdata8(uint32_t data)
+__attribute__((always_inline)) __INLINE void lcd_wrdata8(uint32_t data)
 {
   //GPIO_SETPIN(LCD_PORT, RS_PIN); //data
 
@@ -297,7 +304,7 @@ void lcd_wrdata8(uint32_t data)
 }
 
 
-void lcd_wrcmd8(uint32_t cmd)
+__attribute__((always_inline)) __INLINE void lcd_wrcmd8(uint32_t cmd)
 {
   GPIO_CLRPIN(LCD_PORT, RS_PIN); //cmd
 
@@ -311,7 +318,7 @@ void lcd_wrcmd8(uint32_t cmd)
 }
 
 
-void lcd_disable(void)
+__attribute__((always_inline)) __INLINE void lcd_disable(void)
 {
   GPIO_SETPIN(LCD_PORT, CS_PIN);
 
@@ -319,7 +326,7 @@ void lcd_disable(void)
 }
 
 
-void lcd_enable(void)
+__attribute__((always_inline)) __INLINE void lcd_enable(void)
 {
   GPIO_CLRPIN(LCD_PORT, CS_PIN);
 

@@ -1,5 +1,8 @@
 /*
-  Example sketch for UART communication (default 9600 baud).
+  Example sketch for UART communication (9600 baud).
+
+  Note: To compile the program you have to add the file cmd.h in the Arduino IDE:
+        Sketch -> Add file...
 */
 
 #include <SoftwareSerial.h>

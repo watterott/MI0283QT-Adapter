@@ -18,7 +18,7 @@ enum _COMMANDS
   CMD_FEATURES,              //get available features (_CMDFEATURES)
   CMD_CTRL,                  //control options (_CTRLOPTIONS)
   CMD_PIN,                   //pin mode/config
-  CMD_ADC,                   //read ADC pin
+  CMD_ADC,                   //read ADC pin (1byte channel), returns 16bit -> 2byte
 
   //display commands
   CMD_LCD_LED = 0x10,        //set backlight: power (1byte 0-100%)
@@ -27,7 +27,7 @@ enum _COMMANDS
   CMD_LCD_RAWCMD,            //send raw command to display (1byte)
   CMD_LCD_RAWDAT,            //send raw data to display (1byte)
 
-  CMD_LCD_ORIENTATION = 0x20,//orientation (0=0 9=90 18=180 27=270)
+  CMD_LCD_ORIENTATION = 0x20,//orientation (1byte 0=0 9=90 18=180 27=270)
   CMD_LCD_WIDTH,             //get display width (always 16bit -> 2byte)
   CMD_LCD_HEIGHT,            //get display height (always 16bit -> 2byte)
   CMD_LCD_INVERT,            //invert (1byte 0=off, 1=on)
@@ -144,6 +144,7 @@ enum _CTRLOPTIONS
   CMD_CTRL_INTERFACE,   //interface (1byte)
   CMD_CTRL_BAUDRATE,    //UART baud rate (4byte = 32bit)
   CMD_CTRL_ADDRESS,     //I2C address (1byte)
+  CMD_CTRL_BYTEORDER,   //Byte order (1byte, 0=big, 1=little)
   CMD_CTRL_SYSCLOCK,    //in MHz (1byte)
   CMD_CTRL_FEATURES,    //enable/disable features
 };

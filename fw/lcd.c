@@ -383,15 +383,15 @@ void lcd_fillrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t c
 
   if(x0 > x1) //swap points
   {
-    tmp = x0;
-    x0  = x1;
-    x1  = tmp;
+    x0 ^= x1;
+    x1 ^= x0;
+    x0 ^= x1;
   }
   if(y0 > y1) //swap points
   {
-    tmp = y0;
-    y0  = y1;
-    y1  = tmp;
+    y0 ^= y1;
+    y1 ^= y0;
+    y0 ^= y1;
   }
 
   lcd_enable();
@@ -494,7 +494,7 @@ void lcd_drawline(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t c
 }
 
 
-void lcd_drawpixel(uint32_t x0, uint32_t y0, uint32_t color)
+__attribute__((always_inline)) __INLINE void lcd_drawpixel(uint32_t x0, uint32_t y0, uint32_t color)
 {
   if((x0 >= width) ||
      (y0 >= height))
@@ -576,7 +576,7 @@ uint32_t lcd_getheight(void)
 }
 
 
-void __attribute__((optimize("Os"))) lcd_init(void)
+void lcd_init(void)
 {
   width       = 0;
   height      = 0;

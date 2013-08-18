@@ -11,7 +11,7 @@
 #define SND_BUFSIZE       32 //bytes (8,16,32... size of output fifo)
 
 
-uint32_t if_hw=0, if_state=0, if_addr=DEFAULT_ADDR, if_baud=DEFAULT_BAUD;
+uint32_t if_hw=0, if_state=0, if_addr=DEFAULT_ADDR, if_baud=DEFAULT_BAUD, if_byteorder=DEFAULT_ORDER;
 uint8_t rcv_buf[RCV_BUFSIZE], snd_buf[SND_BUFSIZE];
 volatile uint32_t rcv_head=0, rcv_tail=0, snd_head=0, snd_tail=0;
 
@@ -427,7 +427,37 @@ void if_writebuf(uint8_t *ptr, uint32_t size)
 }
 
 
-void if_write32(uint32_t c)
+void if_write32_little(uint32_t c)
+{
+  if_write8((c&0x000000FF)>>0);
+  if_write8((c&0x0000FF00)>>8);
+  if_write8((c&0x00FF0000)>>16);
+  if_write8((c&0xFF000000)>>24);
+
+  return;
+}
+
+
+void if_write24_little(uint32_t c)
+{
+  if_write8((c&0x000000FF)>>0);
+  if_write8((c&0x0000FF00)>>8);
+  if_write8((c&0x00FF0000)>>16);
+
+  return;
+}
+
+
+void if_write16_little(uint32_t c)
+{
+  if_write8((c&0x000000FF)>>0);
+  if_write8((c&0x0000FF00)>>8);
+
+  return;
+}
+
+
+void if_write32_big(uint32_t c)
 {
   if_write8((c&0xFF000000)>>24);
   if_write8((c&0x00FF0000)>>16);
@@ -438,7 +468,7 @@ void if_write32(uint32_t c)
 }
 
 
-void if_write24(uint32_t c)
+void if_write24_big(uint32_t c)
 {
   if_write8((c&0x00FF0000)>>16);
   if_write8((c&0x0000FF00)>>8);
@@ -448,7 +478,7 @@ void if_write24(uint32_t c)
 }
 
 
-void if_write16(uint32_t c)
+void if_write16_big(uint32_t c)
 {
   if_write8((c&0x0000FF00)>>8);
   if_write8((c&0x000000FF)>>0);
@@ -457,10 +487,49 @@ void if_write16(uint32_t c)
 }
 
 
-void (*if_write8)(uint32_t c) = i2c_write;
+void (*if_write32)(uint32_t c) = if_write32_big;
+void (*if_write24)(uint32_t c) = if_write24_big;
+void (*if_write16)(uint32_t c) = if_write16_big;
+void (*if_write8) (uint32_t c) = i2c_write;
 
 
-uint32_t if_read32(void)
+uint32_t if_read32_little(void)
+{
+  uint32_t c;
+
+  c  = if_read8()<<0;
+  c |= if_read8()<<8;
+  c |= if_read8()<<16;
+  c |= if_read8()<<24;
+
+  return c;
+}
+
+
+uint32_t if_read24_little(void)
+{
+  uint32_t c;
+
+  c  = if_read8()<<0;
+  c |= if_read8()<<8;
+  c |= if_read8()<<16;
+
+  return c;
+}
+
+
+uint32_t if_read16_little(void)
+{
+  uint32_t c;
+
+  c  = if_read8()<<0;
+  c |= if_read8()<<8;
+
+  return c;
+}
+
+
+uint32_t if_read32_big(void)
 {
   uint32_t c;
 
@@ -473,7 +542,7 @@ uint32_t if_read32(void)
 }
 
 
-uint32_t if_read24(void)
+uint32_t if_read24_big(void)
 {
   uint32_t c;
 
@@ -485,7 +554,7 @@ uint32_t if_read24(void)
 }
 
 
-uint32_t if_read16(void)
+uint32_t if_read16_big(void)
 {
   uint32_t c;
 
@@ -494,6 +563,11 @@ uint32_t if_read16(void)
 
   return c;
 }
+
+
+uint32_t (*if_read32)(void) = if_read32_big;
+uint32_t (*if_read24)(void) = if_read24_big;
+uint32_t (*if_read16)(void) = if_read16_big;
 
 
 uint32_t if_read8(void)
@@ -555,6 +629,40 @@ uint32_t if_available(void)
 }
 
 
+void if_setbyteorder(uint32_t byteorder)
+{
+  //set byte order
+  if(byteorder == 0) //big
+  {
+    if_byteorder = 0;
+    if_read16  = if_read16_big;
+    if_read24  = if_read24_big;
+    if_read32  = if_read32_big;
+    if_write16 = if_write16_big;
+    if_write24 = if_write24_big;
+    if_write32 = if_write32_big;
+  }
+  else
+  {
+    if_byteorder = 1;
+    if_read16  = if_read16_little;
+    if_read24  = if_read24_little;
+    if_read32  = if_read32_little;
+    if_write16 = if_write16_little;
+    if_write24 = if_write24_little;
+    if_write32 = if_write32_little;
+  }
+
+  return;
+}
+
+
+uint32_t if_getbyteorder(void)
+{
+  return if_byteorder;
+}
+
+
 uint32_t if_getaddress(void)
 {
   return if_addr;
@@ -573,7 +681,7 @@ uint32_t if_getinterface(void)
 }
 
 
-uint32_t __attribute__((optimize("Os"))) if_init(uint32_t interf)
+uint32_t if_init(uint32_t interf)
 {
   //disable all interfaces
   i2c_off();
@@ -598,6 +706,10 @@ uint32_t __attribute__((optimize("Os"))) if_init(uint32_t interf)
     }
   }
 
+  //set byte order
+  if_setbyteorder(if_byteorder);
+
+  //init interface
   switch(interf)
   {
     default:

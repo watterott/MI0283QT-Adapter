@@ -1,5 +1,8 @@
 /*
   Example sketch for I2C communication (400kHz).
+
+  Note: To compile the program you have to add the file cmd.h in the Arduino IDE:
+        Sketch -> Add file...
 */
 
 #include <Wire.h>

@@ -14,9 +14,6 @@ Third party software
   CMSIS
     http://www.onarm.com
 
-  Rotary Encoder routine by Peter Dannegger
-    http://www.mikrocontroller.net/articles/Drehgeber
-
 
 License
 -------
@@ -25,6 +22,8 @@ License
 
 History
 -------
+  Aug 18 2013  v0.03  Added byte order setting.
+
   Jun 22 2013  v0.02  TP/ENC/NAV have to be enabled.
                       Added light sensor support.
 

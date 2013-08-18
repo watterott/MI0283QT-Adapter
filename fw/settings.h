@@ -3,19 +3,22 @@
 
 
 //----- DEFINES -----
-#define VERSION         "0.02"
+#define VERSION         "0.03"
+
+//LCD support (define only one)
+//#define LCD_MI0283QT9
+//#define LCD_UG12D228AA
+
+#ifdef LCD_MI0283QT9
+#define TP_SUPPORT //touch panel support
+#endif
 
 #define DEFAULT_CLOCK   48000000UL    //Hz, 12 16* 24 32* 36 48* MHz (*crystal)
 #define DEFAULT_POWER   0             //0-100 power for backlight
 #define DEFAULT_INTERF  INTERFACE_I2C //INTERFACE_I2C INTERFACE_SPI INTERFACE_UART
 #define DEFAULT_BAUD    9600          //UART baud rate
 #define DEFAULT_ADDR    0xA0          //I2C address
-
-//LCD support (define only one)
-#define LCD_MI0283QT9
-//#define LCD_UG12D228AA
-
-#define TP_SUPPORT //touch panel support
+#define DEFAULT_ORDER   0             //byte order (0=big, 1=little)
 
 
 //----- PINS -----
@@ -74,9 +77,9 @@
 
 
 //----- GLOBAL MACROS -----
-#define NOP()                          __ASM volatile ("nop")
-#define ENABLE_IRQ()                   __ASM volatile ("cpsie i")
-#define DISABLE_IRQ()                  __ASM volatile ("cpsid i")
+#define NOP()                          __asm__ volatile ("nop")
+#define ENABLE_IRQ()                   __asm__ volatile ("cpsie i")
+#define DISABLE_IRQ()                  __asm__ volatile ("cpsid i")
 
 #define CONCATx(a, b)                  a##b
 #define CONCATx3(a, b, c)              a##b##c

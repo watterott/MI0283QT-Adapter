@@ -143,7 +143,7 @@ uint32_t tp_getx(void)
 }
 
 
-uint32_t __attribute__((optimize("Os"))) tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp)
+uint32_t tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp)
 {
   matrix.div = ((tp[0].x - tp[2].x) * (tp[1].y - tp[2].y)) -
                ((tp[1].x - tp[2].x) * (tp[0].y - tp[2].y));
@@ -288,7 +288,7 @@ void tp_read(void)
 }
 
 
-void __attribute__((optimize("Os"))) tp_init(void)
+void tp_init(void)
 {
   //init vars
   raw_x  = raw_y  = raw_z  = 0;

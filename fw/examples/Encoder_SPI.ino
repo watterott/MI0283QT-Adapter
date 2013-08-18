@@ -1,5 +1,8 @@
 /*
   Example sketch for SPI communication (max 4MHz).
+
+  Note: To compile the program you have to add the file cmd.h in the Arduino IDE:
+        Sketch -> Add file...
 */
 
 #include <SPI.h>

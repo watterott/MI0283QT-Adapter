@@ -18,7 +18,7 @@
 #define IAP_EXECUTE_CMD(a, b)          ((void(*)())(IAP_ROM_LOCATION))(a, b)
 
 
-uint32_t __attribute__((optimize("Os"))) iap_prepare(uint32_t start_sector, uint32_t end_sector)
+uint32_t iap_prepare(uint32_t start_sector, uint32_t end_sector)
 {
   uint32_t cmd[5], result[4], status;
 
@@ -39,7 +39,7 @@ uint32_t __attribute__((optimize("Os"))) iap_prepare(uint32_t start_sector, uint
 }
 
 
-uint32_t __attribute__((optimize("Os"))) iap_copy(uint32_t dst_addr, uint32_t src_addr, uint32_t len)
+uint32_t iap_copy(uint32_t dst_addr, uint32_t src_addr, uint32_t len)
 {
   uint32_t cmd[5], result[4], status;
 
@@ -55,7 +55,7 @@ uint32_t __attribute__((optimize("Os"))) iap_copy(uint32_t dst_addr, uint32_t sr
 }
 
 
-uint32_t __attribute__((optimize("Os"))) iap_erase(uint32_t start_sector, uint32_t end_sector)
+uint32_t iap_erase(uint32_t start_sector, uint32_t end_sector)
 {
   uint32_t cmd[5], result[4], status;
 
@@ -77,7 +77,7 @@ uint32_t __attribute__((optimize("Os"))) iap_erase(uint32_t start_sector, uint32
 }
 
 
-uint32_t __attribute__((optimize("Os"))) iap_write(uint32_t *data, uint32_t len, uint32_t *tmp)
+uint32_t iap_write(uint32_t *data, uint32_t len, uint32_t *tmp)
 {
   uint32_t i, status=1;
   //uint32_t tmp[FLASH_SECTOR_BYTES/4];

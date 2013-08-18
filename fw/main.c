@@ -34,6 +34,7 @@ typedef struct
   uint8_t interface;
   uint32_t baudrate;
   uint8_t address;
+  uint8_t byteorder;
   uint32_t fgcolor;
   uint32_t bgcolor;
   CAL_MATRIX tp;
@@ -48,6 +49,8 @@ void SysTick_Handler(void) //1ms
   uint32_t pin, n, dif;
 
   ms_ticks++;
+
+#ifndef TP_SUPPORT
 
   if(features & FEATURE_ENC)
   {
@@ -102,9 +105,9 @@ void SysTick_Handler(void) //1ms
       nav_t = 0;
 
       //get pin state
-      pin       = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
-      nav_last  = pin;
-      pin      &= nav_last;
+      n        = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
+      pin      = n & nav_last;
+      nav_last = n;
 
       //check nav switches
       if((pin & (1<<NAV_C)) == 0) //right
@@ -159,6 +162,8 @@ void SysTick_Handler(void) //1ms
       }
     }
   }
+
+#endif
 
   return;
 }
@@ -376,7 +381,7 @@ void set_pwm(uint32_t power)
 }
 
 
-uint32_t __attribute__((optimize("Os"))) sysclock(uint32_t clock)
+uint32_t sysclock(uint32_t clock)
 {
   static uint32_t current_clock=12000000UL;
   uint32_t i, pllclksel=0, pllctrl=0;
@@ -509,7 +514,7 @@ uint32_t __attribute__((optimize("Os"))) sysclock(uint32_t clock)
 }
 
 
-void __attribute__((optimize("Os"))) init(void)
+void init(void)
 {
   //disable interrupts
   DISABLE_IRQ();
@@ -577,7 +582,7 @@ void __attribute__((optimize("Os"))) init(void)
 }
 
 
-void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t sysclock, uint8_t power, uint32_t fgcolor, uint32_t bgcolor)
+void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t sysclock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor)
 {
   SETTINGS s;
 
@@ -595,6 +600,7 @@ void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, ui
 
   s.bgcolor   = bgcolor;
   s.fgcolor   = fgcolor; 
+  s.byteorder = byteorder;
   s.address   = address;
   s.baudrate  = baudrate;
   s.interface = interface;
@@ -610,13 +616,21 @@ void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, ui
 
 #ifdef TP_SUPPORT
 
-void __attribute__((optimize("Os"))) cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor)
 {
   uint32_t i;
   CAL_POINT lcd_points[3] = {CAL_POINT1, CAL_POINT2, CAL_POINT3}; //calibration point postions
   CAL_POINT tp_points[3];
 
-  tp_init(); //enable touch
+  tp_init(); //enable/reset touch
+
+  tp_read();
+  if(tp_rawz())
+  {
+     lcd_clear(bgcolor);
+     lcd_drawtext(10, 10, "Release Touchpanel.", 1, fgcolor, 0, 0);
+     while(tp_rawz() > MIN_PRESSURE){ tp_read(); };
+  }
 
   do
   {
@@ -666,6 +680,8 @@ void __attribute__((optimize("Os"))) cmd_tp_calibrate(uint32_t fgcolor, uint32_t
   }
   while((i!=666) && (tp_calmatrix(lcd_points, tp_points)!=0)); //calculate calibration matrix
 
+  tp_init(); //reset touch
+
   lcd_clear(bgcolor);
 
   return;
@@ -674,7 +690,7 @@ void __attribute__((optimize("Os"))) cmd_tp_calibrate(uint32_t fgcolor, uint32_t
 #endif
 
 
-void __attribute__((optimize("Os"))) cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
 {
   uint32_t c=1, f_save=features;
   char tmp[32];
@@ -806,7 +822,7 @@ void __attribute__((optimize("Os"))) cmd_lcd_test(uint32_t fgcolor, uint32_t bgc
 }
 
 
-void __attribute__((optimize("Os"))) cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
+void cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
 {
   uint32_t x=2, y=2, c;
 
@@ -1277,7 +1293,7 @@ int main(void)
   {
     GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
     lcd_clear(bgcolor);
-    lcd_drawtext(10, 10, "no config data", 1, fgcolor, 0, 0);
+    lcd_drawtext(10, 10, "No config data.", 1, fgcolor, 0, 0);
 #if DEFAULT_POWER == 0
     set_pwm(50);
 #else
@@ -1288,7 +1304,7 @@ int main(void)
 #ifdef TP_SUPPORT
     cmd_tp_calibrate(fgcolor, bgcolor);
 #endif
-    cmd_save_settings(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, DEFAULT_CLOCK/1000000UL, DEFAULT_POWER, fgcolor, bgcolor);
+    cmd_save_settings(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, DEFAULT_CLOCK/1000000UL, DEFAULT_POWER, DEFAULT_ORDER, fgcolor, bgcolor);
     cmd_lcd_test(fgcolor, bgcolor);
   }
 
@@ -1303,6 +1319,7 @@ int main(void)
   sysclock(usersettings->sysclock*1000000UL);
   uart_setbaudrate(usersettings->baudrate);
   i2c_setaddress(usersettings->address);
+  if_setbyteorder(usersettings->byteorder);
 
   a = usersettings->interface;
   while(GPIO_GETPIN(SS_PORT, SS_PIN) == 0) //CS low
@@ -1388,6 +1405,7 @@ int main(void)
         a = FEATURE_LCD;
 #ifdef TP_SUPPORT
         a |= FEATURE_TP;
+        a |= FEATURE_LDR;
 #else
         a |= FEATURE_ENC;
         a |= FEATURE_NAV;
@@ -1398,10 +1416,11 @@ int main(void)
       case CMD_CTRL:
         switch(if_read8())
         {
-          case CMD_CTRL_SAVE:      cmd_save_settings(if_getinterface(), if_getbaudrate(), if_getaddress(), sysclock(0), led_power, fgcolor, bgcolor);  break;
+          case CMD_CTRL_SAVE:      cmd_save_settings(if_getinterface(), if_getbaudrate(), if_getaddress(), sysclock(0), led_power,  if_getbyteorder(), fgcolor, bgcolor);  break;
           case CMD_CTRL_INTERFACE: if_init(if_read8());            break;
           case CMD_CTRL_BAUDRATE:  uart_setbaudrate(if_read32());  break;
           case CMD_CTRL_ADDRESS:   i2c_setaddress(if_read8());     break;
+          case CMD_CTRL_BYTEORDER: if_setbyteorder(if_read8());    break;
           case CMD_CTRL_SYSCLOCK:  sysclock(if_read8()*1000000UL); break;
           case CMD_CTRL_FEATURES:
             a = if_read8();
@@ -1418,6 +1437,7 @@ int main(void)
       case CMD_PIN:
         break;
       case CMD_ADC:
+        if_write16(adc_read(if_read8()));
         break;
 
       case CMD_LCD_LED:
@@ -1764,8 +1784,8 @@ int main(void)
         break;
 
 #ifdef TP_SUPPORT
+
       case CMD_TP_POS:
-        //tp_read();
         if_write(tp_getx());
         if_write(tp_gety());
         if_write(tp_getz()); //tp_getz() tp_rawz()
@@ -1803,10 +1823,10 @@ int main(void)
         c = tp_getx();
         d = tp_gety();
         e = 0;
-             if((a > c) && ((a-c) >= 10)) { e |= 0x01; } //x-
-        else if((a < c) && ((c-a) >= 10)) { e |= 0x02; } //x+
-             if((b > d) && ((b-d) >= 10)) { e |= 0x04; } //y-
-        else if((b < d) && ((d-b) >= 10)) { e |= 0x08; } //y+
+             if((a > c) && ((a-c) >= 20)) { e |= 0x01; } //x-
+        else if((a < c) && ((c-a) >= 20)) { e |= 0x02; } //x+
+             if((b > d) && ((b-d) >= 20)) { e |= 0x04; } //y-
+        else if((b < d) && ((d-b) >= 20)) { e |= 0x08; } //y+
         if_write8(e);
         if_flush();
         break;
@@ -1819,30 +1839,7 @@ int main(void)
         if_write8(CMD_TP_CALIBRATE);
         if_flush();
         break;
-/*    case CMD_TP_GETMATRIX:
-        m = tp_getmatrix();
-        if_write32(m->a); //1
-        if_write32(m->b); //2
-        if_write32(m->c); //3
-        if_write32(m->d); //4
-        if_write32(m->e); //5
-        if_write32(m->f); //6
-        if_write32(m->div); //7
-        if_flush();
-        break;
-      case CMD_TP_SETMATRIX:
-        a = if_read32(); //1
-        b = if_read32(); //2
-        c = if_read32(); //3
-        d = if_read32(); //4
-        e = if_read32(); //5
-        f = if_read32(); //6
-        g = if_read32(); //7
-        if(g != 0)
-        {
-          tp_setmatrix(a, b, c, d, e, f, g);
-        }
-        break; */
+
 #else //TP_SUPPORT
 
       case CMD_ENC_POS:
@@ -1891,6 +1888,7 @@ int main(void)
         if_write8(nav_getsw());
         if_flush();
         break;
+
 #endif
     }
   }
