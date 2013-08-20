@@ -109,31 +109,34 @@ void setup()
 
   wait_for_input();
 
-  //enable rotary encoder
-  Serial.println("encoder on...");
+  //enable navigation switch / joystick
+  Serial.println("joystick on...");
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_CTRL);
   SPI.transfer(CMD_CTRL_FEATURES);
-  SPI.transfer(FEATURE_ENC);
+  SPI.transfer(FEATURE_NAV);
   digitalWrite(cs_pin, HIGH);
 
-  Serial.println("Move Rotary Encoder!");
+  Serial.println("Move Joystick!");
 }
 
 
 void loop()
 {
-  int8_t p, s;
+  int8_t h, v, s;
 
   digitalWrite(cs_pin, LOW);
-  SPI.transfer(CMD_ENC_POS);
+  SPI.transfer(CMD_NAV_POS);
   delay(1);
-  p = SPI.transfer(0xFF);
+  h = SPI.transfer(0xFF);
+  v = SPI.transfer(0xFF);
   s = SPI.transfer(0xFF);
   digitalWrite(cs_pin, HIGH);
 
-  Serial.print("ENC: ");
-  Serial.print(p); //position: +/-127
+  Serial.print("NAV: ");
+  Serial.print(h); //h position: +/-127
+  Serial.print(", ");
+  Serial.print(v); //v position: +/-127
   Serial.print(", ");
   Serial.print(s); //switch: 1=press, 3=long press
   Serial.println("");

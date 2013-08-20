@@ -111,27 +111,30 @@ void setup()
 
   wait_for_input();
 
-  //enable rotary encoder
-  Serial.println("encoder on...");
+  //enable navigation switch / joystick
+  Serial.println("joystick on...");
   mySerial.write(CMD_CTRL);
   mySerial.write(CMD_CTRL_FEATURES);
-  mySerial.write(FEATURE_ENC);
+  mySerial.write(FEATURE_NAV);
 
-  Serial.println("Move Rotary Encoder!");
+  Serial.println("Move Joystick!");
 }
 
 
 void loop()
 {
-  int8_t p, s;
+  int8_t h, v, s;
 
-  mySerial.write(CMD_ENC_POS);
-  while(mySerial.available() < 2); //wait for data
-  p = mySerial.read();
+  mySerial.write(CMD_NAV_POS);
+  while(mySerial.available() < 3); //wait for data
+  h = mySerial.read();
+  v = mySerial.read();
   s = mySerial.read();
 
-  Serial.print("ENC: ");
-  Serial.print(p); //position: +/-127
+  Serial.print("NAV: ");
+  Serial.print(h); //h position: +/-127
+  Serial.print(", ");
+  Serial.print(v); //v position: +/-127
   Serial.print(", ");
   Serial.print(s); //switch: 1=press, 3=long press
   Serial.println("");

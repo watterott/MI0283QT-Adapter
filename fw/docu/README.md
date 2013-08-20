@@ -243,7 +243,7 @@ Wait till press. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x0
 Wait till release. Returns 2 bytes: position (-127...+127), state (0x01=press, 0x02=long press).
 
 
-### Navigation-Switch Commands
+### Navigation-Switch / Joystick Commands
 
 Note: To activate the navigation switch use ```CMD_CTRL + CMD_CTRL_FEATURES``` and set ```FEATURE_NAV```.
       The switch will be checked in background continuously and the result can be read with the following commands.

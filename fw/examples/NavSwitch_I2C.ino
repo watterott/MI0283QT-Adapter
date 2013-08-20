@@ -76,33 +76,36 @@ void setup()
 
   wait_for_input();
 
-  //enable rotary encoder
-  Serial.println("encoder on...");
+  //enable navigation switch / joystick
+  Serial.println("joystick on...");
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(CMD_CTRL);
   Wire.write(CMD_CTRL_FEATURES);
-  Wire.write(FEATURE_ENC);
+  Wire.write(FEATURE_NAV);
   Wire.endTransmission();
 
-  Serial.println("Move Rotary Encoder!");
+  Serial.println("Move Joystick!");
 }
 
 
 void loop()
 {
-  int8_t p, s;
+  int8_t h, v, s;
 
   Wire.beginTransmission(I2C_ADDR);
-  Wire.write(CMD_ENC_POS);
+  Wire.write(CMD_NAV_POS);
   Wire.endTransmission();
 
-  if(Wire.requestFrom(I2C_ADDR, 2) == 2)
+  if(Wire.requestFrom(I2C_ADDR, 2) == 3)
   { 
-    p = Wire.read();
+    h = Wire.read();
+    v = Wire.read();
     s = Wire.read();
     
-    Serial.print("ENC: ");
-    Serial.print(p); //position: +/-127
+    Serial.print("NAV: ");
+    Serial.print(h); //h position: +/-127
+    Serial.print(", ");
+    Serial.print(v); //v position: +/-127
     Serial.print(", ");
     Serial.print(s); //switch: 1=press, 3=long press
     Serial.println("");

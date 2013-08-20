@@ -108,6 +108,7 @@ void setup()
     if(c & FEATURE_TP) { Serial.print("TP ");  }
     if(c & FEATURE_ENC){ Serial.print("ENC "); }
     if(c & FEATURE_NAV){ Serial.print("NAV "); }
+    if(c & FEATURE_LDR){ Serial.print("LDR "); }
   }
   Serial.println("");
 
