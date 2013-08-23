@@ -32,7 +32,7 @@ The firmware can be updated via the FTDI connector using [Flash Magic](http://ww
 
 2. Step 2 - Erase
 
-        [x] Erase blocks used by Hex File
+        [x] Erase all
 
 3. Step 3 - Hex File
 
