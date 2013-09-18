@@ -1,5 +1,5 @@
 # Display Firmware
-**Documentation for Firmware v0.03 and greater.**
+**Documentation for Firmware v0.04 and greater.**
 
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
@@ -11,27 +11,29 @@ The current interface can be saved as default with the software command ```CMD_C
 * Interface: I2C
 * Byte order: big endian
 * I2C: address 0xA0, max. 400 kHz
-* SPI: Mode 3, max. 4 MHz @ 48 MHz system clock (default)
+* SPI: Mode 3, max. 4 MHz @ 48 MHz system clock
 * UART: 9600 baud (8N1)
+* System clock: 48 MHz
+
+**I2C activation:**
+
+    RST low, wait 10 ms, RST high
+    CS low, MOSI + RX high
+    wait 20 ms
+    CS high
 
 **SPI activation:**
 
-    RST low
-    wait 10 ms
-    RST high
-    CS low
-    MOSI low
-    wait 800 ms
+    RST low, wait 10 ms, RST high
+    CS + MOSI low (RX high)
+    wait 20 ms
     CS high
 
 **UART activation:**
 
-    RST low
-    wait 10 ms
-    RST high
-    CS low
-    RX low
-    wait 800 ms
+    RST low, wait 10 ms, RST high
+    CS + RX low (MOSI high)
+    wait 20 ms
     CS high
 
 
@@ -59,7 +61,7 @@ No operation.
 Get firmware version. Returns 4 bytes, for example "0.12".
 
     CMD_TEST
-Start the test program. To exit send *0* and the board responses with *CMD_TEST*.
+Start the test program. To exit send ```0``` and the board responses with ```CMD_TEST```.
 
     CMD_FEATURES
 Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV``` and/or ```FEATURE_LDR``` set.
@@ -78,13 +80,13 @@ General system settings/options. There is no return value.
 Planned function...
 
     CMD_ADC
-Planned function...
+Read ADC channel. Parameter: 1 byte (4, 5, 7 or 255 for LDR)
 
 
 ### Display Commands
 
     CMD_LCD_LED
-Set display backlight power. Parameter: 1 byte (0-100)
+Set or get display backlight power. Parameter: 1 byte (0-100 or 255 for reading)
 
     CMD_LCD_RESET
 Reset the display controller.
@@ -119,7 +121,7 @@ Set foreground color. Parameter: color (2 byte, RGB565)
 Set background color. Parameter: color (2 byte, RGB565)
     
     CMD_LCD_TERMINAL
-Start terminal mode. To exit send *0* and the board responses with *CMD_LCD_TERMINAL*.
+Start terminal mode. To exit send *0* and the board responses with ```CMD_LCD_TERMINAL```.
 
     CMD_LCD_DRAWIMAGE
 Draw image. Parameter: x0, y0, w, h, color_mode, color...

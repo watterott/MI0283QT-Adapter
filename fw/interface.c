@@ -570,7 +570,7 @@ uint32_t (*if_read24)(void) = if_read24_big;
 uint32_t (*if_read16)(void) = if_read16_big;
 
 
-uint32_t if_read8(void)
+__attribute__((always_inline)) __INLINE uint32_t if_read8(void)
 {
   uint32_t tail, c;
 
@@ -609,20 +609,23 @@ void if_flush(void)
 }
 
 
-uint32_t if_available(void)
+__attribute__((always_inline)) __INLINE uint32_t if_available(void)
 {
   uint32_t head, tail;
 
-  head = rcv_head;
-  tail = rcv_tail;
+  if(if_hw)
+  {
+    head = rcv_head;
+    tail = rcv_tail;
 
-  if(head > tail)
-  {
-    return (head-tail);
-  }
-  else if(head < tail)
-  {
-    return (RCV_BUFSIZE-(tail-head));
+    if(head > tail)
+    {
+      return (head-tail);
+    }
+    else if(head < tail)
+    {
+      return (RCV_BUFSIZE-(tail-head));
+    }
   }
 
   return 0;
@@ -683,10 +686,14 @@ uint32_t if_getinterface(void)
 
 uint32_t if_init(uint32_t interf)
 {
-  //disable all interfaces
-  i2c_off();
-  spi_off();
-  uart_off();
+  //disable interface
+  if_flush();
+  if(if_hw & INTERFACE_I2C) { i2c_off();  }
+  if(if_hw & INTERFACE_SPI) { spi_off();  }
+  if(if_hw & INTERFACE_UART){ uart_off(); }
+
+  //set byte order
+  if_setbyteorder(if_byteorder);
 
   //reset buffers
   rcv_head = rcv_tail = 0;
@@ -705,9 +712,6 @@ uint32_t if_init(uint32_t interf)
       return 0;
     }
   }
-
-  //set byte order
-  if_setbyteorder(if_byteorder);
 
   //init interface
   switch(interf)

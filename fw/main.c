@@ -15,6 +15,16 @@
 #include "tp.h"
 
 
+//set read/write byte count for position data
+#if ((LCD_WIDTH > 255) || (LCD_HEIGHT > 255))
+# define if_read  if_read16
+# define if_write if_write16
+#else
+# define if_read  if_read8
+# define if_write if_write8
+#endif
+
+
 uint8_t global_buffer[FLASH_SECTOR_BYTES]; //see iap.h
 volatile uint32_t ms_ticks=0;
 uint32_t features=0;
@@ -335,6 +345,18 @@ uint32_t adc_read(uint32_t chn)
       ADC_READ(chn, v);
       IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
+    case 255:
+      //set AD4 to output and high
+      IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+      GPIO_SETPIN(ADC_PORT, ADC_4);
+      GPIO_PORT(ADC_PORT)->DIR |= (1<<ADC_4);
+      //read AD5
+      IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+      ADC_READ(5, v);
+      //IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+      //set AD4 to low
+      GPIO_CLRPIN(ADC_PORT, ADC_4);
+      break;
   }
 
   return v;
@@ -368,7 +390,7 @@ void delay(uint32_t delay)
 }
 
 
-void set_pwm(uint32_t power)
+uint32_t set_pwm(uint32_t power)
 {
   if(power > 100)
   {
@@ -377,7 +399,7 @@ void set_pwm(uint32_t power)
 
   LPC_TMR16B1->MR0 = ~((0xFFFF*power)/100);
 
-  return;
+  return power;
 }
 
 
@@ -582,7 +604,7 @@ void init(void)
 }
 
 
-void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t sysclock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor)
+void cmd_ctrl_save(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t clock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor)
 {
   SETTINGS s;
 
@@ -605,7 +627,7 @@ void cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, ui
   s.baudrate  = baudrate;
   s.interface = interface;
   s.power     = power;
-  s.sysclock  = sysclock;
+  s.sysclock  = clock;
   s.magic     = 0xDEADBEEFUL;
 
   iap_write((uint32_t*)&s, sizeof(s)/4, (uint32_t*)global_buffer); //size in 32bit words
@@ -696,8 +718,10 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
   char tmp[32];
 #ifdef TP_SUPPORT
   uint32_t x, y, z, last_x=0, last_y=0;
+
+  tp_init();
 #else
-  uint32_t sw=0;
+  uint32_t sw;
   int32_t pos=0, hpos=0, vpos=0;
 
   enc_init();
@@ -870,17 +894,7 @@ void cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
 }
 
 
-//set read/write byte count for position data
-#if ((LCD_WIDTH > 255) || (LCD_HEIGHT > 255))
-# define if_read  if_read16
-# define if_write if_write16
-#else
-# define if_read  if_read8
-# define if_write if_write8
-#endif
-
-
-void cmd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
 {
   uint32_t a, b, c, e, i, n, x0, y0, x1, y1, w, h, ms;
 
@@ -1180,7 +1194,7 @@ void cmd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
 }
 
 
-void cmd_drawtext(uint32_t fgcolor, uint32_t bgcolor, uint32_t string)
+void cmd_lcd_drawtext(uint32_t fgcolor, uint32_t bgcolor, uint32_t string)
 {
   uint32_t a, c, l, s, x, y;
   uint32_t ms;
@@ -1265,64 +1279,10 @@ int main(void)
   //init periphery
   init();
 
-  //init lcd
-  lcd_init();
-
-  //init touch panel, encoder, nav switch
-#ifdef TP_SUPPORT
-  if(features & FEATURE_TP)
-  {
-    tp_init();
-  }
-#else
-  if(features & FEATURE_ENC)
-  {
-    enc_init();
-  }
-  if(features & FEATURE_NAV)
-  {
-    nav_init();
-  }
-#endif
-
-  //set system clock
-  sysclock(DEFAULT_CLOCK);
-
-  //check for config data
-  if(usersettings->magic != 0xDEADBEEFUL)
-  {
-    GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
-    lcd_clear(bgcolor);
-    lcd_drawtext(10, 10, "No config data.", 1, fgcolor, 0, 0);
-#if DEFAULT_POWER == 0
-    set_pwm(50);
-#else
-    set_pwm(DEFAULT_POWER);
-#endif
-    GPIO_CLRPIN(LED_PORT, LED_PIN); //LED off
-    delay_ms(1000);
-#ifdef TP_SUPPORT
-    cmd_tp_calibrate(fgcolor, bgcolor);
-#endif
-    cmd_save_settings(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, DEFAULT_CLOCK/1000000UL, DEFAULT_POWER, DEFAULT_ORDER, fgcolor, bgcolor);
-    cmd_lcd_test(fgcolor, bgcolor);
-  }
-
-  //load config data and init interface
-#ifdef TP_SUPPORT
-  tp_setmatrix(usersettings->tp.a, usersettings->tp.b, usersettings->tp.c, usersettings->tp.d, usersettings->tp.e, usersettings->tp.f, usersettings->tp.div);
-#endif
-  fgcolor = usersettings->fgcolor;
-  bgcolor = usersettings->bgcolor;
-  lcd_clear(bgcolor);
-  set_pwm(usersettings->power);
-  sysclock(usersettings->sysclock*1000000UL);
-  uart_setbaudrate(usersettings->baudrate);
-  i2c_setaddress(usersettings->address);
-  if_setbyteorder(usersettings->byteorder);
-
+  //set interface
   a = usersettings->interface;
-  while(GPIO_GETPIN(SS_PORT, SS_PIN) == 0) //CS low
+  b = get_ms();
+  while((GPIO_GETPIN(SS_PORT, SS_PIN) == 0) && ((get_ms()-b) < 100)) //CS low (100ms timeout)
   {
     if(GPIO_GETPIN(SPI_PORT, MOSI_PIN) == 0) //MOSI low
     {
@@ -1337,6 +1297,55 @@ int main(void)
       a = INTERFACE_I2C;
     }
   }
+
+  //init lcd
+  lcd_init();
+
+  //check for config data
+  if(usersettings->magic != 0xDEADBEEFUL)
+  {
+    sysclock(DEFAULT_CLOCK); //set system clock to default value
+    lcd_clear(bgcolor);
+    lcd_drawtext(10, 10, "No config data.", 1, fgcolor, 0, 0);
+#if DEFAULT_POWER == 0
+    set_pwm(50);
+#else
+    set_pwm(DEFAULT_POWER);
+#endif
+    delay_ms(1000);
+#ifdef TP_SUPPORT
+    cmd_tp_calibrate(fgcolor, bgcolor);
+#endif
+    cmd_ctrl_save(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, DEFAULT_CLOCK/1000000UL, DEFAULT_POWER, DEFAULT_ORDER, fgcolor, bgcolor);
+    cmd_lcd_test(fgcolor, bgcolor);
+    a = DEFAULT_INTERF;
+  }
+
+  //load config data and init touch panel, encoder, nav switch, interface
+  sysclock(usersettings->sysclock*1000000UL);
+#ifdef TP_SUPPORT
+  if(features & FEATURE_TP)
+  {
+    tp_init();
+  }
+  tp_setmatrix(usersettings->tp.a, usersettings->tp.b, usersettings->tp.c, usersettings->tp.d, usersettings->tp.e, usersettings->tp.f, usersettings->tp.div);
+#else
+  if(features & FEATURE_ENC)
+  {
+    enc_init();
+  }
+  if(features & FEATURE_NAV)
+  {
+    nav_init();
+  }
+#endif
+  fgcolor = usersettings->fgcolor;
+  bgcolor = usersettings->bgcolor;
+  lcd_clear(bgcolor);
+  set_pwm(usersettings->power);
+  uart_setbaudrate(usersettings->baudrate);
+  i2c_setaddress(usersettings->address);
+  if_setbyteorder(usersettings->byteorder);
   if_init(a);
 
 
@@ -1416,7 +1425,7 @@ int main(void)
       case CMD_CTRL:
         switch(if_read8())
         {
-          case CMD_CTRL_SAVE:      cmd_save_settings(if_getinterface(), if_getbaudrate(), if_getaddress(), sysclock(0), led_power,  if_getbyteorder(), fgcolor, bgcolor);  break;
+          case CMD_CTRL_SAVE:      cmd_ctrl_save(if_getinterface(), if_getbaudrate(), if_getaddress(), sysclock(0)/1000000, led_power, if_getbyteorder(), fgcolor, bgcolor);  break;
           case CMD_CTRL_INTERFACE: if_init(if_read8());            break;
           case CMD_CTRL_BAUDRATE:  uart_setbaudrate(if_read32());  break;
           case CMD_CTRL_ADDRESS:   i2c_setaddress(if_read8());     break;
@@ -1441,8 +1450,15 @@ int main(void)
         break;
 
       case CMD_LCD_LED:
-        led_power = if_read8();
-        set_pwm(led_power);
+        a = if_read8();
+        if(a == 255)
+        {
+          if_write8(led_power);
+        }
+        else
+        {
+          led_power = set_pwm(a);
+        }
         break;
       case CMD_LCD_RESET:
         lcd_init();
@@ -1483,7 +1499,7 @@ int main(void)
         if_flush();
         break;
       case CMD_LCD_DRAWIMAGE:
-        cmd_drawimage(fgcolor, bgcolor);
+        cmd_lcd_drawimage(fgcolor, bgcolor);
         break;
 
       case CMD_LCD_CLEAR:
@@ -1762,25 +1778,25 @@ int main(void)
       case CMD_LCD_DRAWTEXT:
         a = if_read(); //fg_color
         b = if_read(); //bg_color
-        cmd_drawtext(a, b, 0);
+        cmd_lcd_drawtext(a, b, 0);
         break;
       case CMD_LCD_DRAWTEXTFG:
-        cmd_drawtext(fgcolor, bgcolor, 0);
+        cmd_lcd_drawtext(fgcolor, bgcolor, 0);
         break;
       case CMD_LCD_DRAWTEXTBG:
-        cmd_drawtext(bgcolor, fgcolor, 0);
+        cmd_lcd_drawtext(bgcolor, fgcolor, 0);
         break;
 
       case CMD_LCD_DRAWSTRING:
         a = if_read(); //fg_color
         b = if_read(); //bg_color
-        cmd_drawtext(a, b, 1);
+        cmd_lcd_drawtext(a, b, 1);
         break;
       case CMD_LCD_DRAWSTRINGFG:
-        cmd_drawtext(fgcolor, bgcolor, 1);
+        cmd_lcd_drawtext(fgcolor, bgcolor, 1);
         break;
       case CMD_LCD_DRAWSTRINGBG:
-        cmd_drawtext(bgcolor, fgcolor, 1);
+        cmd_lcd_drawtext(bgcolor, fgcolor, 1);
         break;
 
 #ifdef TP_SUPPORT

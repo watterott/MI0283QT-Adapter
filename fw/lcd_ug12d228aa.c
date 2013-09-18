@@ -22,14 +22,12 @@
 uint32_t lcd_mode=0;
 
 
-/*
-__attribute__((always_inline)) __INLINE void lcd_drawstop(void)
+/*__attribute__((always_inline)) __INLINE void lcd_drawstop(void)
 {
   //lcd_disable();
 
   return;
-}
-*/
+}*/
 
 
 __attribute__((always_inline)) __INLINE void lcd_draw(uint32_t color)
@@ -38,15 +36,12 @@ __attribute__((always_inline)) __INLINE void lcd_draw(uint32_t color)
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_drawstart(void)
+/*__attribute__((always_inline)) __INLINE void lcd_drawstart(void)
 {
   //lcd_enable();
 
-  //lcd_wrcmd8(LCD_CMD_WRITE);
-
   return;
-}
-
+}*/
 
 __attribute__((always_inline)) __INLINE void lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
 {
@@ -123,6 +118,7 @@ uint32_t lcd_setbias(uint32_t o)
       break;
     case 27:
     case 270:
+    case 14: //270&0xFF
       o     = 270;
       w     = LCD_HEIGHT;
       h     = LCD_WIDTH;

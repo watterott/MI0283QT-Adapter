@@ -42,9 +42,10 @@
 
 //----- PROTOTYPES -----
 #define                                lcd_drawstop()
-//void                                   lcd_drawstop(void);
+//void                                   lcd_drawstop(void); //empty function
 void                                   lcd_draw(uint32_t color);
-void                                   lcd_drawstart(void);
+#define                                lcd_drawstart()
+//void                                   lcd_drawstart(void); //empty function
 void                                   lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1);
 uint32_t                               lcd_setbias(uint32_t o);
 void                                   lcd_invert(uint32_t on);

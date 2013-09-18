@@ -20,11 +20,11 @@ uint32_t                               adc_read(uint32_t chn);
 uint32_t                               get_ms(void);
 void                                   delay_ms(uint32_t delay);
 void                                   delay(uint32_t delay);
-void                                   set_pwm(uint32_t power);
+uint32_t                               set_pwm(uint32_t power);
 uint32_t                               sysclock(uint32_t clock);
 void                                   init(void);
 
-void                                   cmd_save_settings(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t sysclock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor);
+void                                   cmd_ctrl_save(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t sysclock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor);
 #ifdef TP_SUPPORT
 void                                   cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor);
 #endif

@@ -59,7 +59,7 @@
 
 //----- PROTOTYPES -----
 #define                                lcd_drawstop()
-//void                                   lcd_drawstop(void);
+//void                                   lcd_drawstop(void); //empty function
 void                                   lcd_draw(uint32_t color);
 void                                   lcd_drawstart(void);
 void                                   lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1);

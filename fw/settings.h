@@ -3,10 +3,10 @@
 
 
 //----- DEFINES -----
-#define VERSION         "0.03"
+#define VERSION         "0.04"
 
 //LCD support (define only one)
-//#define LCD_MI0283QT9
+#define LCD_MI0283QT9
 //#define LCD_UG12D228AA
 
 #ifdef LCD_MI0283QT9
