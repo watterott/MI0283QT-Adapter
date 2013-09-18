@@ -1,7 +1,8 @@
 # Projects using the MI0283QT Adapter
 
 * Arduino TouchLib: http://www.mafu-foto.de/elektronik/arduino
-* Arduino Touch Screen Lib: http://code.google.com/p/arduino-touch-gui/
+* Arduino Touch Screen Lib: http://code.google.com/p/arduino-touch-gui
+* Arduino and chipKIT UTFT Lib: http://www.henningkarlsen.com/electronics/library.php?id=51
 * Arduino PrXoS + MI0283QT-2 Control Api: http://arduinoprx.de
 * Arduino DSO: http://code.google.com/p/simple-touch-screen-dso-software/ http://skyduino.wordpress.com/2011/07/08/arduinoscillo-news/
 * Misc Arduino Programs: http://www.mon-club-elec.fr/pmwiki_mon_club_elec/pmwiki.php?n=MAIN.ArduinoExpertTFTGraphCouleur240x320
