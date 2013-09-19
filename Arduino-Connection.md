@@ -8,6 +8,7 @@ LED         5      9     9     9
 RST         6      8     8     8
 CS          7      7     7     7
 SDI/MOSI    8     11    51    16   (ISP Pin 4)
+SDO/MISO    9     12    50    14   (ISP Pin 1)
 SCL/SCK    10     13    52    15   (ISP Pin 3)
 ADS-CS     11      6     6     6
 ```
