@@ -1,6 +1,11 @@
 # Display Firmware
 **Documentation for Firmware v0.04 and greater.**
 
+
+## Firmware Update
+See [Firmware Update Guide](https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/update_guide/README.md).
+
+
 ## Interfaces
 The display can be controlled through 3 interfaces: I2C, SPI/SSI and UART. The default interface is I2C.
 To activate SPI or UART set CS+MOSI or CS+RX to low after a reset or on power-up.

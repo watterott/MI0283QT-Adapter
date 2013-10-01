@@ -111,7 +111,7 @@ void setup()
   }
   Serial.print(y, DEC);
   Serial.println("");
-  if((x > 128) || (y > 128))
+  if((x > 255) || (y > 255))
   {
     postion_16bit = 1;
   }

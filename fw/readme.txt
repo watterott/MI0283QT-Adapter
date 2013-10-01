@@ -1,12 +1,14 @@
 Display Firmware
 ================
+  Visit https://github.com/watterott/MI0283QT-Adapter for updates.
   Compiled with Rowley's CrossWorks for ARM 2.3.3
                          CPU Pkg. LPC1000 1.27
                          RAM size 0x1FE0 because of IAP
 
 Documentation
 -------------
-  See docu/README.md and update_guide/README.md
+  See docu/README.md
+    https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/docu/README.md
 
 
 Third party software
@@ -18,6 +20,7 @@ Third party software
 License
 -------
   See license.txt
+    https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/license.txt
 
 
 History
