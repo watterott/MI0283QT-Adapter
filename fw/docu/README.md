@@ -15,7 +15,7 @@ The current interface can be saved as default with the software command ```CMD_C
 
 * Interface: I2C
 * Byte order: big endian
-* I2C: address 0xA0, max. 400 kHz
+* I2C: address 0x20, max. 400 kHz
 * SPI: Mode 3, max. 4 MHz @ 48 MHz system clock
 * UART: 9600 baud (8N1)
 * System clock: 48 MHz
@@ -72,6 +72,7 @@ Start the test program. To exit send ```0``` and the board responses with ```CMD
 Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV``` and/or ```FEATURE_LDR``` set.
 
     CMD_CTRL
+      --- Parameter ---
       CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
       CMD_CTRL_INTERFACE //Set interface. Parameter: 1 byte (INTERFACE_UART, INTERFACE_I2C, INTERFACE_SPI)
       CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
@@ -79,7 +80,7 @@ Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATUR
       CMD_CTRL_BYTEORDER //Set byte order. Parameter: 1 byte (0=big endian , 1=little endian)
       CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12,16,24,32,36,48)
       CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV, FEATURE_LDR)
-General system settings/options. There is no return value.
+General system settings/options. Parameter: 1 byte
 
     CMD_PIN
 Planned function...

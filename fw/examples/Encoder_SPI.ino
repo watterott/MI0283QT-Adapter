@@ -11,7 +11,7 @@
 
 #define RGB(r,g,b) (((r&0xF8)<<8)|((g&0xFC)<<3)|((b&0xF8)>>3)) //16bit: 5 red | 6 green | 5 blue
 
-#define I2C_ADDR 0xA0
+#define I2C_ADDR 0x20
 
 int rst_pin  = 8;  //connect to RST from display
 int cs_pin   = 7;  //connect to CS from display

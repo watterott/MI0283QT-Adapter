@@ -17,7 +17,7 @@
 #define DEFAULT_POWER   0             //0-100 power for backlight
 #define DEFAULT_INTERF  INTERFACE_I2C //INTERFACE_I2C INTERFACE_SPI INTERFACE_UART
 #define DEFAULT_BAUD    9600          //UART baud rate
-#define DEFAULT_ADDR    0xA0          //I2C address
+#define DEFAULT_ADDR    0x20          //I2C address
 #define DEFAULT_ORDER   0             //byte order (0=big, 1=little)
 
 

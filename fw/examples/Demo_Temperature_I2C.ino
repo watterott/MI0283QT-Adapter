@@ -15,7 +15,7 @@
 
 #define RGB(r,g,b) (((r&0xF8)<<8)|((g&0xFC)<<3)|((b&0xF8)>>3)) //16bit: 5 red | 6 green | 5 blue
 
-#define I2C_ADDR 0xA0
+#define I2C_ADDR 0x20
 
 OneWire ds(8);  //DS18B20 on pin 8 (with 4k7 to VCC necessary)
 uint8_t ds_addr[8];
