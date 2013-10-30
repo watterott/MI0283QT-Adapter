@@ -1,18 +1,24 @@
-* -------------------------------------------------------------------
-* Copyright (C) 2011 ARM Limited. All rights reserved.  
-* 
-* Date:        25 July 2011  
-* Revision:    V2.10 
-*  
-* Project:     Cortex Microcontroller Software Interface Standard (CMSIS)
-* Title:       Release Note for CMSIS
-*
-* -------------------------------------------------------------------
+CMSIS : Cortex Microcontroller Software Interface Standard
+==========================================================
 
+Introduction
+~~~~~~~~~~~~
+CMSIS defines for a Cortex-M Microcontroller System:
 
-The Cortex Microcontroller Software Interface Standard (CMSIS) provides a single standard across all 
-Cortex-Mx processor series vendors. It enables code re-use and code sharing across software projects 
-and reduces time-to-market for new embedded applications.
+    * A common way to access peripheral registers and a 
+      common way to define exception vectors.
+    * The register names of the Core Peripherals and the 
+      names of the Core Exception Vectors.
+    * An device independent interface for RTOS Kernels 
+      including a debug channel.
 
-CMSIS is released under the terms of the end user license agreement ("CMSIS END USER LICENCE AGREEMENT.pdf").
-Any user of the software package is bound to the terms and conditions of the end user license agreement.
+By using CMSIS compliant software components, the user can 
+easier re-use template code. CMSIS is intended to enable the
+combination of software components from multiple middleware 
+vendors. 
+
+This project contains appropriate files for this MCU family 
+taken from CMSIS. A full copy of the CMSIS files, together
+with additional information on CMSIS can be found at:
+
+  http://www.arm.com/cmsis/
