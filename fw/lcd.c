@@ -374,7 +374,7 @@ void lcd_drawrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_
 
 void lcd_fillrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color)
 {
-  uint32_t tmp, size;
+  uint32_t size;
 
   if(x0 >= width)  { x0 = width-1;  }
   if(y0 >= height) { y0 = height-1; }

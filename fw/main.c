@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "cmsis/LPC11xx.h"
-#include "cmsis/system_LPC11xx.h"
 #include "settings.h"
 #include "main.h"
 #include "iap.h"
@@ -25,7 +24,7 @@
 #endif
 
 
-uint8_t global_buffer[FLASH_SECTOR_BYTES]; //see iap.h
+uint32_t global_buffer[FLASH_SECTOR_BYTES/4]; //see iap.h
 volatile uint32_t ms_ticks=0;
 uint32_t features=0;
 volatile uint32_t enc_sw=0;
@@ -48,19 +47,20 @@ typedef struct
   uint32_t fgcolor;
   uint32_t bgcolor;
   CAL_MATRIX tp;
+  uint32_t padding;
 } SETTINGS;
 SETTINGS *usersettings = (SETTINGS*)(FLASH_BYTES-128); //last 128 bytes are for settings
 
 
 void SysTick_Handler(void) //1ms
 {
-  static uint32_t enc_t=0, enc_sw_t=0;
-  static uint32_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
-  uint32_t pin, n, dif;
-
   ms_ticks++;
 
 #ifndef TP_SUPPORT
+
+  static uint32_t enc_t=0, enc_sw_t=0;
+  static uint32_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
+  uint32_t pin, n, dif;
 
   if(features & FEATURE_ENC)
   {
@@ -291,7 +291,6 @@ void nav_init(void)
 
 uint32_t ldr_read(void)
 {
-  static uint32_t last;
   uint32_t v1, v2;
 
   //set AD4 to output and high
@@ -1272,8 +1271,7 @@ int main(void)
 {
   uint32_t a, b, c, d, e, color, fgcolor=RGB(0,0,0), bgcolor=RGB(255,255,255), led_power=DEFAULT_POWER;
 #ifdef TP_SUPPORT
-  uint32_t tp_t=0, tp_int=0, ldr_t;
-  CAL_MATRIX *m;
+  uint32_t tp_t=0, tp_int=0, ldr_t=0;
 #endif
 
   //init periphery

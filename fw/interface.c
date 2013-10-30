@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "cmsis/LPC11xx.h"
-#include "cmsis/system_LPC11xx.h"
 #include "settings.h"
 #include "main.h"
 #include "cmd.h"

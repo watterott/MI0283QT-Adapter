@@ -1,9 +1,9 @@
 Display Firmware
 ================
   Visit https://github.com/watterott/MI0283QT-Adapter for updates.
-  Compiled with Rowley's CrossWorks for ARM 2.3.3
-                         CPU Pkg. LPC1000 1.27
-                         RAM size 0x1FE0 because of IAP
+
+  Supported IDEs: CrossWorks for ARM 2.3 and NXP LPCXpresso 6.1
+
 
 Documentation
 -------------
@@ -25,6 +25,8 @@ License
 
 History
 -------
+         2013  v0.05  
+
   Sep 18 2013  v0.04  Added ADC read function.
 
   Aug 18 2013  v0.03  Added byte order setting.
