@@ -44,7 +44,9 @@
   .global reset_handler
   .syntax unified
 
-  #include <LPC1000.h>
+  //#include <LPC1000.h>
+  #define SYSCON_BASE_ADDRESS 0x40048000
+  #define SYSMEMREMAP_OFFSET 0x0
 
   .section .vectors, "ax"
   .code 16

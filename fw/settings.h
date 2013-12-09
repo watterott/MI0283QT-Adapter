@@ -3,7 +3,7 @@
 
 
 //----- DEFINES -----
-#define VERSION         "0.04"
+#define VERSION         "0.05"
 
 //LCD support (define only one)
 #define LCD_MI0283QT9
@@ -15,6 +15,7 @@
 
 #define DEFAULT_CLOCK   48000000UL    //Hz, 12 16* 24 32* 36 48* MHz (*crystal)
 #define DEFAULT_POWER   0             //0-100 power for backlight
+#define DEFAULT_LDRTIME 500           //check LDR every 500 milliseconds
 #define DEFAULT_INTERF  INTERFACE_I2C //INTERFACE_I2C INTERFACE_SPI INTERFACE_UART
 #define DEFAULT_BAUD    9600          //UART baud rate
 #define DEFAULT_ADDR    0x20          //I2C address

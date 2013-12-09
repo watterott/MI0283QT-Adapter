@@ -10,14 +10,15 @@
 #define SND_BUFSIZE       32 //bytes (8,16,32... size of output fifo)
 
 
-uint32_t if_hw=0, if_state=0, if_addr=DEFAULT_ADDR, if_baud=DEFAULT_BAUD, if_byteorder=DEFAULT_ORDER;
+uint_least8_t if_hw=0, if_state=0, if_addr=DEFAULT_ADDR, if_byteorder=DEFAULT_ORDER;
+uint_least32_t if_baud=DEFAULT_BAUD;
 uint8_t rcv_buf[RCV_BUFSIZE], snd_buf[SND_BUFSIZE];
-volatile uint32_t rcv_head=0, rcv_tail=0, snd_head=0, snd_tail=0;
+volatile uint_least16_t rcv_head=0, rcv_tail=0, snd_head=0, snd_tail=0;
 
 
-void i2c_write(uint32_t c)
+void i2c_write(uint_least8_t c)
 {
-  uint32_t head;
+  uint_least16_t head;
 
   head = snd_head;
   snd_buf[head++] = c;
@@ -30,7 +31,8 @@ void i2c_write(uint32_t c)
 
 void I2C_IRQHandler(void)
 {
-  uint32_t state, head, tail;
+  uint_least32_t state;
+  uint_least16_t head, tail;
 
   //if_state: 1=write, 2=read
   state = LPC_I2C->STAT;
@@ -124,7 +126,7 @@ void i2c_off(void)
 }
 
 
-void i2c_setaddress(uint32_t adr)
+void i2c_setaddress(uint_least8_t adr)
 {
   if_addr = adr;
 
@@ -139,7 +141,7 @@ void i2c_setaddress(uint32_t adr)
 
 void i2c_init(void)
 {
-  uint32_t sysdiv;
+  uint_least32_t sysdiv;
 
   if_state = 0;
 
@@ -171,7 +173,7 @@ void i2c_init(void)
 }
 
 
-void spi_write(uint32_t c)
+void spi_write(uint_least8_t c)
 {
   while((LPC_SSP0->SR & 0x02) != 0x02); //TNF
   LPC_SSP0->DR = c;
@@ -182,7 +184,8 @@ void spi_write(uint32_t c)
 
 void SSP0_IRQHandler(void)
 {
-  uint32_t state, head, c;
+  uint_least32_t state;
+  uint_least16_t head;
 
   state = LPC_SSP0->MIS;
 
@@ -194,8 +197,7 @@ void SSP0_IRQHandler(void)
   head = rcv_head;
   while(LPC_SSP0->SR & 0x04) //RNE
   {
-    c = LPC_SSP0->DR; //read data
-    rcv_buf[head++] = c; //write data to receive fifo
+    rcv_buf[head++] = LPC_SSP0->DR; //read and write data to receive fifo
     head = head & (RCV_BUFSIZE-1);
   }
   rcv_head = head;
@@ -225,7 +227,7 @@ void spi_off(void)
 
 void spi_init(void)
 {
-  uint32_t c;
+  uint_least8_t c;
 
   spi_off();
 
@@ -261,7 +263,7 @@ void spi_init(void)
 }
 
 
-void uart_write(uint32_t c)
+void uart_write(uint_least8_t c)
 {
   if(GPIO_GETPIN(SS_PORT, SS_PIN) == 0)
   {
@@ -275,7 +277,9 @@ void uart_write(uint32_t c)
 
 void UART_IRQHandler(void)
 {
-  uint32_t state, head, c;
+  uint_least32_t state;
+  uint_least16_t head;
+  uint_least8_t c;
 
   state = LPC_UART->IIR;
   state = (state>>1)&0x07; //skip pending bit and mask identification bits
@@ -296,7 +300,7 @@ void UART_IRQHandler(void)
 
 void PIOINT0_IRQHandler(void)
 {
-  uint32_t c;
+  uint_least8_t c;
 
   GPIO_PORT(SS_PORT)->IC |= (1<<SS_PIN); //clear interrupt
 
@@ -333,11 +337,11 @@ void uart_off(void)
 }
 
 
-void uart_setbaudrate(uint32_t br)
+void uart_setbaudrate(uint_least32_t br)
 {
-  uint32_t div, sysdiv, uartdiv;
+  uint_least32_t div, sysdiv, uartdiv;
 
-  if((br < 9600) || (br > 1000000))
+  if((br < 9600) || (br > 1000000UL))
   {
     return;
   }
@@ -362,7 +366,7 @@ void uart_setbaudrate(uint32_t br)
 
 void uart_init(void)
 {
-  uint32_t c;
+  uint_least8_t c;
 
   uart_off();
 
@@ -415,7 +419,7 @@ void if_writestr(char *s)
 }
 
 
-void if_writebuf(uint8_t *ptr, uint32_t size)
+void if_writebuf(uint8_t *ptr, uint_least16_t size)
 {
   for( ;size!=0; size--)
   {
@@ -426,7 +430,7 @@ void if_writebuf(uint8_t *ptr, uint32_t size)
 }
 
 
-void if_write32_little(uint32_t c)
+void if_write32_little(uint_least32_t c)
 {
   if_write8((c&0x000000FF)>>0);
   if_write8((c&0x0000FF00)>>8);
@@ -437,7 +441,7 @@ void if_write32_little(uint32_t c)
 }
 
 
-void if_write24_little(uint32_t c)
+void if_write24_little(uint_least32_t c)
 {
   if_write8((c&0x000000FF)>>0);
   if_write8((c&0x0000FF00)>>8);
@@ -447,7 +451,7 @@ void if_write24_little(uint32_t c)
 }
 
 
-void if_write16_little(uint32_t c)
+void if_write16_little(uint_least16_t c)
 {
   if_write8((c&0x000000FF)>>0);
   if_write8((c&0x0000FF00)>>8);
@@ -456,7 +460,7 @@ void if_write16_little(uint32_t c)
 }
 
 
-void if_write32_big(uint32_t c)
+void if_write32_big(uint_least32_t c)
 {
   if_write8((c&0xFF000000)>>24);
   if_write8((c&0x00FF0000)>>16);
@@ -467,7 +471,7 @@ void if_write32_big(uint32_t c)
 }
 
 
-void if_write24_big(uint32_t c)
+void if_write24_big(uint_least32_t c)
 {
   if_write8((c&0x00FF0000)>>16);
   if_write8((c&0x0000FF00)>>8);
@@ -477,7 +481,7 @@ void if_write24_big(uint32_t c)
 }
 
 
-void if_write16_big(uint32_t c)
+void if_write16_big(uint_least16_t c)
 {
   if_write8((c&0x0000FF00)>>8);
   if_write8((c&0x000000FF)>>0);
@@ -486,15 +490,15 @@ void if_write16_big(uint32_t c)
 }
 
 
-void (*if_write32)(uint32_t c) = if_write32_big;
-void (*if_write24)(uint32_t c) = if_write24_big;
-void (*if_write16)(uint32_t c) = if_write16_big;
-void (*if_write8) (uint32_t c) = i2c_write;
+void (*if_write32)(uint_least32_t c) = if_write32_big;
+void (*if_write24)(uint_least32_t c) = if_write24_big;
+void (*if_write16)(uint_least16_t c) = if_write16_big;
+void (*if_write8) (uint_least8_t c)  = i2c_write;
 
 
-uint32_t if_read32_little(void)
+uint_least32_t if_read32_little(void)
 {
-  uint32_t c;
+  uint_least32_t c;
 
   c  = if_read8()<<0;
   c |= if_read8()<<8;
@@ -505,9 +509,9 @@ uint32_t if_read32_little(void)
 }
 
 
-uint32_t if_read24_little(void)
+uint_least32_t if_read24_little(void)
 {
-  uint32_t c;
+  uint_least32_t c;
 
   c  = if_read8()<<0;
   c |= if_read8()<<8;
@@ -517,9 +521,9 @@ uint32_t if_read24_little(void)
 }
 
 
-uint32_t if_read16_little(void)
+uint_least16_t if_read16_little(void)
 {
-  uint32_t c;
+  uint_least16_t c;
 
   c  = if_read8()<<0;
   c |= if_read8()<<8;
@@ -528,9 +532,9 @@ uint32_t if_read16_little(void)
 }
 
 
-uint32_t if_read32_big(void)
+uint_least32_t if_read32_big(void)
 {
-  uint32_t c;
+  uint_least32_t c;
 
   c  = if_read8()<<24;
   c |= if_read8()<<16;
@@ -541,9 +545,9 @@ uint32_t if_read32_big(void)
 }
 
 
-uint32_t if_read24_big(void)
+uint_least32_t if_read24_big(void)
 {
-  uint32_t c;
+  uint_least32_t c;
 
   c  = if_read8()<<16;
   c |= if_read8()<<8;
@@ -553,9 +557,9 @@ uint32_t if_read24_big(void)
 }
 
 
-uint32_t if_read16_big(void)
+uint_least16_t if_read16_big(void)
 {
-  uint32_t c;
+  uint_least16_t c;
 
   c  = if_read8()<<8;
   c |= if_read8()<<0;
@@ -564,14 +568,15 @@ uint32_t if_read16_big(void)
 }
 
 
-uint32_t (*if_read32)(void) = if_read32_big;
-uint32_t (*if_read24)(void) = if_read24_big;
-uint32_t (*if_read16)(void) = if_read16_big;
+uint_least32_t (*if_read32)(void) = if_read32_big;
+uint_least32_t (*if_read24)(void) = if_read24_big;
+uint_least16_t (*if_read16)(void) = if_read16_big;
 
 
-__attribute__((always_inline)) __INLINE uint32_t if_read8(void)
+__attribute__((always_inline)) __INLINE uint_least8_t if_read8(void)
 {
-  uint32_t tail, c;
+  uint_least16_t tail;
+  uint_least8_t c;
 
   tail = rcv_tail;
   while(tail == rcv_head); //wait for data
@@ -585,7 +590,7 @@ __attribute__((always_inline)) __INLINE uint32_t if_read8(void)
 
 void if_flush(void)
 {
-  uint32_t ms;
+  uint_least32_t ms;
 
   if(if_hw & INTERFACE_I2C)
   {
@@ -608,9 +613,9 @@ void if_flush(void)
 }
 
 
-__attribute__((always_inline)) __INLINE uint32_t if_available(void)
+__attribute__((always_inline)) __INLINE uint_least16_t if_available(void)
 {
-  uint32_t head, tail;
+  uint_least16_t head, tail;
 
   if(if_hw)
   {
@@ -631,7 +636,7 @@ __attribute__((always_inline)) __INLINE uint32_t if_available(void)
 }
 
 
-void if_setbyteorder(uint32_t byteorder)
+void if_setbyteorder(uint_least8_t byteorder)
 {
   //set byte order
   if(byteorder == 0) //big
@@ -659,31 +664,31 @@ void if_setbyteorder(uint32_t byteorder)
 }
 
 
-uint32_t if_getbyteorder(void)
+uint_least8_t if_getbyteorder(void)
 {
   return if_byteorder;
 }
 
 
-uint32_t if_getaddress(void)
+uint_least8_t if_getaddress(void)
 {
   return if_addr;
 }
 
 
-uint32_t if_getbaudrate(void)
+uint_least32_t if_getbaudrate(void)
 {
   return if_baud;
 }
 
 
-uint32_t if_getinterface(void)
+uint_least8_t if_getinterface(void)
 {
   return if_hw;
 }
 
 
-uint32_t if_init(uint32_t interf)
+uint_least8_t if_init(uint_least8_t interf)
 {
   //disable interface
   if_flush();

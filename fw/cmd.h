@@ -15,6 +15,7 @@ enum _COMMANDS
   CMD_NOP2 = 0x00,           //NOP / poll
   CMD_VERSION,               //get firmware version (4bytes "x.xx")
   CMD_TEST,                  //start test program
+  CMD_STATUS,                //get status (1byte)
   CMD_FEATURES,              //get available features (_CMDFEATURES)
   CMD_CTRL,                  //control options (_CTRLOPTIONS)
   CMD_PIN,                   //pin mode/config
@@ -126,6 +127,7 @@ enum _CMDFEATURES
   FEATURE_ENC = 0x04, //rotary encoder
   FEATURE_NAV = 0x08, //navigation switch
   FEATURE_LDR = 0x10, //light sensor (LDR)
+  FEATURE_IRQ = 0x20, //IRQ output
 };
 
 
@@ -159,6 +161,7 @@ enum _COLORMODES
   COLOR_RGB323 =    8, // 8 bit [  8   4   8] (RLE: x=1byte, m=0xAA)
   COLOR_RGB332,        // 8 bit [  8   8   4] (RLE: x=1byte, m=0xAA)
   COLOR_RGB233,        // 8 bit [  4   8   8] (RLE: x=1byte, m=0xAA)
+  COLOR_GRAY,          // 8 bit gray scale    (RLE: x=1byte, m=0xAA)
   COLOR_RGB565 =   16, //16 bit [ 32  64  32] (RLE: x=2byte, m=0xAAAA)
   COLOR_RGB888 =   24, //24 bit [256 256 256] (RLE: x=3byte, m=0xAA)
   COLOR_RLE    = 0x80, //use RLE with magic number (x,x,m,n,x...0,0) n=1byte (n=0 for stop)

@@ -2,7 +2,7 @@ Display Firmware
 ================
   Visit https://github.com/watterott/MI0283QT-Adapter for updates.
 
-  Supported IDEs: CrossWorks for ARM 2.3 and NXP LPCXpresso 6.1
+  Supported IDEs: CrossWorks for ARM 2.3 and LPCXpresso 6.1
 
 
 Documentation
@@ -14,7 +14,7 @@ Documentation
 Third party software
 --------------------
   CMSIS
-    http://www.onarm.com
+    http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
 
 
 License
@@ -25,7 +25,8 @@ License
 
 History
 -------
-         2013  v0.05  
+         2013  v0.05  Compiling with LPCXpresso.
+                      Added interrupt/status output.
 
   Sep 18 2013  v0.04  Added ADC read function.
 

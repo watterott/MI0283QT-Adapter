@@ -8,10 +8,10 @@
 #include "lcd_font8x8.h"
 
 
-uint32_t width, height, fgcolor, bgcolor, orientation;
+uint_least16_t width, height, fgcolor, bgcolor, orientation;
 
 
-uint32_t lcd_drawtext(uint32_t x, uint32_t y, char *s, uint32_t size, uint32_t fgcolor, uint32_t bgcolor, uint32_t clear_bg)
+uint_least16_t lcd_drawtext(uint_least16_t x, uint_least16_t y, char *s, uint_least8_t size, uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t clear_bg)
 {
   size = (size==0)?1:size;
 
@@ -39,9 +39,10 @@ uint32_t lcd_drawtext(uint32_t x, uint32_t y, char *s, uint32_t size, uint32_t f
 }
 
 
-uint32_t lcd_drawchar(uint32_t x, uint32_t y, char c, uint32_t size, uint32_t fgcolor, uint32_t bgcolor, uint32_t clear_bg)
+uint_least16_t lcd_drawchar(uint_least16_t x, uint_least16_t y, char c, uint_least8_t size, uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t clear_bg)
 {
-  uint32_t ret, i, x0, y0, x1, y1, h, data, mask;
+  uint_least16_t ret, i, x0, y0, x1, y1, h;
+  uint_least8_t data, mask;
   uint8_t *ptr;
 
   //size = (size==0)?1:size;
@@ -140,9 +141,10 @@ uint32_t lcd_drawchar(uint32_t x, uint32_t y, char c, uint32_t size, uint32_t fg
 }
 
 
-void lcd_fillellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint32_t color)
+void lcd_fillellipse(uint_least16_t x0, uint_least16_t y0, uint_least16_t r_x, uint_least16_t r_y, uint_least16_t color)
 {
-  int32_t e, e2, x, y, dx, dy, rx, ry;
+  int_least16_t x, y;
+  int_least32_t e, e2, dx, dy, rx, ry;
 
   if(((x0-r_x) >= width) ||
      ((y0-r_y) >= height))
@@ -178,9 +180,10 @@ void lcd_fillellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint3
 }
 
 
-void lcd_drawellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint32_t color)
+void lcd_drawellipse(uint_least16_t x0, uint_least16_t y0, uint_least16_t r_x, uint_least16_t r_y, uint_least16_t color)
 {
-  int32_t e, e2, x, y, dx, dy, rx, ry;
+  int_least16_t x, y;
+  int_least32_t e, e2, dx, dy, rx, ry;
 
   x  = -r_x;
   y  = 0;
@@ -212,15 +215,9 @@ void lcd_drawellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint3
 }
 
 
-void lcd_fillcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color)
+void lcd_fillcircle(uint_least16_t x0, uint_least16_t y0, uint_least16_t r, uint_least16_t color)
 {
-  int32_t err, x, y;
-
-  if(((x0-r) >= width) ||
-     ((y0-r) >= height))
-  {
-    return;
-  }
+  int_least16_t err, x, y;
 
   err = -r;
   x   = r;
@@ -245,13 +242,14 @@ void lcd_fillcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color)
 }
 
 
-void lcd_drawcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color)
+void lcd_drawcircle(uint_least16_t x0, uint_least16_t y0, uint_least16_t r, uint_least16_t color)
 {
-  int32_t err, x, y;
+  int_least16_t err, x, y;
 
   err = -r;
   x   = r;
   y   = 0;
+
   while(x >= y)
   {
     lcd_drawpixel(x0 - x, y0 - y, color);
@@ -276,9 +274,9 @@ void lcd_drawcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color)
 }
 
 
-void lcd_fillrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t r, uint32_t color)
+void lcd_fillrndrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t r, uint_least16_t color)
 {
-  int32_t err, x, y;
+  int_least16_t err, x, y;
 
   if(((x0+r) >= (x1-r)) || ((y0+r) >= (y1-r)))
   {
@@ -323,9 +321,9 @@ void lcd_fillrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_
 }
 
 
-void lcd_drawrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t r, uint32_t color)
+void lcd_drawrndrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t r, uint_least16_t color)
 {
-  int32_t err, x, y;
+  int_least16_t err, x, y;
 
   if(((x0+r) >= (x1-r)) || ((y0+r) >= (y1-r)))
   {
@@ -372,9 +370,9 @@ void lcd_drawrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_
 }
 
 
-void lcd_fillrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color)
+void lcd_fillrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color)
 {
-  uint32_t size;
+  uint_least32_t size;
 
   if(x0 >= width)  { x0 = width-1;  }
   if(y0 >= height) { y0 = height-1; }
@@ -411,7 +409,7 @@ void lcd_fillrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t c
 }
 
 
-void lcd_drawrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color)
+void lcd_drawrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color)
 {
   lcd_fillrect(x0, y0, x0, y1, color);
   lcd_fillrect(x0, y1, x1, y1, color);
@@ -422,9 +420,9 @@ void lcd_drawrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t c
 }
 
 
-void lcd_drawline(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color)
+void lcd_drawline(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color)
 {
-  int32_t dx, dy, dx2, dy2, err, stepx, stepy;
+  int_least16_t dx, dy, dx2, dy2, err, stepx, stepy;
 
   if((x0 == x1) || //horizontal line
      (y0 == y1))   //vertical line
@@ -494,7 +492,7 @@ void lcd_drawline(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t c
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_drawpixel(uint32_t x0, uint32_t y0, uint32_t color)
+__attribute__((always_inline)) __INLINE void lcd_drawpixel(uint_least16_t x0, uint_least16_t y0, uint_least16_t color)
 {
   if((x0 >= width) ||
      (y0 >= height))
@@ -516,16 +514,16 @@ __attribute__((always_inline)) __INLINE void lcd_drawpixel(uint32_t x0, uint32_t
 }
 
 
-void lcd_clear(uint32_t color)
+void lcd_clear(uint_least16_t color)
 {
-  uint32_t size;
+  uint_least16_t size;
 
   lcd_enable();
 
   lcd_setarea(0, 0, width-1, height-1);
 
   lcd_drawstart();
-  for(size=(LCD_WIDTH*LCD_HEIGHT/8); size!=0; size--)
+  for(size=(LCD_WIDTH*LCD_HEIGHT/8UL); size!=0; size--)
   {
     lcd_draw(color); //1
     lcd_draw(color); //2
@@ -544,13 +542,13 @@ void lcd_clear(uint32_t color)
 }
 
 
-uint32_t lcd_getorientation(void)
+uint_least16_t lcd_getorientation(void)
 {
   return orientation;
 }
 
 
-void lcd_setorientation(uint32_t o)
+void lcd_setorientation(uint_least16_t o)
 {
   uint32_t wh;
 
@@ -564,13 +562,13 @@ void lcd_setorientation(uint32_t o)
 }
 
 
-uint32_t lcd_getwidth(void)
+uint_least16_t lcd_getwidth(void)
 {
   return width;
 }
 
 
-uint32_t lcd_getheight(void)
+uint_least16_t lcd_getheight(void)
 {
   return height;
 }

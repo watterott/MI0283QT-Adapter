@@ -21,23 +21,23 @@
 
 
 //----- PROTOTYPES -----
-uint32_t                               lcd_drawtext(uint32_t x, uint32_t y, char *s, uint32_t size, uint32_t fgcolor, uint32_t bgcolor, uint32_t clear_bg);
-uint32_t                               lcd_drawchar(uint32_t x, uint32_t y, char c, uint32_t size, uint32_t fgcolor, uint32_t bgcolor, uint32_t clear_bg);
-void                                   lcd_fillellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint32_t color);
-void                                   lcd_drawellipse(uint32_t x0, uint32_t y0, uint32_t r_x, uint32_t r_y, uint32_t color);
-void                                   lcd_fillcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color);
-void                                   lcd_drawcircle(uint32_t x0, uint32_t y0, uint32_t r, uint32_t color);
-void                                   lcd_fillrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t r, uint32_t color);
-void                                   lcd_drawrndrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t r, uint32_t color);
-void                                   lcd_fillrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color);
-void                                   lcd_drawrect(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color);
-void                                   lcd_drawline(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t color);
-void                                   lcd_drawpixel(uint32_t x0, uint32_t y0, uint32_t color);
-void                                   lcd_clear(uint32_t color);
-uint32_t                               lcd_getorientation(void);
-void                                   lcd_setorientation(uint32_t o);
-uint32_t                               lcd_getwidth(void);
-uint32_t                               lcd_getheight(void);
+uint_least16_t                         lcd_drawtext(uint_least16_t x, uint_least16_t y, char *s, uint_least8_t size, uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t clear_bg);
+uint_least16_t                         lcd_drawchar(uint_least16_t x, uint_least16_t y, char c, uint_least8_t size, uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t clear_bg);
+void                                   lcd_fillellipse(uint_least16_t x0, uint_least16_t y0, uint_least16_t r_x, uint_least16_t r_y, uint_least16_t color);
+void                                   lcd_drawellipse(uint_least16_t x0, uint_least16_t y0, uint_least16_t r_x, uint_least16_t r_y, uint_least16_t color);
+void                                   lcd_fillcircle(uint_least16_t x0, uint_least16_t y0, uint_least16_t r, uint_least16_t color);
+void                                   lcd_drawcircle(uint_least16_t x0, uint_least16_t y0, uint_least16_t r, uint_least16_t color);
+void                                   lcd_fillrndrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t r, uint_least16_t color);
+void                                   lcd_drawrndrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t r, uint_least16_t color);
+void                                   lcd_fillrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color);
+void                                   lcd_drawrect(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color);
+void                                   lcd_drawline(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1, uint_least16_t color);
+void                                   lcd_drawpixel(uint_least16_t x0, uint_least16_t y0, uint_least16_t color);
+void                                   lcd_clear(uint_least16_t color);
+uint_least16_t                         lcd_getorientation(void);
+void                                   lcd_setorientation(uint_least16_t o);
+uint_least16_t                         lcd_getwidth(void);
+uint_least16_t                         lcd_getheight(void);
 void                                   lcd_init(void);
 
 

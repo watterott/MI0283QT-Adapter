@@ -31,7 +31,7 @@ __attribute__((always_inline)) __INLINE void lcd_drawstop(void)
 }
 */
 
-__attribute__((always_inline)) __INLINE void lcd_draw(uint32_t color)
+__attribute__((always_inline)) __INLINE void lcd_draw(uint_least16_t color)
 {
   return lcd_wrdata16(color);
 }
@@ -47,7 +47,7 @@ __attribute__((always_inline)) __INLINE void lcd_drawstart(void)
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1)
+__attribute__((always_inline)) __INLINE void lcd_setarea(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1)
 {
   //lcd_enable();
 
@@ -65,9 +65,10 @@ __attribute__((always_inline)) __INLINE void lcd_setarea(uint32_t x0, uint32_t y
 }
 
 
-uint32_t lcd_setbias(uint32_t o)
+uint_least32_t lcd_setbias(uint_least16_t o)
 {
-  uint32_t param, w, h;
+  uint_least32_t w, h;
+  uint_least8_t param;
 
   #define MEM_Y   (7) //MY row address order
   #define MEM_X   (6) //MX column address order 
@@ -120,7 +121,7 @@ uint32_t lcd_setbias(uint32_t o)
 }
 
 
-void lcd_invert(uint32_t on)
+void lcd_invert(uint_least8_t on)
 {
   lcd_enable();
 
@@ -139,7 +140,7 @@ void lcd_invert(uint32_t on)
 }
 
 
-void lcd_power(uint32_t on)
+void lcd_power(uint_least8_t on)
 {
   lcd_enable();
 
@@ -166,7 +167,10 @@ void lcd_power(uint32_t on)
 
 void lcd_reset(void)
 {
-  uint32_t c, i, j;
+  uint_least8_t c;
+  uint_least16_t i, j;
+  uint_least32_t s;
+
   uint8_t initdata[] = 
   {
     //0x40| 1, LCD_CMD_RESET,
@@ -251,7 +255,6 @@ void lcd_reset(void)
           lcd_wrcmd8(c);
         }
         break;
-
       case 0x80: //data
         for(j=c&0x3F; j!=0; j--)
         {
@@ -259,7 +262,6 @@ void lcd_reset(void)
           lcd_wrdata8(c);
         }
         break;
-
       case 0xC0: //delay
         delay_ms(c&0x3F);
         break;
@@ -268,7 +270,7 @@ void lcd_reset(void)
 
   //clear display buffer
   lcd_drawstart();
-  for(i=(LCD_WIDTH*LCD_HEIGHT); i!=0; i--)
+  for(s=(LCD_WIDTH*LCD_HEIGHT); s!=0; s--)
   {
     lcd_draw(0);
   }
@@ -280,7 +282,7 @@ void lcd_reset(void)
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_wrdata16(uint32_t data)
+__attribute__((always_inline)) __INLINE void lcd_wrdata16(uint_least16_t data)
 {
   //GPIO_SETPIN(LCD_PORT, RS_PIN); //data
 
@@ -298,7 +300,7 @@ __attribute__((always_inline)) __INLINE void lcd_wrdata16(uint32_t data)
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_wrdata8(uint32_t data)
+__attribute__((always_inline)) __INLINE void lcd_wrdata8(uint_least8_t data)
 {
   //GPIO_SETPIN(LCD_PORT, RS_PIN); //data
 
@@ -310,7 +312,7 @@ __attribute__((always_inline)) __INLINE void lcd_wrdata8(uint32_t data)
 }
 
 
-__attribute__((always_inline)) __INLINE void lcd_wrcmd8(uint32_t cmd)
+__attribute__((always_inline)) __INLINE void lcd_wrcmd8(uint_least8_t cmd)
 {
   GPIO_CLRPIN(LCD_PORT, RS_PIN); //cmd
 

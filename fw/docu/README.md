@@ -1,6 +1,6 @@
 # Display Firmware
 
-**Documentation for Firmware v0.04 and greater.**
+**Documentation for Firmware v0.05 and greater.**
 
 
 ## Firmware Update
@@ -27,24 +27,21 @@ The current interface can be saved as default with the software command ```CMD_C
 
 **I2C activation:**
 
-    RST low, wait 10 ms, RST high
-    CS low, MOSI + RX high
-    wait 20 ms
-    CS high
+    - Reset:    RST low -> wait 10 ms -> RST high
+    - Set I2C:  MOSI + RX high
+    - Activate: CS low -> wait 20 ms -> CS high
 
 **SPI activation:**
 
-    RST low, wait 10 ms, RST high
-    CS + MOSI low (RX high)
-    wait 20 ms
-    CS high
+    - Reset:    RST low -> wait 10 ms -> RST high
+    - Set SPI:  MOSI low (RX high)
+    - Activate: CS low -> wait 20 ms -> CS high
 
 **UART activation:**
 
-    RST low, wait 10 ms, RST high
-    CS + RX low (MOSI high)
-    wait 20 ms
-    CS high
+    - Reset:    RST low -> wait 10 ms -> RST high
+    - Set UART: RX low (MOSI high)
+    - Activate: CS low -> wait 20 ms -> CS high
 
 
 ## Examples
@@ -68,27 +65,30 @@ Example: ```CMD_LCD_CLEAR``` has as parameter a 2 byte color value and ```CMD_LC
 No operation.
 
     CMD_VERSION
-Get firmware version. Returns 4 bytes, for example "0.12".
+Get firmware version. Returns 4 bytes, for example ```0.12```.
 
     CMD_TEST
 Start the test program. To exit send ```0``` and the board responses with ```CMD_TEST```.
 
+    CMD_STATUS
+Get status. A reading clears the interrupt output. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR``` set.
+
     CMD_FEATURES
-Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV``` and/or ```FEATURE_LDR``` set.
+Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR```, ```FEATURE_IRQ``` set.
 
     CMD_CTRL
-      --- Parameter ---
-      CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
-      CMD_CTRL_INTERFACE //Set interface. Parameter: 1 byte (INTERFACE_UART, INTERFACE_I2C, INTERFACE_SPI)
-      CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
-      CMD_CTRL_ADDRESS   //Set I2C address. Parameter: 1 byte
-      CMD_CTRL_BYTEORDER //Set byte order. Parameter: 1 byte (0=big endian , 1=little endian)
-      CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12,16,24,32,36,48)
-      CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV, FEATURE_LDR)
 General system settings/options. Parameter: 1 byte
 
+        CMD_CTRL_SAVE      //Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
+        CMD_CTRL_INTERFACE //Set interface. Parameter: 1 byte (INTERFACE_UART, INTERFACE_I2C, INTERFACE_SPI)
+        CMD_CTRL_BAUDRATE  //Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
+        CMD_CTRL_ADDRESS   //Set I2C address. Parameter: 1 byte
+        CMD_CTRL_BYTEORDER //Set byte order. Parameter: 1 byte (0=big endian , 1=little endian)
+        CMD_CTRL_SYSCLOCK  //Set system clock in MHz. Parameter: 1 byte (12, 16, 24, 32, 36, 48)
+        CMD_CTRL_FEATURES, //Enable or disable features. Parameter: 1 byte (FEATURE_TP, FEATURE_ENC, FEATURE_NAV, FEATURE_LDR, FEATURE_IRQ)
+
     CMD_PIN
-Planned function...
+Set GPIO pin. Parameter: 1 byte (1=input, 2=read input, 3=output low, 4=output high, 5=IRQ output low active, 6=IRQ output high active)
 
     CMD_ADC
 Read ADC channel. Parameter: 1 byte (4, 5, 7 or 255 for LDR)

@@ -20,19 +20,19 @@
 
 typedef struct 
 {
-  uint32_t x;
-  uint32_t y;
+  uint_least32_t x;
+  uint_least32_t y;
 } CAL_POINT;
 
 typedef struct 
 {
-  uint32_t a;
-  uint32_t b;
-  uint32_t c;
-  uint32_t d;
-  uint32_t e;
-  uint32_t f;
-  uint32_t div;
+  uint_least32_t a;
+  uint_least32_t b;
+  uint_least32_t c;
+  uint_least32_t d;
+  uint_least32_t e;
+  uint_least32_t f;
+  uint_least32_t div;
 } CAL_MATRIX;
 
 
@@ -40,16 +40,16 @@ typedef struct
 
 
 //----- PROTOTYPES -----
-uint32_t                               tp_getz(void);
-uint32_t                               tp_gety(void);
-uint32_t                               tp_getx(void);
-uint32_t                               tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp);
+uint_least16_t                         tp_getz(void);
+uint_least16_t                         tp_gety(void);
+uint_least16_t                         tp_getx(void);
+uint_least8_t                          tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp);
 CAL_MATRIX*                            tp_getmatrix(void);
-void                                   tp_setmatrix(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t e, uint32_t f, uint32_t div);
-uint32_t                               tp_rawz(void);
-uint32_t                               tp_rawy(void);
-uint32_t                               tp_rawx(void);
-void                                   tp_read(void);
+void                                   tp_setmatrix(uint_least32_t a, uint_least32_t b, uint_least32_t c, uint_least32_t d, uint_least32_t e, uint_least32_t f, uint_least32_t div);
+uint_least16_t                         tp_rawz(void);
+uint_least16_t                         tp_rawy(void);
+uint_least16_t                         tp_rawx(void);
+uint_least16_t                         tp_read(void);
 void                                   tp_init(void);
 
 

@@ -100,7 +100,7 @@ void loop()
   { 
     p = Wire.read();
     s = Wire.read();
-    
+
     Serial.print("ENC: ");
     Serial.print(p); //position: +/-127
     Serial.print(", ");

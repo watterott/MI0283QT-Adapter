@@ -143,7 +143,7 @@ void loop()
   y |= mySerial.read()<<0;
   z  = mySerial.read()<<8;
   z |= mySerial.read()<<0;
-  
+
   if(z)
   {
     Serial.print("TP: ");

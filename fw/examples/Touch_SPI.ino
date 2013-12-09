@@ -134,7 +134,7 @@ void loop()
 {
   uint16_t x, y, z;
   static uint16_t last_x=0, last_y=0;
-  
+
   digitalWrite(cs_pin, LOW);
   SPI.transfer(CMD_TP_POS);
   delay(1);
@@ -145,7 +145,7 @@ void loop()
   z  = SPI.transfer(0xFF)<<8;
   z |= SPI.transfer(0xFF)<<0;
   digitalWrite(cs_pin, HIGH);
-  
+
   if(z)
   {
     Serial.print("TP: ");

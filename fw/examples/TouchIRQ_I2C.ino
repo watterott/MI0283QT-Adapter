@@ -85,11 +85,16 @@ void setup()
   wait_for_input();
 
   //enable touchpanel
-  Serial.println("touch on...");
+  Serial.println("touch + irq output on...");
+  pinMode(9, INPUT); //pin 9 = Input (GPIO)
+  Wire.beginTransmission(I2C_ADDR);
+  Wire.write(CMD_PIN);
+  Wire.write(0x05); //0x05=output low active, 0x06=output high active
+  Wire.endTransmission();
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(CMD_CTRL);
   Wire.write(CMD_CTRL_FEATURES);
-  Wire.write(FEATURE_TP);
+  Wire.write(FEATURE_TP|FEATURE_IRQ);
   Wire.endTransmission();
 
   Serial.println("Press Touchpanel!");
@@ -100,47 +105,48 @@ void loop()
 {
   uint16_t x, y, z;
   static uint16_t last_x=0, last_y=0;
+  
+  if(digitalRead(9) == 0) //read pin 9 (GPIO)
+  {
+    Wire.beginTransmission(I2C_ADDR);
+    Wire.write(CMD_TP_POS);
+    Wire.endTransmission();
 
-  Wire.beginTransmission(I2C_ADDR);
-  Wire.write(CMD_TP_POS);
-  Wire.endTransmission();
-
-  if(Wire.requestFrom(I2C_ADDR, 6) == 6)
-  { 
-    x  = Wire.read()<<8;
-    x |= Wire.read()<<0;
-    y  = Wire.read()<<8;
-    y |= Wire.read()<<0;
-    z  = Wire.read()<<8;
-    z |= Wire.read()<<0;
-
-    if(z)
-    {
-      Serial.print("TP: ");
-      Serial.print(x);
-      Serial.print(", ");
-      Serial.print(y);
-      Serial.print(", ");
-      Serial.print(z);
-      Serial.println("");
-
-      if((x != last_x) || (y != last_y))
+    if(Wire.requestFrom(I2C_ADDR, 6) == 6)
+    { 
+      x  = Wire.read()<<8;
+      x |= Wire.read()<<0;
+      y  = Wire.read()<<8;
+      y |= Wire.read()<<0;
+      z  = Wire.read()<<8;
+      z |= Wire.read()<<0;
+      
+      if(z)
       {
-        last_x = x;
-        last_y = y;
-        Wire.beginTransmission(I2C_ADDR);
-        Wire.write(CMD_LCD_FILLCIRCLEFG); //x0, y0, radius
-        z = 4; //radius
-        Wire.write(x>>8);
-        Wire.write(x);
-        Wire.write(y>>8);
-        Wire.write(y);
-        Wire.write(z>>8);
-        Wire.write(z);
-        Wire.endTransmission();
+        Serial.print("TP: ");
+        Serial.print(x);
+        Serial.print(", ");
+        Serial.print(y);
+        Serial.print(", ");
+        Serial.print(z);
+        Serial.println("");
+
+        if((x != last_x) || (y != last_y))
+        {
+          last_x = x;
+          last_y = y;
+          Wire.beginTransmission(I2C_ADDR);
+          Wire.write(CMD_LCD_FILLCIRCLEFG); //x0, y0, radius
+          z = 4; //radius
+          Wire.write(x>>8);
+          Wire.write(x);
+          Wire.write(y>>8);
+          Wire.write(y);
+          Wire.write(z>>8);
+          Wire.write(z);
+          Wire.endTransmission();
+        }
       }
     }
   }
-
-  delay(20);
 }

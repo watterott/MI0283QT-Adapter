@@ -43,21 +43,22 @@
 #define YM_ADC()        SET_ADC(  YM_PORT, YM_PIN)
 
 
-uint32_t raw_x, raw_y, raw_z;
-uint32_t last_x, last_y;
-uint32_t cal_x, cal_y, cal_z;
+uint_least16_t raw_x, raw_y, raw_z;
+uint_least16_t last_x, last_y;
+uint_least16_t cal_x, cal_y, cal_z;
 CAL_MATRIX matrix;
 
 
-uint32_t tp_getz(void)
+uint_least16_t tp_getz(void)
 {
   return cal_z; 
 }
 
 
-uint32_t tp_gety(void)
+uint_least16_t tp_gety(void)
 {
-  uint32_t o, x, y;
+  uint_least16_t o;
+  uint_least32_t x, y;
 
   if(raw_x != last_x)
   {
@@ -99,9 +100,10 @@ uint32_t tp_gety(void)
 }
 
 
-uint32_t tp_getx(void)
+uint_least16_t tp_getx(void)
 {
-  uint32_t o, x, y;
+  uint_least16_t o;
+  uint_least32_t x, y;
 
   if(raw_x != last_x)
   {
@@ -143,7 +145,7 @@ uint32_t tp_getx(void)
 }
 
 
-uint32_t tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp)
+uint_least8_t tp_calmatrix(CAL_POINT *lcd, CAL_POINT *tp)
 {
   matrix.div = ((tp[0].x - tp[2].x) * (tp[1].y - tp[2].y)) -
                ((tp[1].x - tp[2].x) * (tp[0].y - tp[2].y));
@@ -183,7 +185,7 @@ CAL_MATRIX* tp_getmatrix(void)
 }
 
 
-void tp_setmatrix(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t e, uint32_t f, uint32_t div)
+void tp_setmatrix(uint_least32_t a, uint_least32_t b, uint_least32_t c, uint_least32_t d, uint_least32_t e, uint_least32_t f, uint_least32_t div)
 {
   matrix.a = a;
   matrix.b = b;
@@ -197,30 +199,27 @@ void tp_setmatrix(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t e, ui
 }
 
 
-uint32_t tp_rawz(void)
+uint_least16_t tp_rawz(void)
 {
   return raw_z; 
 }
 
 
-uint32_t tp_rawy(void)
+uint_least16_t tp_rawy(void)
 {
   return raw_y; 
 }
 
 
-uint32_t tp_rawx(void)
+uint_least16_t tp_rawx(void)
 {
   return raw_x; 
 }
 
 
-void tp_read(void)
+uint_least16_t tp_read(void)
 {
-  uint32_t adc_cr, x1, x2, y1, y2, z, z1, z2;
-  
-  //save adc settings
-  adc_cr = LPC_ADC->CR;
+  uint_least16_t x1, x2, y1, y2, z, z1, z2;
 
   //get z1 & z2
   XM_ADC();   //adc
@@ -234,22 +233,14 @@ void tp_read(void)
   if(z > MIN_PRESSURE) //valid touch?
   {
     raw_z = z;
-    //cal_z = 0;
-
-    //save values
-    // middle of two values
-    //  raw_x = (x1+x2)/2;
-    //  raw_y = (y1+y2)/2;
-    //  cal_z = z;
-    // accept only if both readings are equal
 
     //get x
     YP_ADC();   //hiZ
     YM_ADC();   //adc
     XP_DATA(1); //Vcc
     XM_DATA(0); //GND
-    ADC_READ(YM_AD, x1); x1 &= 0x3FE; //remove last bit
-    ADC_READ(YM_AD, x2); x2 &= 0x3FE; //remove last bit
+    ADC_READ(YM_AD, x1); x1 &= 0x03FE; //remove last bit
+    ADC_READ(YM_AD, x2); x2 &= 0x03FE; //remove last bit
 
     if(x1 && (x1 == x2))
     {
@@ -258,8 +249,8 @@ void tp_read(void)
       XM_ADC();   //adc
       YP_DATA(1); //Vcc
       YM_DATA(0); //GND
-      ADC_READ(XM_AD, y1); y1 &= 0x3FE; //remove last bit
-      ADC_READ(XM_AD, y2); y2 &= 0x3FE; //remove last bit
+      ADC_READ(XM_AD, y1); y1 &= 0x03FE; //remove last bit
+      ADC_READ(XM_AD, y2); y2 &= 0x03FE; //remove last bit
 
       if(y1 && (y1 == y2))
       {
@@ -267,16 +258,22 @@ void tp_read(void)
         raw_y = y1;
         cal_z = z;
       }
+      else
+      {
+        z = 0;
+      }
+    }
+    else
+    {
+      z = 0;
     }
   }
   else
   {
+    z     = 0;
     raw_z = 0;
     cal_z = 0;
   }
-
-  //stop adc
-  LPC_ADC->CR = adc_cr;
 
   //set standby
   XP_HIZUP(); //hiZ + pull-up
@@ -284,7 +281,7 @@ void tp_read(void)
   YP_HIZUP(); //hiZ + pull-up
   YM_HIZUP(); //hiZ + pull-up
 
-  return;
+  return z;
 }
 
 

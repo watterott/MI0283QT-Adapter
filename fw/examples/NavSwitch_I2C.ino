@@ -101,7 +101,7 @@ void loop()
     h = Wire.read();
     v = Wire.read();
     s = Wire.read();
-    
+
     Serial.print("NAV: ");
     Serial.print(h); //h position: +/-127
     Serial.print(", ");

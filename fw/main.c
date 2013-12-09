@@ -25,15 +25,14 @@
 
 
 uint32_t global_buffer[FLASH_SECTOR_BYTES/4]; //see iap.h
-volatile uint32_t ms_ticks=0;
-uint32_t features=0;
-volatile uint32_t enc_sw=0;
-volatile int32_t enc_delta=0;
-uint32_t enc_last=0;
-volatile uint32_t nav_sw=0;
-volatile int32_t nav_hdelta=0; //left-right
-volatile int32_t nav_vdelta=0; //up-down
-uint32_t nav_last=0;
+volatile uint_least32_t ms_ticks=0;
+volatile uint_least8_t features=0, status=0, io_config=0;
+volatile uint_least8_t enc_sw=0;
+volatile int_least8_t enc_delta=0;
+uint_least8_t enc_last=0;
+volatile uint_least8_t nav_sw=0;
+volatile int_least8_t nav_hdelta=0, nav_vdelta=0; //h=left-right, v=up-down
+uint_least32_t nav_last=0;
 
 typedef struct
 {
@@ -44,8 +43,8 @@ typedef struct
   uint32_t baudrate;
   uint8_t address;
   uint8_t byteorder;
-  uint32_t fgcolor;
-  uint32_t bgcolor;
+  uint16_t fgcolor;
+  uint16_t bgcolor;
   CAL_MATRIX tp;
   uint32_t padding;
 } SETTINGS;
@@ -58,9 +57,10 @@ void SysTick_Handler(void) //1ms
 
 #ifndef TP_SUPPORT
 
-  static uint32_t enc_t=0, enc_sw_t=0;
-  static uint32_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
-  uint32_t pin, n, dif;
+  static uint_least8_t enc_t=0, enc_sw_t=0;
+  static uint_least8_t nav_t=0, nav_sw_t=0, inc_h=0, inc_v=0;
+  uint_least32_t pin, p;
+  uint_least8_t n, dif;
 
   if(features & FEATURE_ENC)
   {
@@ -115,9 +115,9 @@ void SysTick_Handler(void) //1ms
       nav_t = 0;
 
       //get pin state
-      n        = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
-      pin      = n & nav_last;
-      nav_last = n;
+      p        = GPIO_GETPORT(NAV_PORT, (1<<NAV_SW)|(1<<NAV_A)|(1<<NAV_B)|(1<<NAV_C)|(1<<NAV_D));
+      pin      = p & nav_last;
+      nav_last = p;
 
       //check nav switches
       if((pin & (1<<NAV_C)) == 0) //right
@@ -182,9 +182,9 @@ void SysTick_Handler(void) //1ms
 //Rotary Encoder routine by Peter Dannegger
 //http://www.mikrocontroller.net/articles/Drehgeber
 
-int32_t enc_getdelta(void)
+int_least8_t enc_getdelta(void)
 {
-  int32_t val;
+  int_least8_t val;
 
   DISABLE_IRQ();
 
@@ -196,8 +196,8 @@ int32_t enc_getdelta(void)
   // enc_delta = val & 1;
   // val >>= 1;
   //read four step encoders
-   enc_delta = val & 3;
-   val >>= 2;
+  enc_delta = val & 3;
+  val >>= 2;
 
   ENABLE_IRQ();
 
@@ -205,9 +205,9 @@ int32_t enc_getdelta(void)
 }
 
 
-uint32_t enc_getsw(void)
+uint_least8_t enc_getsw(void)
 {
-  uint32_t sw;
+  uint_least8_t sw;
 
   sw = enc_sw;
   enc_sw = 0;
@@ -238,9 +238,9 @@ void enc_init(void)
 }
 
 
-int32_t nav_gethdelta(void)
+int_least8_t nav_gethdelta(void)
 {
-  int32_t val;
+  int_least8_t val;
 
   val = nav_hdelta;
   nav_hdelta = 0;
@@ -249,9 +249,9 @@ int32_t nav_gethdelta(void)
 }
 
 
-int32_t nav_getvdelta(void)
+int_least8_t nav_getvdelta(void)
 {
-  int32_t val;
+  int_least8_t val;
 
   val = nav_vdelta;
   nav_vdelta = 0;
@@ -260,9 +260,9 @@ int32_t nav_getvdelta(void)
 }
 
 
-uint32_t nav_getsw(void)
+uint_least8_t nav_getsw(void)
 {
-  uint32_t sw;
+  uint_least8_t sw;
 
   sw = nav_sw;
   nav_sw = 0;
@@ -289,59 +289,79 @@ void nav_init(void)
 }
 
 
-uint32_t ldr_read(void)
+uint_least8_t ldr_service(uint_least8_t power_max)
 {
-  uint32_t v1, v2;
+  uint_least16_t i, j;
+  static uint_least8_t last=0;
 
-  //set AD4 to output and high
-  IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+  //set AD4 to high
   GPIO_SETPIN(ADC_PORT, ADC_4);
-  GPIO_PORT(ADC_PORT)->DIR |= (1<<ADC_4);
 
   //read AD5
-  IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-  ADC_READ(5, v1);
-  ADC_READ(5, v2);
+  //IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+  ADC_READ(5, i);
+  ADC_READ(5, j);
   //IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL);
 
   //set AD4 to low
   GPIO_CLRPIN(ADC_PORT, ADC_4);
 
-  if(v1 == v2)
+  if(i == j)
   {
-         if(v1 > 800) v1 = 100;
-    else if(v1 > 100) v1 /= 8;
-    else              v1 = 10;
-    set_pwm(v1);
+         if(i > 800) i = 100;
+    else if(i > 100) i /= 8;
+    else             i = 10;
+    last += i; //add to last value
+    last /= 2; //div by 2 (do average)
+    if(last > power_max)
+    {
+      last = power_max;
+    }
+    set_pwm(last);
   }
-  else
+  else if(last == 0)
   {
-    v1 = 0;
+    last = power_max;
+    set_pwm(last);
   }
 
-  return v1;
+  return last;
 }
 
 
-uint32_t adc_read(uint32_t chn)
+void ldr_init(void)
 {
-  uint32_t v=0;
+  //set AD4 to output and low
+  IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+  GPIO_CLRPIN(ADC_PORT, ADC_4);
+  GPIO_PORT(ADC_PORT)->DIR |= (1<<ADC_4);
+
+  //set AD5 to analog
+  IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
+
+  return;
+}
+
+
+uint_least16_t adc_read(uint_least8_t chn)
+{
+  uint_least16_t i=0;
 
   switch(chn)
   {
     case 4:
       IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, v);
+      ADC_READ(chn, i);
       IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 5:
       IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, v);
+      ADC_READ(chn, i);
       IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 7:
       IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, v);
+      ADC_READ(chn, i);
       IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 255:
@@ -351,26 +371,66 @@ uint32_t adc_read(uint32_t chn)
       GPIO_PORT(ADC_PORT)->DIR |= (1<<ADC_4);
       //read AD5
       IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(5, v);
-      //IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL);
+      ADC_READ(5, i);
+      IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_NOPULL | IOCON_DIGITAL);
       //set AD4 to low
       GPIO_CLRPIN(ADC_PORT, ADC_4);
       break;
   }
 
-  return v;
+  return i;
 }
 
 
-uint32_t get_ms(void)
+void io_set(uint_least8_t source)
+{
+  status |= source;
+
+  if(features & FEATURE_IRQ)
+  {
+    if(io_config == 0)
+    {
+       GPIO_CLRPIN(IO_PORT, IO_PIN);
+    }
+    else
+    {
+       GPIO_SETPIN(IO_PORT, IO_PIN);
+    }
+  }
+
+  return;
+}
+
+
+void io_clr(uint_least8_t source)
+{
+  status &= ~source;
+
+  if(features & FEATURE_IRQ)
+  {
+    if(io_config == 0)
+    {
+       GPIO_SETPIN(IO_PORT, IO_PIN);
+    }
+    else
+    {
+       GPIO_CLRPIN(IO_PORT, IO_PIN);
+    }
+  }
+
+  return;
+}
+
+
+uint_least32_t get_ms(void)
 {
   return ms_ticks;
 }
 
 
-void delay_ms(uint32_t delay)
+void delay_ms(uint_least32_t delay)
 {
-  uint32_t current = get_ms();
+  uint_least32_t current = get_ms();
 
   while((get_ms() - current) < delay);
 
@@ -378,7 +438,7 @@ void delay_ms(uint32_t delay)
 }
 
 
-void delay(uint32_t delay)
+void delay(uint_least32_t delay)
 {
   for( ; delay!=0; delay--)
   {
@@ -389,23 +449,30 @@ void delay(uint32_t delay)
 }
 
 
-uint32_t set_pwm(uint32_t power)
+uint_least8_t set_pwm(uint_least8_t power)
 {
-  if(power > 100)
+  if(power == 0)
+  {
+    LPC_TMR16B1->MR0 = ~(0);
+    LPC_TMR16B1->TCR = (0<<0); //disable timer
+    return power;
+  }
+  else if(power > 100)
   {
     power = 100;
   }
 
+  LPC_TMR16B1->TCR = (1<<0); //enable timer
   LPC_TMR16B1->MR0 = ~((0xFFFF*power)/100);
 
   return power;
 }
 
 
-uint32_t sysclock(uint32_t clock)
+uint_least32_t sysclock(uint_least32_t clock)
 {
-  static uint32_t current_clock=12000000UL;
-  uint32_t i, pllclksel=0, pllctrl=0;
+  static uint_least32_t current_clock=12000000UL;
+  uint_least32_t i, pllclksel=0, pllctrl=0;
 
   //get clock
   if(clock == 0)
@@ -603,7 +670,7 @@ void init(void)
 }
 
 
-void cmd_ctrl_save(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_t clock, uint8_t power, uint8_t byteorder, uint32_t fgcolor, uint32_t bgcolor)
+void cmd_ctrl_save(uint_least8_t interface, uint_least32_t baudrate, uint_least8_t address, uint_least8_t clock, uint_least8_t power, uint_least8_t byteorder, uint_least16_t fgcolor, uint_least16_t bgcolor)
 {
   SETTINGS s;
 
@@ -629,7 +696,7 @@ void cmd_ctrl_save(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_
   s.sysclock  = clock;
   s.magic     = 0xDEADBEEFUL;
 
-  iap_write((uint32_t*)&s, sizeof(s)/4, (uint32_t*)global_buffer); //size in 32bit words
+  iap_write((uint32_t*)&s, (sizeof(s)/4), (uint32_t*)global_buffer); //size in 32bit words
 
   return;
 }
@@ -637,9 +704,9 @@ void cmd_ctrl_save(uint8_t interface, uint32_t baudrate, uint8_t address, uint8_
 
 #ifdef TP_SUPPORT
 
-void cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_tp_calibrate(uint_least16_t fgcolor, uint_least16_t bgcolor)
 {
-  uint32_t i;
+  uint_least8_t i;
   CAL_POINT lcd_points[3] = {CAL_POINT1, CAL_POINT2, CAL_POINT3}; //calibration point postions
   CAL_POINT tp_points[3];
 
@@ -693,13 +760,13 @@ void cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor)
       {
         if(if_read8() == 0)
         {
-          i = 666;
+          i = 0xFF;
           break;
         }
       }
     }
   }
-  while((i!=666) && (tp_calmatrix(lcd_points, tp_points)!=0)); //calculate calibration matrix
+  while((i!=0xFF) && (tp_calmatrix(lcd_points, tp_points)!=0)); //calculate calibration matrix
 
   tp_init(); //reset touch
 
@@ -711,17 +778,20 @@ void cmd_tp_calibrate(uint32_t fgcolor, uint32_t bgcolor)
 #endif
 
 
-void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_lcd_test(uint_least16_t fgcolor, uint_least16_t bgcolor)
 {
-  uint32_t c=1, f_save=features;
+  uint_least8_t c=1, f_save=features;
   char tmp[32];
 #ifdef TP_SUPPORT
-  uint32_t x, y, z, last_x=0, last_y=0;
+  uint_least16_t x, y, z, last_x=0, last_y=0;
+  uint_least32_t ms=0;
 
   tp_init();
+  ldr_init();
+  features = FEATURE_TP | FEATURE_LDR; //FEATURE_TP | FEATURE_LDR
 #else
-  uint32_t sw;
-  int32_t pos=0, hpos=0, vpos=0;
+  uint_least8_t sw;
+  int_least8_t pos=0, hpos=0, vpos=0;
 
   enc_init();
   features = FEATURE_ENC;
@@ -730,7 +800,7 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
   lcd_fillrect(0,                   0, (LCD_WIDTH-1)/3,     LCD_HEIGHT-1, RGB(255,0,0));
   lcd_fillrect((LCD_WIDTH-1)/3,     0, ((LCD_WIDTH-1)/3)*2, LCD_HEIGHT-1, RGB(0,255,0));
   lcd_fillrect(((LCD_WIDTH-1)/3)*2, 0, LCD_WIDTH-1,         LCD_HEIGHT-1, RGB(0,0,255));
-
+/*
   delay_ms(1500);
   lcd_clear(bgcolor);
 
@@ -747,8 +817,11 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
   lcd_drawline(LCD_WIDTH/4*2, 0, LCD_WIDTH/4*2, LCD_HEIGHT-1, RGB(120,120,120));
   lcd_drawline(LCD_WIDTH/4*3, 0, LCD_WIDTH/4*3, LCD_HEIGHT-1, RGB(120,120,120));
   lcd_drawcircle(LCD_WIDTH/2, LCD_HEIGHT/2, 40, RGB(120,120,120));
-  lcd_drawtext(2, 2, "FW "VERSION, 0, RGB(120,120,120), 0, 0);
-  lcd_drawtext(LCD_CENTER, LCD_CENTER, "Test", 2, RGB(120,120,120), 0, 0);
+*/
+
+  lcd_drawtext(LCD_CENTER, LCD_HEIGHT/2-5, "v"VERSION, 0, 0, 0, 0);
+  lcd_drawtext(LCD_CENTER, LCD_HEIGHT/2+5, "("__DATE__")", 0, 0, 0, 0);
+  lcd_drawtext(LCD_CENTER, LCD_HEIGHT-10, "watterott.com", 1, 0, 0, 0);
 
   do
   {
@@ -763,10 +836,11 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
       {
         last_x = x;
         last_y = y;
-        sprintf(tmp, " X %03i Y %03i Z %03i", x, y, z);
-        lcd_drawtext(80, 2, tmp, 0, fgcolor, bgcolor, 1);
-        lcd_fillcircle(x, y, 4, RGB(255,0,0)); //lcd_drawpixel(x, y);
+        lcd_fillcircle(x, y, 4, fgcolor); //lcd_drawpixel(x, y);
+        sprintf(tmp, "X%03i Y%03i Z%03i", x, x, z);
+        lcd_drawtext(5, 5, tmp, 0, fgcolor, bgcolor, 1);
       }
+
       GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
     }
     else
@@ -776,29 +850,25 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
 
     if(features & FEATURE_LDR)
     {
-      x = ldr_read();
-      if(x)
+      if((get_ms() - ms) >= 100)
       {
+        ms = get_ms();
+        x = ldr_service(100);
         sprintf(tmp, "LDR %03i", x);
-        lcd_drawtext(12, 12, tmp, 0, fgcolor, bgcolor, 1);
+        lcd_drawtext(5, 15, tmp, 0, fgcolor, bgcolor, 1);
       }
     }
 
 #else //TP_SUPPORT
-    if(features == FEATURE_ENC)
-    {
-      pos += enc_getdelta();
-      sprintf(tmp, "%03i", pos);
-      sw = enc_getsw();
-    }
-    else //if(features == FEATURE_NAV)
-    {
-      hpos += nav_gethdelta();
-      vpos += nav_getvdelta();
-      sprintf(tmp, "%03i %03i", hpos, vpos);
-      sw = nav_getsw();
-    }
-    lcd_drawtext(5, 12, tmp, 0, fgcolor, bgcolor, 1);
+
+    pos  += enc_getdelta();
+    hpos += nav_gethdelta();
+    vpos += nav_getvdelta();
+    sprintf(tmp, "P%03i H%03i V%03i", pos, hpos, vpos);
+    lcd_drawtext(5, 5, tmp, 0, fgcolor, bgcolor, 1);
+
+    sw  = enc_getsw();
+    sw |= nav_getsw();
     if(sw)
     {
       GPIO_SETPIN(LED_PORT, LED_PIN); //LED on
@@ -806,22 +876,23 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
       {
         if(features == FEATURE_ENC)
         {
-          lcd_drawtext(5, 32, "NAV", 0, fgcolor, bgcolor, 1);
+          sprintf(tmp, "NAV");
           nav_init();
           features = FEATURE_NAV;
         }
         else //if(features == FEATURE_NAV)
         {
-          lcd_drawtext(5, 32, "ENC", 0, fgcolor, bgcolor, 1);
+          sprintf(tmp, "ENC");
           enc_init();
           features = FEATURE_ENC;
         }
+        lcd_drawtext(5, 25, tmp, 0, fgcolor, bgcolor, 1);
         delay_ms(500);
         while(enc_getsw() || nav_getsw());
       }
       else if(sw & 0x01)
       {
-        lcd_drawtext(5, 22, "press", 0, fgcolor, bgcolor, 1);
+        lcd_drawtext(5, 15, "press", 0, fgcolor, bgcolor, 1);
       }
     }
     else
@@ -845,9 +916,10 @@ void cmd_lcd_test(uint32_t fgcolor, uint32_t bgcolor)
 }
 
 
-void cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
+void cmd_lcd_terminal(uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t size)
 {
-  uint32_t x=2, y=2, c;
+  uint_least16_t x=2, y=2;
+  uint_least8_t c;
 
   lcd_clear(bgcolor);
 
@@ -893,9 +965,11 @@ void cmd_lcd_terminal(uint32_t fgcolor, uint32_t bgcolor, uint32_t size)
 }
 
 
-void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
+void cmd_lcd_drawimage(uint_least16_t fgcolor, uint_least16_t bgcolor)
 {
-  uint32_t a, b, c, e, i, n, x0, y0, x1, y1, w, h, ms;
+  uint_least8_t a, b, c, e, n;
+  uint_least16_t x0, y0, x1, y1, w, h;
+  uint_least32_t i, ms;
 
   x0 = if_read(); //x0
   y0 = if_read(); //y0
@@ -926,9 +1000,9 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
       bgcolor = bgcolor;
       break;
     case COLOR_BG: //bg/fg
-      i       = fgcolor;
-      fgcolor = bgcolor;
-      bgcolor = i;
+      fgcolor ^= bgcolor;
+      bgcolor ^= fgcolor;
+      fgcolor ^= bgcolor;
       break;
   }
 
@@ -962,6 +1036,7 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
       case COLOR_RGB323:
       case COLOR_RGB332:
       case COLOR_RGB233:
+      case COLOR_GRAY:
         for(i=w*h; i!=0;)
         {
           if(if_available())
@@ -969,7 +1044,8 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
             a = if_read8();
                  if(c == COLOR_RGB323){ a = RGB323toRGB565(a); }
             else if(c == COLOR_RGB332){ a = RGB332toRGB565(a); }
-            else                      { a = RGB233toRGB565(a); }
+            else if(c == COLOR_RGB233){ a = RGB233toRGB565(a); }
+            else                      { a = GRAYtoRGB565(a);   }
             lcd_draw(a);
             i--;
           }
@@ -1067,6 +1143,7 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
       case COLOR_RGB323:
       case COLOR_RGB332:
       case COLOR_RGB233:
+      case COLOR_GRAY:
         for(i=w*h; i!=0;)
         {
           if(if_available())
@@ -1080,7 +1157,8 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
                 a = if_read8();
                      if(c == COLOR_RGB323){ a = RGB323toRGB565(a); }
                 else if(c == COLOR_RGB332){ a = RGB332toRGB565(a); }
-                else                      { a = RGB233toRGB565(a); }
+                else if(c == COLOR_RGB233){ a = RGB233toRGB565(a); }
+                else                      { a = GRAYtoRGB565(a);   }
                 for(; (n!=0) && (i!=0); n--)
                 {
                   lcd_draw(a);
@@ -1096,7 +1174,8 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
             {
                    if(c == COLOR_RGB323){ a = RGB323toRGB565(a); }
               else if(c == COLOR_RGB332){ a = RGB332toRGB565(a); }
-              else                      { a = RGB233toRGB565(a); }
+              else if(c == COLOR_RGB233){ a = RGB233toRGB565(a); }
+              else                      { a = GRAYtoRGB565(a);   }
               lcd_draw(a);
               i--;
             }
@@ -1193,10 +1272,11 @@ void cmd_lcd_drawimage(uint32_t fgcolor, uint32_t bgcolor)
 }
 
 
-void cmd_lcd_drawtext(uint32_t fgcolor, uint32_t bgcolor, uint32_t string)
+void cmd_lcd_drawtext(uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least8_t string)
 {
-  uint32_t a, c, l, s, x, y;
-  uint32_t ms;
+  uint_least8_t a, c, l, s;
+  uint_least16_t x, y;
+  uint_least32_t ms;
 
   x = if_read();  //x
   y = if_read();  //y
@@ -1269,30 +1349,33 @@ void cmd_lcd_drawtext(uint32_t fgcolor, uint32_t bgcolor, uint32_t string)
 
 int main(void)
 {
-  uint32_t a, b, c, d, e, color, fgcolor=RGB(0,0,0), bgcolor=RGB(255,255,255), led_power=DEFAULT_POWER;
+  uint_least16_t a, b, c, d, e;
+  uint_least16_t color, fgcolor=RGB(0,0,0), bgcolor=RGB(255,255,255);
+  uint_least8_t intf=DEFAULT_INTERF, led_power=DEFAULT_POWER;
+  uint_least32_t ms;
 #ifdef TP_SUPPORT
-  uint32_t tp_t=0, tp_int=0, ldr_t=0;
+  uint_least32_t tp_t=0, tp_int=0, ldr_t=0;
 #endif
 
   //init periphery
   init();
 
   //set interface
-  a = usersettings->interface;
-  b = get_ms();
-  while((GPIO_GETPIN(SS_PORT, SS_PIN) == 0) && ((get_ms()-b) < 100)) //CS low (100ms timeout)
+  intf = usersettings->interface;
+  ms = get_ms();
+  while((GPIO_GETPIN(SS_PORT, SS_PIN) == 0) && ((get_ms()-ms) < 100)) //CS low (100ms timeout)
   {
     if(GPIO_GETPIN(SPI_PORT, MOSI_PIN) == 0) //MOSI low
     {
-      a = INTERFACE_SPI;
+      intf = INTERFACE_SPI;
     }
     else if(GPIO_GETPIN(UART_PORT, RX_PIN) == 0) //Rx low
     {
-      a = INTERFACE_UART;
+      intf = INTERFACE_UART;
     }
     else
     {
-      a = INTERFACE_I2C;
+      intf = INTERFACE_I2C;
     }
   }
 
@@ -1314,9 +1397,9 @@ int main(void)
 #ifdef TP_SUPPORT
     cmd_tp_calibrate(fgcolor, bgcolor);
 #endif
-    cmd_ctrl_save(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, DEFAULT_CLOCK/1000000UL, DEFAULT_POWER, DEFAULT_ORDER, fgcolor, bgcolor);
+    cmd_ctrl_save(DEFAULT_INTERF, DEFAULT_BAUD, DEFAULT_ADDR, (DEFAULT_CLOCK/1000000UL), DEFAULT_POWER, DEFAULT_ORDER, fgcolor, bgcolor);
     cmd_lcd_test(fgcolor, bgcolor);
-    a = DEFAULT_INTERF;
+    intf = DEFAULT_INTERF;
   }
 
   //load config data and init touch panel, encoder, nav switch, interface
@@ -1344,24 +1427,36 @@ int main(void)
   uart_setbaudrate(usersettings->baudrate);
   i2c_setaddress(usersettings->address);
   if_setbyteorder(usersettings->byteorder);
-  if_init(a);
+  if_init(intf);
 
-
-//set_pwm(50);
-//cmd_lcd_test(fgcolor, bgcolor);
-
-
-  //cmd loop
+  //main loop
   while(1)
   {
+    ms = get_ms();
 #ifdef TP_SUPPORT
+    //read ldr and set backlight
+    if(features & FEATURE_LDR)
+    {
+      if(if_available() == 0)
+      {
+        if((ms - ldr_t) >= DEFAULT_LDRTIME)
+        {
+          ldr_t = ms;
+          led_power = ldr_service(led_power);
+        }
+      }
+    }
+
     //read touch panel
     if(features & FEATURE_TP)
     {
-      if((get_ms() - tp_t) >= tp_int)
+      if((ms - tp_t) >= tp_int)
       {
-        tp_t = get_ms();
-        tp_read();
+        tp_t = ms;
+        if(tp_read()) //touch press?
+        {
+          io_set(FEATURE_TP); //set status + IRQ output
+        }
       }
       if(if_available() == 0)
       {
@@ -1371,18 +1466,6 @@ int main(void)
       else
       {
         tp_int = 50; //50ms (slow down tp read when data is available)
-      }
-    }
-
-    if(features & FEATURE_LDR)
-    {
-     if(if_available() == 0)
-     {
-       if((get_ms() - ldr_t) >= 1000) //every second
-        {
-          ldr_t = get_ms();
-          ldr_read();
-        }
       }
     }
 #endif
@@ -1408,11 +1491,18 @@ int main(void)
         if_write8(CMD_TEST);
         if_flush();
         break;
+      case CMD_STATUS:
+        a = status;
+        if_write8(a);
+        if_flush();
+        io_clr(a);
+        break;
       case CMD_FEATURES:
-        a = FEATURE_LCD;
+        a  = FEATURE_LCD;
 #ifdef TP_SUPPORT
         a |= FEATURE_TP;
         a |= FEATURE_LDR;
+        a |= FEATURE_IRQ;
 #else
         a |= FEATURE_ENC;
         a |= FEATURE_NAV;
@@ -1433,6 +1523,7 @@ int main(void)
             a = if_read8();
 #ifdef TP_SUPPORT
             if(a & FEATURE_TP) { tp_init();  };
+            if(a & FEATURE_LDR){ ldr_init(); };
 #else
             if(a & FEATURE_ENC){ enc_init(); };
             if(a & FEATURE_NAV){ nav_init(); };
@@ -1442,9 +1533,40 @@ int main(void)
         }
         break;
       case CMD_PIN:
+        a = if_read8(); //mode
+        switch(a)
+        {
+          case 1: //input
+            GPIO_PORT(IO_PORT)->DIR &= (1<<IO_PIN);
+            break;
+          case 2: //read
+            c = (GPIO_GETPIN(IO_PORT, IO_PIN)) ? 1 : 0;
+            if_write8(c);
+            if_flush();
+            break;
+          case 3: //output low
+            GPIO_PORT(IO_PORT)->DIR |= (1<<IO_PIN);
+            GPIO_CLRPIN(IO_PORT, IO_PIN);
+            break;
+          case 4: //output high
+            GPIO_PORT(IO_PORT)->DIR |= (1<<IO_PIN);
+            GPIO_SETPIN(IO_PORT, IO_PIN);
+            break;
+          case 5: //state/irq (touch) low active
+            io_config = 0;
+            GPIO_PORT(IO_PORT)->DIR |= (1<<IO_PIN);
+            GPIO_SETPIN(IO_PORT, IO_PIN);
+            break;
+          case 6: //state/irq (touch) high active
+            io_config = 1;
+            GPIO_PORT(IO_PORT)->DIR |= (1<<IO_PIN);
+            GPIO_CLRPIN(IO_PORT, IO_PIN);
+            break;
+        }
         break;
       case CMD_ADC:
         if_write16(adc_read(if_read8()));
+        if_flush();
         break;
 
       case CMD_LCD_LED:
@@ -1452,6 +1574,7 @@ int main(void)
         if(a == 255)
         {
           if_write8(led_power);
+          if_flush();
         }
         else
         {
@@ -1803,30 +1926,36 @@ int main(void)
         if_write(tp_getx());
         if_write(tp_gety());
         if_write(tp_getz()); //tp_getz() tp_rawz()
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_X:
         if_write(tp_getx());
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_Y:
         if_write(tp_gety());
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_Z:
         if_write(tp_rawz()); //tp_rawz() tp_getz()
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_WAITPRESS:
         while(tp_getz() == 0){ tp_read(); delay_ms(5); }
         if_write(tp_getx());
         if_write(tp_gety());
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_WAITRELEASE:
         while(tp_rawz() != 0){ tp_read(); delay_ms(5); }
         if_write(tp_getx());
         if_write(tp_gety());
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_WAITMOVE:
@@ -1842,6 +1971,7 @@ int main(void)
              if((b > d) && ((b-d) >= 20)) { e |= 0x04; } //y-
         else if((b < d) && ((d-b) >= 20)) { e |= 0x08; } //y+
         if_write8(e);
+        io_clr(FEATURE_TP);
         if_flush();
         break;
       case CMD_TP_CALIBRATE:
@@ -1851,6 +1981,7 @@ int main(void)
         }
         cmd_tp_calibrate(fgcolor, bgcolor);
         if_write8(CMD_TP_CALIBRATE);
+        io_clr(FEATURE_TP);
         if_flush();
         break;
 
@@ -1859,22 +1990,26 @@ int main(void)
       case CMD_ENC_POS:
         if_write8(enc_getdelta());
         if_write8(enc_getsw());
+        io_clr(FEATURE_ENC);
         if_flush();
         break;
       case CMD_ENC_SW:
         if_write8(enc_getsw());
+        io_clr(FEATURE_ENC);
         if_flush();
         break;
       case CMD_ENC_WAITPRESS:
         while(enc_getsw() == 0);
         if_write8(enc_getdelta());
         if_write8(enc_getsw());
+        io_clr(FEATURE_ENC);
         if_flush();
         break;
       case CMD_ENC_WAITRELEASE:
         while(GPIO_GETPIN(ENC_PORT, ENC_SW) == 0);
         if_write8(enc_getdelta());
         if_write8(enc_getsw());
+        io_clr(FEATURE_ENC);
         if_flush();
         break;
 
@@ -1882,10 +2017,12 @@ int main(void)
         if_write8(nav_gethdelta());
         if_write8(nav_getvdelta());
         if_write8(nav_getsw());
+        io_clr(FEATURE_NAV);
         if_flush();
         break;
       case CMD_NAV_SW:
         if_write8(nav_getsw());
+        io_clr(FEATURE_NAV);
         if_flush();
         break;
       case CMD_NAV_WAITPRESS:
@@ -1893,6 +2030,7 @@ int main(void)
         if_write8(nav_gethdelta());
         if_write8(nav_getvdelta());
         if_write8(nav_getsw());
+        io_clr(FEATURE_NAV);
         if_flush();
         break;
       case CMD_NAV_WAITRELEASE:
@@ -1900,6 +2038,7 @@ int main(void)
         if_write8(nav_gethdelta());
         if_write8(nav_getvdelta());
         if_write8(nav_getsw());
+        io_clr(FEATURE_NAV);
         if_flush();
         break;
 

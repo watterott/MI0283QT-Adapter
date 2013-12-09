@@ -60,16 +60,16 @@
 //----- PROTOTYPES -----
 #define                                lcd_drawstop()
 //void                                   lcd_drawstop(void); //empty function
-void                                   lcd_draw(uint32_t color);
+void                                   lcd_draw(uint_least16_t color);
 void                                   lcd_drawstart(void);
-void                                   lcd_setarea(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1);
-uint32_t                               lcd_setbias(uint32_t o);
-void                                   lcd_invert(uint32_t on);
-void                                   lcd_power(uint32_t on);
+void                                   lcd_setarea(uint_least16_t x0, uint_least16_t y0, uint_least16_t x1, uint_least16_t y1);
+uint_least32_t                         lcd_setbias(uint_least16_t o);
+void                                   lcd_invert(uint_least8_t on);
+void                                   lcd_power(uint_least8_t on);
 void                                   lcd_reset(void);
-void                                   lcd_wrdata16(uint32_t data);
-void                                   lcd_wrdata8(uint32_t data);
-void                                   lcd_wrcmd8(uint32_t cmd);
+void                                   lcd_wrdata16(uint_least16_t data);
+void                                   lcd_wrdata8(uint_least8_t data);
+void                                   lcd_wrcmd8(uint_least8_t cmd);
 void                                   lcd_disable(void);
 void                                   lcd_enable(void);
 

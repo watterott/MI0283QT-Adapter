@@ -93,9 +93,9 @@ uint32_t iap_write(uint32_t *data, uint32_t len, uint32_t *tmp)
     }
 
     //overwrite last 128 bytes of sector with data
-    for(i=0; i<len; i++)
+    for(i=(FLASH_SECTOR_BYTES/4)-(128/4); len!=0; len--)
     {
-      tmp[(FLASH_SECTOR_BYTES/4)-(128/4)+i] = *data++;
+      tmp[i++] = *data++;
     }
 
     //erase and re-program sector
