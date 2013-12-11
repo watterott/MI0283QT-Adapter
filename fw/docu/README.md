@@ -78,7 +78,6 @@ Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATUR
 
     CMD_CTRL
 General system settings/options. Parameter: 1 byte
-
 * ```CMD_CTRL_SAVE```      - Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
 * ```CMD_CTRL_INTERFACE``` - Set interface. Parameter: 1 byte (```INTERFACE_UART```, ```INTERFACE_I2C```, ```INTERFACE_SPI```)
 * ```CMD_CTRL_BAUDRATE```  - Set UART baud rate. Parameter: 4 bytes = 32 bit (9600...1000000)
@@ -87,6 +86,7 @@ General system settings/options. Parameter: 1 byte
 * ```CMD_CTRL_SYSCLOCK```  - Set system clock in MHz. Parameter: 1 byte (12, 16, 24, 32, 36, 48)
 * ```CMD_CTRL_FEATURES```  - Enable or disable features. Parameter: 1 byte (```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR```, ```FEATURE_IRQ```)
 
+-
     CMD_PIN
 Set GPIO pin. Parameter: 1 byte (1=input, 2=read input, 3=output low, 4=output high, 5=IRQ output low active, 6=IRQ output high active)
 
