@@ -25,7 +25,7 @@ License
 
 History
 -------
-         2013  v0.05  Compiling with LPCXpresso.
+  Dec 09 2013  v0.05  Compiling with LPCXpresso.
                       Added interrupt/status output.
 
   Sep 18 2013  v0.04  Added ADC read function.
