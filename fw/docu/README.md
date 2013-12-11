@@ -113,6 +113,7 @@ Send raw data to the display controller. Parameter: 1 byte
     
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
+
 ![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.jpg)
 
     CMD_LCD_WIDTH
