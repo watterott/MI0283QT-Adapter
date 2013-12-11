@@ -552,9 +552,30 @@ void lcd_setorientation(uint_least16_t o)
 {
   uint32_t wh;
 
-  orientation = o;
+  switch(o)
+  {
+    default:
+    case 0:
+    //case 36:
+    //case 360:
+      orientation = 0;
+      break;
+    case 9:
+    case 90:
+      orientation = 90;
+      break;
+    case 18:
+    case 180:
+      orientation = 180;
+      break;
+    case 27:
+    case 270:
+    case 14: //270&0xFF
+      orientation = 270;
+      break;
+  }
 
-  wh = lcd_setbias(o);
+  wh = lcd_setbias(orientation);
   height = (wh>> 0)&0xFFFF;
   width  = (wh>>16)&0xFFFF;
 

@@ -104,21 +104,17 @@ uint_least32_t lcd_setbias(uint_least16_t o)
       w     = LCD_WIDTH;
       h     = LCD_HEIGHT;
       break;
-    case 9:
     case 90:
       o     = 90;
       w     = LCD_HEIGHT;
       h     = LCD_WIDTH;
       break;
-    case 18:
     case 180:
       o     = 180;
       w     = LCD_WIDTH;
       h     = LCD_HEIGHT;
       break;
-    case 27:
     case 270:
-    case 14: //270&0xFF
       o     = 270;
       w     = LCD_HEIGHT;
       h     = LCD_WIDTH;

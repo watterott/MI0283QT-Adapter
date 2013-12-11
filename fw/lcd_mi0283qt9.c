@@ -87,21 +87,17 @@ uint_least32_t lcd_setbias(uint_least16_t o)
       h     = LCD_HEIGHT;
       param = (1<<MEM_BGR) | (1<<MEM_X) | (1<<MEM_Y);
       break;
-    case 9:
     case 90:
       w     = LCD_HEIGHT;
       h     = LCD_WIDTH;
       param = (1<<MEM_BGR) | (1<<MEM_X) | (1<<MEM_V);
       break;
-    case 18:
     case 180:
       w     = LCD_WIDTH;
       h     = LCD_HEIGHT;
       param = (1<<MEM_BGR) | (1<<MEM_L);
       break;
-    case 27:
     case 270:
-    case 14: //270&0xFF
       w     = LCD_HEIGHT;
       h     = LCD_WIDTH;
       param = (1<<MEM_BGR) | (1<<MEM_Y) | (1<<MEM_V);
