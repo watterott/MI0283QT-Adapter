@@ -351,17 +351,17 @@ uint_least16_t adc_read(uint_least8_t chn)
   {
     case 4:
       IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, i);
+      ADC_READ(4, i);
       IOCON_SETRPIN(ADC_PORT, ADC_4, IOCON_R_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 5:
       IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, i);
+      ADC_READ(5, i);
       IOCON_SETPIN(ADC_PORT, ADC_5, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 7:
       IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_ADC | IOCON_NOPULL | IOCON_ANALOG);
-      ADC_READ(chn, i);
+      ADC_READ(7, i);
       IOCON_SETPIN(ADC_PORT, ADC_7, IOCON_PIO | IOCON_PULLUP | IOCON_DIGITAL);
       break;
     case 255:
@@ -1288,6 +1288,10 @@ void cmd_lcd_drawtext(uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least
   {
     l = if_read8(); //length
   }
+  else
+  {
+    l = 0;
+  }
 
   if(x == LCD_CENTER) //x center
   {
@@ -1565,7 +1569,8 @@ int main(void)
         }
         break;
       case CMD_ADC:
-        if_write16(adc_read(if_read8()));
+        a = if_read8(); //chn
+        if_write16(adc_read(a));
         if_flush();
         break;
 
@@ -1897,8 +1902,8 @@ int main(void)
         break;
 
       case CMD_LCD_DRAWTEXT:
-        a = if_read(); //fg_color
-        b = if_read(); //bg_color
+        a = if_read16(); //fg_color
+        b = if_read16(); //bg_color
         cmd_lcd_drawtext(a, b, 0);
         break;
       case CMD_LCD_DRAWTEXTFG:
@@ -1909,8 +1914,8 @@ int main(void)
         break;
 
       case CMD_LCD_DRAWSTRING:
-        a = if_read(); //fg_color
-        b = if_read(); //bg_color
+        a = if_read16(); //fg_color
+        b = if_read16(); //bg_color
         cmd_lcd_drawtext(a, b, 1);
         break;
       case CMD_LCD_DRAWSTRINGFG:

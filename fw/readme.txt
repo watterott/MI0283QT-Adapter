@@ -25,6 +25,8 @@ License
 
 History
 -------
+         2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT
+
   Dec 09 2013  v0.05  Compiling with LPCXpresso.
                       Added interrupt/status output.
 
