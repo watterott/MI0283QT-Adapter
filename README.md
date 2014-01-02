@@ -1,5 +1,5 @@
 # MI0283QT-Adapter
-Adapter Board with 2.8" TFT-Display und Touch-Panel.
+Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
 
 Shop:
 [MI0283QT-Adapter v1](http://www.watterott.com/en/MI0283QT-2-Adapter), 
@@ -10,7 +10,7 @@ Shop:
 
 ## Features
 * MI0283QT-Adapter v1
-  * Multi-Inno MI0283QT2 or MI0283QT9A 2.8" Display with Touch-Panel (240x320, 262K colors)
+  * Multi-Inno MI0283QT2 or MI0283QT9A 2.8" Display with Touchpanel (240x320, 262K colors)
   * TI ADS7846 Touch-Controller
   * Interface: SPI (Display + Touch-Controller)
   * Backlight dimmable (PWM)
@@ -18,7 +18,7 @@ Shop:
   * Power: 3.3V - 5V
 
 * MI0283QT-Adapter v2
-  * Multi-Inno MI0283QT9 2.8" Display with Touch-Panel (240x320, 262K colors)
+  * Multi-Inno MI0283QT9 2.8" Display with Touchpanel (240x320, 262K colors)
   * NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
   * Interface: UART, I2C, SPI
   * Backlight dimmable via interface
