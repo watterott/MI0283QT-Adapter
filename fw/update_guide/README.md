@@ -1,11 +1,22 @@
 # How to update the Firmware?
 
 ## Firmware - Hex Files
+
 * [GLCD-Shield](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_glcdshield.hex)
 * [MI0283QT Adapter v2](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9.hex)
 
 
-## LPCSP
+## Hardware Connection
+
+![FTDI Connector](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update1.jpg)
+
+![FTDI Connection](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update2.jpg)
+
+
+## Software
+
+### LPCSP
+
 The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan.org/works/sp78k/report_e.html)
 ([alternative download](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/lpcsp.zip)).
 
@@ -22,7 +33,8 @@ The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan
 4. Wait till the programming has finished.
 
 
-## Flash Magic
+### Flash Magic
+
 The firmware can be updated via the FTDI connector using [Flash Magic](http://www.flashmagictool.com).
 
 1. Connect a [5V USB-Serial-Converter with FTDI pinout](http://www.watterott.com/en/FTDI-Breakout-Reloaded-V11) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
@@ -57,6 +69,7 @@ The firmware can be updated via the FTDI connector using [Flash Magic](http://ww
 8. Wait till the programming has finished.
 
 
-## Other programming tools
+### Other programming tools
+
 * [LPC21ISP](http://sourceforge.net/projects/lpc21isp/)
 * [NXPprog](http://sourceforge.net/projects/nxpprog/)
