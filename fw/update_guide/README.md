@@ -12,6 +12,16 @@
 
 ![FTDI Connection](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update2.jpg)
 
+It is also possible to use an Arduino Uno for the firmware update. In this case remove the AVR microcontroller from the Arduino and connect the board as follows.
+
+    Arduino Uno -> FTDI-Connector
+    -----------------------------
+    Reset       -> Pin 6 DTR/grn
+    0 (Rx)      -> Pin 4
+    1 (Tx)      -> Pin 5
+    5V          -> Pin 3
+    GND         -> Pin 1 GND/blk
+
 
 ## Software
 
