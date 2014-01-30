@@ -8,11 +8,15 @@
 
 ## Hardware Connection
 
+### FTDI USB-Serial-Converter
+
 ![FTDI Connector](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update1.jpg)
 
 ![FTDI Connection](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update2.jpg)
 
-It is also possible to use an Arduino Uno for the firmware update. In this case remove the AVR microcontroller from the Arduino and connect the board as follows.
+### Arduino
+
+It is also possible to use an Arduino Uno for the firmware update. In this case remove the AVR microcontroller from the socket on the Arduino and connect the board as follows.
 
     Arduino Uno -> FTDI-Connector
     -----------------------------
