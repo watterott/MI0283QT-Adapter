@@ -10,7 +10,7 @@ Shop:
 
 ## Features
 * **MI0283QT-Adapter v1**
-  * Multi-Inno 2.8" Display with Touchpanel (240x320 pixel)
+  * Multi-Inno 2.8" Display with Touchpanel (320x240 pixel)
   * TI ADS7846/TSC2046 Touch-Controller
   * Interface: SPI/SSI (up to 32MHz)
   * Backlight dimmable (PWM)
@@ -18,7 +18,7 @@ Shop:
   * Power: 3.3V - 5V
 
 * **MI0283QT-Adapter v2**
-  * Multi-Inno 2.8" Display with Touchpanel (240x320 pixel)
+  * Multi-Inno 2.8" Display with Touchpanel (320x240 pixel)
   * NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
   * Interface: UART, I2C, SPI/SSI (Mode 3, up to 4MHz)
   * Backlight dimmable via interface
@@ -29,6 +29,7 @@ Shop:
 
 ## Hardware
 * [Dimension and Pinout](https://raw.github.com/watterott/MI0283QT-Adapter/master/pcb/MI0283QT_size.pdf)
+* [Schematics + Layout](https://github.com/watterott/MI0283QT-Adapter/tree/master/pcb)
 * [3D Model from MI0283QT-Adapter v2](http://grabcad.com/library/mi0283qt-adapter-2-8-240x320-display-with-touch-panel-1)
 * [Connecting Adapter to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
 
