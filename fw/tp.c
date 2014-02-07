@@ -66,7 +66,8 @@ uint_least16_t tp_gety(void)
     x = raw_x;
     y = raw_y;
     x = ((matrix.a * x) + (matrix.b * y) + matrix.c) / matrix.div;
-    if(x >= LCD_WIDTH) { x = LCD_WIDTH-1; }
+         if(x >= (LCD_WIDTH*2)) { x = 0; }
+    else if(x >= (LCD_WIDTH*1)) { x = LCD_WIDTH-1; }
     cal_x = x;
   }
 
@@ -76,7 +77,8 @@ uint_least16_t tp_gety(void)
     x = raw_x;
     y = raw_y;
     y = ((matrix.d * x) + (matrix.e * y) + matrix.f) / matrix.div;
-    if(y >= LCD_HEIGHT) { y = LCD_HEIGHT-1; }
+         if(y >= (LCD_HEIGHT*2)) { y = 0; }
+    else if(y >= (LCD_HEIGHT*1)) { y = LCD_HEIGHT-1; }
     cal_y = y;
   }
 
@@ -111,7 +113,8 @@ uint_least16_t tp_getx(void)
     x = raw_x;
     y = raw_y;
     x = ((matrix.a * x) + (matrix.b * y) + matrix.c) / matrix.div;
-    if(x >= LCD_WIDTH) { x = LCD_WIDTH-1; }
+         if(x >= (LCD_WIDTH*2)) { x = 0; }
+    else if(x >= (LCD_WIDTH*1)) { x = LCD_WIDTH-1; }
     cal_x = x;
   }
 
@@ -121,7 +124,8 @@ uint_least16_t tp_getx(void)
     x = raw_x;
     y = raw_y;
     y = ((matrix.d * x) + (matrix.e * y) + matrix.f) / matrix.div;
-    if(y >= LCD_HEIGHT) { y = LCD_HEIGHT-1; }
+         if(y >= (LCD_HEIGHT*2)) { y = 0; }
+    else if(y >= (LCD_HEIGHT*1)) { y = LCD_HEIGHT-1; }
     cal_y = y;
   }
 

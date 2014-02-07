@@ -740,7 +740,7 @@ void cmd_tp_calibrate(uint_least16_t fgcolor, uint_least16_t bgcolor)
 
       //touch detected? -> save point
       tp_read();
-      if(tp_getz())
+      if(tp_getz() > (MIN_PRESSURE*1.5))
       {
         //mark point
         lcd_fillcircle(lcd_points[i].x, lcd_points[i].y, 4, RGB(255,0,0));
