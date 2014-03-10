@@ -12722,8 +12722,8 @@ DIN A4, landscape with location and doc. field</description>
 <text x="38.735" y="144.145" size="1.778" layer="95">0</text>
 <text x="38.735" y="146.685" size="1.778" layer="95">0</text>
 <text x="38.735" y="139.065" size="1.778" layer="95">0</text>
-<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike 3.0 License</text>
-<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/3.0/</text>
+<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike License</text>
+<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/4.0/</text>
 <text x="161.29" y="25.4" size="1.27" layer="95">Designed by Andreas Watterott (Watterott electronic)</text>
 <text x="21.59" y="166.37" size="3.81" layer="250">Display with Touch-Panel</text>
 <text x="179.07" y="166.37" size="3.81" layer="250">ARM Cortex-M0</text>

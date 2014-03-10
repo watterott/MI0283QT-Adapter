@@ -7962,10 +7962,10 @@ DIN A4, landscape with location and doc. field</description>
 <parts>
 <part name="LCD" library="Display" deviceset="MI0283QT" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="U1" library="Voltage-Reg" deviceset="TS5204" device=""/>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
@@ -7983,7 +7983,7 @@ DIN A4, landscape with location and doc. field</description>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="C5" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
 <part name="C6" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="IC1" library="Display" deviceset="ADS7846" device=""/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
 <part name="ID(0)" library="jumper" deviceset="SJ2W" device=""/>
@@ -8039,8 +8039,8 @@ DIN A4, landscape with location and doc. field</description>
 <text x="45.085" y="146.685" size="1.778" layer="95">0</text>
 <text x="45.085" y="149.225" size="1.778" layer="95">0</text>
 <text x="45.085" y="141.605" size="1.778" layer="95">0</text>
-<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike 3.0 License</text>
-<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/3.0/</text>
+<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike License</text>
+<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/4.0/</text>
 <text x="161.29" y="25.4" size="1.27" layer="95">Designed by Andreas Watterott (Watterott electronic)</text>
 <text x="44.45" y="166.37" size="3.81" layer="250">Display</text>
 <text x="104.14" y="114.3" size="3.81" layer="250">Touch Controller</text>

@@ -12324,10 +12324,10 @@ DIN A4, landscape with location and doc. field</description>
 </classes>
 <parts>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="U1" library="Voltage-Reg" deviceset="TS5204" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="VCC-3V3" library="jumper" deviceset="SJ" device=""/>
@@ -12400,8 +12400,8 @@ DIN A4, landscape with location and doc. field</description>
 <text x="45.085" y="144.145" size="1.778" layer="95">0</text>
 <text x="45.085" y="146.685" size="1.778" layer="95">1</text>
 <text x="45.085" y="139.065" size="1.778" layer="95">0</text>
-<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike 3.0 License</text>
-<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/3.0/</text>
+<text x="161.29" y="31.75" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike License</text>
+<text x="161.29" y="29.21" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/4.0/</text>
 <text x="161.29" y="25.4" size="1.27" layer="95">Designed by Andreas Watterott (Watterott electronic)</text>
 <text x="26.67" y="166.37" size="3.81" layer="250">Display with Touch-Panel</text>
 <wire x1="105.41" y1="65.024" x2="105.41" y2="67.183" width="0.8128" layer="94"/>
