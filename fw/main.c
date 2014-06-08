@@ -967,8 +967,8 @@ void cmd_lcd_terminal(uint_least16_t fgcolor, uint_least16_t bgcolor, uint_least
 
 void cmd_lcd_drawimage(uint_least16_t fgcolor, uint_least16_t bgcolor)
 {
-  uint_least8_t a, b, c, e, n;
-  uint_least16_t x0, y0, x1, y1, w, h;
+  uint_least8_t b, c, e, n;
+  uint_least16_t a, x0, y0, x1, y1, w, h;
   uint_least32_t i, ms;
 
   x0 = if_read(); //x0
@@ -1227,7 +1227,7 @@ void cmd_lcd_drawimage(uint_least16_t fgcolor, uint_least16_t bgcolor)
         {
           if(if_available())
           {
-            a = if_read16();
+            a = if_read8();
             if(a == 0xAA)
             {
               c = if_read8(); //n
@@ -1480,6 +1480,10 @@ int main(void)
       default:
       case CMD_NOP1:
       case CMD_NOP2:
+        if_flush();
+        break;
+      case CMD_SYNC:
+        if_write8(CMD_SYNC);
         if_flush();
         break;
       case CMD_VERSION:

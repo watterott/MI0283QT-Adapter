@@ -26,6 +26,7 @@ License
 History
 -------
          2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT.
+                      Bugfix in CMD_LCD_DRAWIMAGE.
                       Bugfix in touch calibration routine.
 
   Dec 09 2013  v0.05  Compiling with LPCXpresso.

@@ -13,7 +13,8 @@ enum _COMMANDS
   //general commands
   CMD_NOP1 = 0xFF,           //NOP / poll
   CMD_NOP2 = 0x00,           //NOP / poll
-  CMD_VERSION,               //get firmware version (4bytes "x.xx")
+  CMD_SYNC = 0xFA,           //synchronize
+  CMD_VERSION = 0x01,        //get firmware version (4bytes "x.xx")
   CMD_TEST,                  //start test program
   CMD_STATUS,                //get status (1byte)
   CMD_FEATURES,              //get available features (_CMDFEATURES)
@@ -22,7 +23,7 @@ enum _COMMANDS
   CMD_ADC,                   //read ADC pin (1byte channel), returns 16bit -> 2byte
 
   //display commands
-  CMD_LCD_LED = 0x10,        //set backlight: power (1byte 0-100%)
+  CMD_LCD_LED = 0x10,        //set backlight: power (1byte 0-100)
   CMD_LCD_RESET,             //reset display
   CMD_LCD_POWER,             //display panel power: power (1byte 0=off, 1=on)
   CMD_LCD_RAWCMD,            //send raw command to display (1byte)

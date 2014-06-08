@@ -1,6 +1,6 @@
 # Display Firmware
 
-**Documentation for Firmware v0.05 and greater.**
+**Documentation for Firmware v0.06 and greater.**
 
 
 ## Firmware Update
@@ -64,11 +64,14 @@ Example: ```CMD_LCD_CLEAR``` has as parameter a 2 byte color value and ```CMD_LC
     CMD_NOP2
 No operation.
 
+    CMD_SYNC
+Returns ```CMD_SYNC``` (1 byte).
+
     CMD_VERSION
 Get firmware version. Returns 4 bytes, for example ```0.12```.
 
     CMD_TEST
-Start the test program. To exit send ```0``` and the board responses with ```CMD_TEST```.
+Start the test program. To exit send ```0``` and wait till the board responses with ```CMD_TEST``` (1 byte).
 
     CMD_STATUS
 Get status. A reading clears the interrupt output. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR``` set.

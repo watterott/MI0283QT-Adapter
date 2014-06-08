@@ -1,4 +1,5 @@
 # Arduino Examples
+For MI0283QT-Adapter v2 and GLCD-Shield.
 
 * Download the respective .ino file and the file ```cmd.h```.
 * Copy everything to the same directory.
@@ -7,6 +8,7 @@
 
 
 # Raspberry Pi Examples
+For MI0283QT-Adapter v2 and GLCD-Shield.
 
 ## I2C
 
