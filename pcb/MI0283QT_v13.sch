@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -12412,9 +12412,11 @@ DIN A4, landscape with location and doc. field</description>
 <wire x1="16.51" y1="144.145" x2="16.51" y2="142.24" width="0.8128" layer="94"/>
 <wire x1="27.94" y1="142.24" x2="27.94" y2="140.335" width="0.8128" layer="94"/>
 <wire x1="232.41" y1="50.292" x2="232.41" y2="48.26" width="0.4064" layer="94"/>
-<text x="46.99" y="158.75" size="1.27" layer="250" font="vector">9bit  0   1   0   1</text>
-<text x="46.99" y="156.21" size="1.27" layer="250" font="vector">8bit  0   1   1   0</text>
+<text x="46.99" y="158.75" size="1.27" layer="250" font="vector">9bit  x   1   0   1</text>
+<text x="46.99" y="156.21" size="1.27" layer="250" font="vector">8bit  x   1   1   0</text>
 <text x="46.99" y="161.29" size="1.27" layer="250" font="vector">SPI  IM3 IM2 IM1 IM0</text>
+<text x="19.05" y="156.21" size="1.6764" layer="250" font="vector">Jumper IM1 is IM3</text>
+<wire x1="31.75" y1="156.21" x2="29.21" y2="144.78" width="0.1524" layer="250"/>
 </plain>
 <instances>
 <instance part="GND3" gate="1" x="77.47" y="127" smashed="yes">
