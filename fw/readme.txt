@@ -25,7 +25,7 @@ License
 
 History
 -------
-         2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT.
+  Jun 08 2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT.
                       Bugfix in CMD_LCD_DRAWIMAGE.
                       Bugfix in touch calibration routine.
 
