@@ -3,7 +3,7 @@
 
 
 //----- DEFINES -----
-#define VERSION         "0.06"
+#define VERSION         "0.07"
 
 //LCD support (define only one)
 #define LCD_MI0283QT9

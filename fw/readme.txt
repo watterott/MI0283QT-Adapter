@@ -25,9 +25,12 @@ License
 
 History
 -------
+  Jun 30 2014  v0.07  Bugfix in set_pwm.
+
   Jun 08 2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT.
                       Bugfix in CMD_LCD_DRAWIMAGE.
                       Bugfix in touch calibration routine.
+                      Added CMD_SYNC.
 
   Dec 09 2013  v0.05  Compiling with LPCXpresso.
                       Added interrupt/status output.
