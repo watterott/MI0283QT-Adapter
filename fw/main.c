@@ -453,8 +453,8 @@ uint_least8_t set_pwm(uint_least8_t power)
 {
   if(power == 0)
   {
-    LPC_TMR16B1->MR0 = ~(0);
-    LPC_TMR16B1->TCR = (0<<0); //disable timer
+    LPC_IOCON->PIO1_9 = (0x0<<0); //PIO1_9/CT16B1MAT0 -> GPIO
+    LPC_TMR16B1->TCR  = (0<<0); //disable timer
     return power;
   }
   else if(power > 100)
@@ -462,8 +462,9 @@ uint_least8_t set_pwm(uint_least8_t power)
     power = 100;
   }
 
-  LPC_TMR16B1->TCR = (1<<0); //enable timer
-  LPC_TMR16B1->MR0 = ~((0xFFFF*power)/100);
+  LPC_IOCON->PIO1_9 = (0x1<<0); //PIO1_9/CT16B1MAT0 -> PWM
+  LPC_TMR16B1->TCR  = (1<<0); //enable timer
+  LPC_TMR16B1->MR0  = ~((0xFFFF*power)/100);
 
   return power;
 }
@@ -642,7 +643,7 @@ void init(void)
   GPIO_CLRPIN(PWM_PORT, PWM_PIN);
 
   //init PWM for backlight
-  LPC_IOCON->PIO1_9 = (0x1<<0); //PIO1_9/CT16B1MAT0 -> PWM
+  // LPC_IOCON->PIO1_9 = (0x1<<0); //PIO1_9/CT16B1MAT0 -> PWM (set in set_pwm())
   LPC_TMR16B1->TC   = 0;
   LPC_TMR16B1->PR   = 0; //no prescale
   LPC_TMR16B1->PC   = 0;
