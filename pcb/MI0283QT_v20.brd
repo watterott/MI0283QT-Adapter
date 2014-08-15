@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -3034,7 +3034,7 @@ design rules under a new name.</description>
 <element name="R4" library="rcl" package="R0603" value="22" x="8.255" y="32.5438" smashed="yes" rot="MR90">
 <attribute name="NAME" x="7.4613" y="30.7975" size="0.8128" layer="26" font="vector" ratio="10" rot="MR180"/>
 </element>
-<element name="U1" library="Voltage-Reg" package="SOT23" value="TS5204" x="15.875" y="8.255" smashed="yes" rot="MR0">
+<element name="U1" library="Voltage-Reg" package="SOT23" value="TS5204-3V3" x="15.875" y="8.255" smashed="yes" rot="MR0">
 <attribute name="NAME" x="16.51" y="10.3188" size="0.8128" layer="26" font="vector" ratio="10" rot="MR0"/>
 <attribute name="VALUE" x="18.0975" y="11.6841" size="0.8128" layer="28" font="vector" ratio="10" rot="MR0"/>
 </element>

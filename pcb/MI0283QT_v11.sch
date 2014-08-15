@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -8165,7 +8165,7 @@ DIN A4, landscape with location and doc. field</description>
 <part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
-<part name="U1" library="Voltage-Reg" deviceset="TS5204" device=""/>
+<part name="U1" library="Voltage-Reg" deviceset="TS5204" device="" value="TS5204-3V3"/>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="VCC-3V3" library="jumper" deviceset="SJ" device=""/>

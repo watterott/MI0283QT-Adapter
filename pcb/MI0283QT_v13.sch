@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -12328,7 +12328,7 @@ DIN A4, landscape with location and doc. field</description>
 <part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
-<part name="U1" library="Voltage-Reg" deviceset="TS5204" device=""/>
+<part name="U1" library="Voltage-Reg" deviceset="TS5204" device="" value="TS5204-3V3"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="VCC-3V3" library="jumper" deviceset="SJ" device=""/>
 <part name="C1" library="rcl" deviceset="C-EU" device="C0603" value="1uF"/>
