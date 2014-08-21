@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.127" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.00625" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.0125" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -170,6 +170,7 @@
 <text x="2.032" y="6.6675" size="0.6096" layer="22" font="vector" rot="MR0">CS</text>
 <text x="4.8895" y="8.5725" size="0.8128" layer="22" font="vector" rot="MR0">Display</text>
 <text x="-4.953" y="8.5725" size="0.8128" layer="22" font="vector" rot="MR0">Touch</text>
+<text x="-25.4" y="-1.27" size="1.27" layer="49" font="vector" ratio="10" align="top-left">Silkscreen: 22 bPlace + 26 bNames</text>
 </plain>
 <libraries>
 <library name="rcl">
