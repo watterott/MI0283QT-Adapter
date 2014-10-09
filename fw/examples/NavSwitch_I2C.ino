@@ -96,7 +96,7 @@ void loop()
   Wire.write(CMD_NAV_POS);
   Wire.endTransmission();
 
-  if(Wire.requestFrom(I2C_ADDR, 2) == 3)
+  if(Wire.requestFrom(I2C_ADDR, 3) == 3)
   { 
     h = Wire.read();
     v = Wire.read();
