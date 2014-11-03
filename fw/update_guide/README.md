@@ -2,8 +2,9 @@
 
 ## Firmware - Hex Files
 
-* [GLCD-Shield](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_glcdshield.hex)
-* [MI0283QT Adapter v2](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9.hex)
+* [GLCD-Shield (I2C)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_glcdshield.hex)
+* [MI0283QT Adapter v2 (I2C)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9.hex)
+* [MI0283QT Adapter v2 (SPI)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9_spi.hex)
 
 
 ## Hardware Connection
@@ -34,7 +35,7 @@ It is also possible to use an Arduino Uno for the firmware update. In this case 
 The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan.org/works/sp78k/report_e.html)
 ([alternative download](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/lpcsp.zip)).
 
-1. Connect a [5V USB-Serial-Converter with FTDI pinout](http://www.watterott.com/en/FTDI-Breakout-Reloaded-V11) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
+1. Connect a [5V USB-Serial-Converter with FTDI pinout](https://github.com/watterott/FTDI-Breakout) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
 
 2. Hold down the ISP switch (next to the ARM controller on the MI0283QT Adapter and next to the reset switch on the GLCD-Shield) and run the programming software with the following parameters:
 
@@ -51,7 +52,7 @@ The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan
 
 The firmware can be updated via the FTDI connector using [Flash Magic](http://www.flashmagictool.com).
 
-1. Connect a [5V USB-Serial-Converter with FTDI pinout](http://www.watterott.com/en/FTDI-Breakout-Reloaded-V11) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
+1. Connect a [5V USB-Serial-Converter with FTDI pinout](https://github.com/watterott/FTDI-Breakout) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
 
 2. Start Flash Magic
 
