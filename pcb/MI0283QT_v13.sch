@@ -72,44 +72,8 @@
 <layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="100" name="Muster" color="7" fill="1" visible="no" active="no"/>
-<layer number="101" name="Bemassung" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="102" name="fp2" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="103" name="fp3" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="104" name="fp4" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="105" name="fp5" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="106" name="fp6" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="107" name="fp7" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="108" name="fp8" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="109" name="fp9" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="110" name="fp0" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="116" name="Patch_BOT" color="9" fill="4" visible="yes" active="yes"/>
-<layer number="120" name="Descript" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="121" name="tTestdril" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="122" name="bTestdril" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="123" name="tTestmark" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="124" name="bTestmark" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="144" name="DrillLegend" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="200" name="200bmp" color="1" fill="10" visible="yes" active="yes"/>
-<layer number="201" name="201bmp" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="202" name="202bmp" color="3" fill="10" visible="yes" active="yes"/>
-<layer number="203" name="203bmp" color="4" fill="10" visible="yes" active="yes"/>
-<layer number="204" name="204bmp" color="5" fill="10" visible="yes" active="yes"/>
-<layer number="205" name="205bmp" color="6" fill="10" visible="yes" active="yes"/>
-<layer number="206" name="206bmp" color="7" fill="10" visible="yes" active="yes"/>
-<layer number="207" name="207bmp" color="15" fill="10" visible="yes" active="yes"/>
-<layer number="208" name="208bmp" color="9" fill="10" visible="yes" active="yes"/>
-<layer number="209" name="209bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="210" name="210bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="211" name="211bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="212" name="212bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="213" name="213bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="214" name="214bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="215" name="215bmp" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="216" name="216bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="yes" active="yes"/>
 <layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
-<layer number="254" name="OrgLBR" color="13" fill="1" visible="yes" active="yes"/>
 </layers>
 <schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
 <libraries>
@@ -12376,12 +12340,10 @@ DIN A4, landscape with location and doc. field</description>
 <part name="R13" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="R14" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="R15" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
-<part name="R16" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V12" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V13" library="supply1" deviceset="+3V3" device=""/>
-<part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="VREF-3V3" library="jumper" deviceset="SJ" device=""/>
 <part name="+3V8" library="supply1" deviceset="+3V3" device=""/>
@@ -12598,10 +12560,6 @@ DIN A4, landscape with location and doc. field</description>
 <attribute name="NAME" x="190.5254" y="109.474" size="1.778" layer="95" rot="MR270"/>
 <attribute name="VALUE" x="193.04" y="105.029" size="1.778" layer="96" rot="MR90"/>
 </instance>
-<instance part="R16" gate="G$1" x="199.39" y="130.81" smashed="yes" rot="MR270">
-<attribute name="NAME" x="198.0184" y="132.588" size="1.778" layer="95" rot="MR270"/>
-<attribute name="VALUE" x="200.66" y="128.905" size="1.778" layer="96" rot="MR90"/>
-</instance>
 <instance part="+3V1" gate="G$1" x="191.77" y="158.75" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="189.23" y="161.29" size="1.778" layer="96" rot="MR180"/>
 </instance>
@@ -12613,9 +12571,6 @@ DIN A4, landscape with location and doc. field</description>
 </instance>
 <instance part="+3V13" gate="G$1" x="199.39" y="115.57" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="196.85" y="118.11" size="1.778" layer="96" rot="MR180"/>
-</instance>
-<instance part="GND14" gate="1" x="199.39" y="123.19" smashed="yes" rot="MR0">
-<attribute name="VALUE" x="201.93" y="120.65" size="1.778" layer="96" rot="MR0"/>
 </instance>
 <instance part="GND15" gate="1" x="199.39" y="80.01" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="201.93" y="77.47" size="1.778" layer="96" rot="MR0"/>
@@ -12831,10 +12786,6 @@ DIN A4, landscape with location and doc. field</description>
 <pinref part="IC2" gate="P" pin="GND"/>
 <pinref part="GND10" gate="1" pin="GND"/>
 <pinref part="C7" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<pinref part="R16" gate="G$1" pin="2"/>
-<pinref part="GND14" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="R14" gate="G$1" pin="2"/>
