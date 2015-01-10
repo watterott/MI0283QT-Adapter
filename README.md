@@ -5,7 +5,7 @@ Shop:
 [MI0283QT-Adapter v1](http://www.watterott.com/en/MI0283QT-2-Adapter), 
 [MI0283QT-Adapter v2](http://www.watterott.com/en/MI0283QT-Adapter-v2)
 
-[![MI0283QT-Adapter](https://raw.github.com/watterott/MI0283QT-Adapter/master/img/mi0283qt-adapter.jpg)](http://www.watterott.com/en/MI0283QT-2-Adapter)
+[![MI0283QT-Adapter](https://raw.github.com/watterott/MI0283QT-Adapter/master/pcb/MI0283QT_v20)](http://www.watterott.com/en/MI0283QT-2-Adapter)
 
 
 ## Features
@@ -35,12 +35,12 @@ Shop:
 
 
 ## Software
-* MI0283QT-Adapter v1
+* **MI0283QT-Adapter v1**
   * [Arduino Library with Examples](https://github.com/watterott/Arduino-Libs) ([old version](https://github.com/watterott/mSD-Shield/tree/5054db114faef1bcfd9c1d165ed713a681a0edea/src))
   * [Raspberry Pi Framebuffer](https://github.com/watterott/RPi-ShieldBridge/blob/master/docu/MI0283QT-Adapter.md#mi0283qt-adapter-v1)
   * [BeagleBone Black Framebuffer](https://github.com/notro/fbtft/wiki/BeagleBone-Black)
 
-* MI0283QT-Adapter v2
+* **MI0283QT-Adapter v2**
   * [General Examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/examples)
   * [Arduino Library with Examples](https://github.com/watterott/Arduino-Libs)
   * [Raspberry Pi Framebuffer](https://github.com/watterott/RPi-ShieldBridge/blob/master/docu/MI0283QT-Adapter.md#mi0283qt-adapter-v2)
