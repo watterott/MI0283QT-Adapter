@@ -21,7 +21,6 @@
  <Project>
   <ProjectSessionItem path="display" name="unnamed" />
   <ProjectSessionItem path="display;display" name="unnamed" />
-  <ProjectSessionItem path="display;display;System Files" name="unnamed" />
  </Project>
  <Register1>
   <RegisterWindow openNodes="" binaryNodes="" unsignedNodes="" decimalNodes="" octalNodes="" asciiNodes="" visibleNodes="" name="" />
