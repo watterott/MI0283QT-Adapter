@@ -86,6 +86,13 @@ void setup()
   Serial.println("");
   digitalWrite(cs_pin, HIGH);
 
+  //save interface as default
+  // Serial.println("save interface...");
+  // digitalWrite(cs_pin, LOW);
+  // SPI.transfer(CMD_CTRL);
+  // SPI.transfer(CMD_CTRL_SAVE);
+  // digitalWrite(cs_pin, HIGH);
+
   //get features
   Serial.print("features: ");
   digitalWrite(cs_pin, LOW);

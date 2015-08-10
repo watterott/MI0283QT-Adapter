@@ -71,6 +71,13 @@ void setup()
   }
   Serial.println("");
 
+  //save interface as default
+  // Serial.println("save interface...");
+  // Wire.beginTransmission(I2C_ADDR);
+  // Wire.write(CMD_CTRL);
+  // Wire.write(CMD_CTRL_SAVE);
+  // Wire.endTransmission();
+
   //get width and height
   Serial.print("width/height: ");
   Wire.beginTransmission(I2C_ADDR);

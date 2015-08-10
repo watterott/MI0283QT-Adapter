@@ -97,6 +97,11 @@ void setup()
   }
   Serial.println("");
 
+  //save interface as default
+  // Serial.println("save interface...");
+  // mySerial.write(CMD_CTRL);
+  // mySerial.write(CMD_CTRL_SAVE);
+
   //get features
   Serial.print("features: ");
   mySerial.write(CMD_FEATURES);
