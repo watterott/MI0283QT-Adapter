@@ -5,7 +5,7 @@
 
 ## Firmware Update
 
-See [Firmware Update Guide](https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/update_guide/README.md).
+See [Firmware Update Guide](https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/update_guide/README.md).
 
 The source code can be compiled with [CrossWorks for ARM](http://www.rowley.co.uk/arm/index.htm) or [LPCXpresso](http://www.lpcware.com/lpcxpresso) (registered Free Edition).
 
@@ -46,7 +46,7 @@ The current interface can be saved as default with the software command ```CMD_C
 
 ## Examples
 
-* [Arduino examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/fw/examples)
+* [Arduino examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/firmware/examples)
 
 
 ## Commands

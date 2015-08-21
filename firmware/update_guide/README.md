@@ -2,18 +2,18 @@
 
 ## Firmware - Hex Files
 
-* [GLCD-Shield (I2C)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_glcdshield.hex)
-* [MI0283QT Adapter v2 (I2C)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9.hex)
-* [MI0283QT Adapter v2 (SPI)](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/fw_mi0283qt9_spi.hex)
+* [GLCD-Shield (I2C)](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/fw_glcdshield.hex)
+* [MI0283QT Adapter v2 (I2C)](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/fw_mi0283qt9.hex)
+* [MI0283QT Adapter v2 (SPI)](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/fw_mi0283qt9_spi.hex)
 
 
 ## Hardware Connection
 
 ### FTDI USB-Serial-Converter
 
-![FTDI Connector](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update1.jpg)
+![FTDI Connector](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/update1.jpg)
 
-![FTDI Connection](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/update2.jpg)
+![FTDI Connection](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/update2.jpg)
 
 ### Arduino
 
@@ -33,7 +33,7 @@ It is also possible to use an Arduino Uno for the firmware update. In this case 
 ### LPCSP
 
 The firmware can be updated via the FTDI connector using [LPCSP](http://elm-chan.org/works/sp78k/report_e.html)
-([alternative download](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/update_guide/lpcsp.zip)).
+([alternative download](https://github.com/watterott/MI0283QT-Adapter/raw/master/firmware/update_guide/lpcsp.zip)).
 
 1. Connect a [5V USB-Serial-Converter with FTDI pinout](https://github.com/watterott/FTDI-Breakout) to the 6-Pin FTDI connector on the PCB bottom side (blk=GND, grn=DTR).
 

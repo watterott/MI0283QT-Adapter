@@ -1,26 +1,26 @@
 Display Firmware
 ================
-  Visit https://github.com/watterott/MI0283QT-Adapter for updates.
+Visit https://github.com/watterott/MI0283QT-Adapter for updates.
 
-  Supported IDEs: CrossWorks for ARM 2.3 and LPCXpresso 6.1
+Supported IDEs: CrossWorks for ARM 2.3 and LPCXpresso 6.1
 
 
 Documentation
 -------------
   See docu/README.md
-    https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/docu/README.md
+  https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/docu/README.md
 
 
 Third party software
 --------------------
   CMSIS
-    http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
+  http://www.arm.com/products/processors/cortex-m/cortex-microcontroller-software-interface-standard.php
 
 
 License
 -------
   See license.txt
-    https://github.com/watterott/MI0283QT-Adapter/blob/master/fw/license.txt
+  https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/license.txt
 
 
 History

@@ -1,4 +1,4 @@
-<!DOCTYPE CrossStudio_for_ARM_Session_File>
+<!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
  <Breakpoints/>
@@ -21,6 +21,7 @@
  <Project>
   <ProjectSessionItem path="display" name="unnamed" />
   <ProjectSessionItem path="display;display" name="unnamed" />
+  <ProjectSessionItem path="display;display;Source Files" name="unnamed" />
  </Project>
  <Register1>
   <RegisterWindow openNodes="" binaryNodes="" unsignedNodes="" decimalNodes="" octalNodes="" asciiNodes="" visibleNodes="" name="" />
