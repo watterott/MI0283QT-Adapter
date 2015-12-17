@@ -3,6 +3,7 @@
 
   Note: To compile the program you have to add the file cmd.h in the Arduino IDE:
         Sketch -> Add file...
+        Check function write_pos() if the screen is smaller than 255 pixel.
 */
 
 #include <SoftwareSerial.h>
@@ -42,7 +43,7 @@ void wait_for_input(void)
 
 void write_pos(uint16_t i)
 {
-  mySerial.write(i>>8); //for screens > 255 pixel, otherwise remove
+  mySerial.write(i>>8); //only for screens > 255 pixel, otherwise remove
   mySerial.write(i);
 }
 

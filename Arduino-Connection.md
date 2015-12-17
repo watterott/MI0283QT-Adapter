@@ -31,32 +31,32 @@ SCL/SCK    10     13    52    15   (ISP Pin 3)
 
 ## I2C
 ```
-Signal  Display  Uno  Mega  Leonardo
-------------------------------------
-GND       1-2    GND   GND   GND 
-5V        3-4     5V    5V    5V
-SDA        14    SDA   SDA   SDA
-SCL        13    SCL   SCL   SCL
+Signal  Display  Arduino
+------------------------
+GND       1-2      GND
+5V        3-4       5V
+SDA        14      SDA
+SCL        13      SCL
 ```
 
 ## Hardware UART
 ```
-Signal  Display  Uno  Mega  Leonardo
-------------------------------------
-GND       1-2    GND   GND   GND
-5V        3-4     5V    5V    5V
-CS          7      7     7     7
-RX         12   1/TX  1/TX  1/TX
-TX         11   0/RX  0/RX  0/RX
+Signal  Display  Arduino
+------------------------
+GND       1-2      GND
+5V        3-4       5V
+CS          7        7
+RX         12     1/TX
+TX         11     0/RX
 ```
 
 ## Software UART (mSD-Shield)
 ```
-Signal  Display  Uno  Mega  Leonardo
-------------------------------------
-GND       1-2    GND   GND   GND
-5V        3-4     5V    5V    5V
-CS          7      7     7     7
-RX         12      5     5     5
-TX         11      6     6     6
+Signal  Display  Arduino
+------------------------
+GND       1-2      GND
+5V        3-4       5V
+CS          7        7
+RX         12        5
+TX         11        6
 ```
