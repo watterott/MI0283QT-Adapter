@@ -13,7 +13,7 @@ Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
 * **MI0283QT-Adapter v1**
   * Multi-Inno MI0283QT-2/-9/-11 2.8" Display with Touchpanel (320x240 pixel)
   * TI ADS7846/TSC2046 Touch-Controller
-  * Interface: SPI/SSI (up to 32MHz)
+  * Interface: SPI/SSI (8-Bit or 9-Bit, up to 32MHz)
   * Backlight dimmable (PWM)
   * 3.3V - 5V tolerant IOs
   * Power: 3.3V - 5V
