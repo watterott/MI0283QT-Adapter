@@ -10051,7 +10051,7 @@ all kinds in 0603 and 0402</description>
 <part name="C8" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="100n"/>
 <part name="C7" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="100n"/>
 <part name="C9" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="100n"/>
-<part name="BUSY-RS" library="we-rcl" deviceset="JUMPER3" device="-0603" value="JUMPER3-0603"/>
+<part name="RS-BUSY" library="we-rcl" deviceset="JUMPER3" device="-0603" value="JUMPER3-0603"/>
 <part name="VCC-3V3" library="we-rcl" deviceset="JUMPER2" device="-0603-NC" value="JUMPER2-0603-NC"/>
 <part name="T1" library="we-transistor" deviceset="MOSFET-N" device="-SOT23" value="N-Chn"/>
 <part name="X1" library="we-symbol" deviceset="PASSER" device="-07"/>
@@ -10233,7 +10233,7 @@ all kinds in 0603 and 0402</description>
 <attribute name="VALUE" x="154.94" y="8.89" size="1.778" layer="96" align="top-center"/>
 </instance>
 <instance part="C9" gate="C" x="97.79" y="109.22" rot="R90"/>
-<instance part="BUSY-RS" gate="J" x="232.41" y="48.26"/>
+<instance part="RS-BUSY" gate="J" x="232.41" y="48.26"/>
 <instance part="VCC-3V3" gate="J" x="116.84" y="25.4"/>
 <instance part="T1" gate="T" x="85.09" y="119.38" smashed="yes" rot="MR270">
 <attribute name="NAME" x="82.55" y="124.46" size="1.778" layer="95" rot="MR180"/>
@@ -10787,7 +10787,7 @@ all kinds in 0603 and 0402</description>
 <segment>
 <wire x1="232.41" y1="55.88" x2="232.41" y2="53.34" width="0.1524" layer="91"/>
 <label x="232.41" y="55.88" size="1.27" layer="95" rot="R90" xref="yes"/>
-<pinref part="BUSY-RS" gate="J" pin="1"/>
+<pinref part="RS-BUSY" gate="J" pin="1"/>
 </segment>
 </net>
 <net name="ADS_CS" class="0">
@@ -10990,7 +10990,7 @@ all kinds in 0603 and 0402</description>
 <segment>
 <wire x1="232.41" y1="40.64" x2="232.41" y2="43.18" width="0.1524" layer="91"/>
 <label x="232.41" y="40.64" size="1.27" layer="95" rot="R270" xref="yes"/>
-<pinref part="BUSY-RS" gate="J" pin="3"/>
+<pinref part="RS-BUSY" gate="J" pin="3"/>
 </segment>
 <segment>
 <wire x1="208.28" y1="139.7" x2="189.23" y2="139.7" width="0.1524" layer="91"/>
@@ -10998,10 +10998,10 @@ all kinds in 0603 and 0402</description>
 <label x="189.23" y="139.7" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="N$6" class="0">
+<net name="BUSY_RS" class="0">
 <segment>
 <wire x1="205.74" y1="48.26" x2="227.33" y2="48.26" width="0.1524" layer="91"/>
-<pinref part="BUSY-RS" gate="J" pin="2"/>
+<pinref part="RS-BUSY" gate="J" pin="2"/>
 <pinref part="J1" gate="J" pin="12"/>
 </segment>
 </net>
