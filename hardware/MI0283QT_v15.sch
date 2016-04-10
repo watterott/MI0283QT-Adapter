@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -60,11 +60,6 @@
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="53" name="tCopper" color="7" fill="11" visible="no" active="no"/>
-<layer number="54" name="bCopper" color="7" fill="1" visible="no" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
-<layer number="60" name="Board" color="7" fill="1" visible="no" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -10073,9 +10068,10 @@ all kinds in 0603 and 0402</description>
 <text x="45.085" y="144.145" size="1.778" layer="95">0</text>
 <text x="45.085" y="146.685" size="1.778" layer="95">1</text>
 <text x="45.085" y="139.065" size="1.778" layer="95">1</text>
-<text x="162.56" y="21.59" size="1.27" layer="95">Released under the Creative Commons Attribution Share-Alike License</text>
-<text x="162.56" y="19.05" size="1.27" layer="95">http://creativecommons.org/licenses/by-sa/4.0/</text>
-<text x="162.56" y="15.24" size="1.27" layer="95">Designed by Andreas Watterott (Watterott electronic)</text>
+<text x="162.56" y="22.86" size="1.27" layer="95" align="top-left">Released under the Creative Commons Attribution Share-Alike 
+License. http://creativecommons.org/licenses/by-sa/4.0/
+
+Designed by Andreas Watterott (Watterott electronic)</text>
 <text x="26.67" y="166.37" size="3.81" layer="250">Display with Touch-Panel</text>
 <wire x1="105.41" y1="65.024" x2="105.41" y2="67.183" width="0.8128" layer="94"/>
 <text x="114.3" y="104.14" size="3.81" layer="250">Touch Controller</text>
@@ -11030,4 +11026,10 @@ all kinds in 0603 and 0402</description>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
