@@ -32,7 +32,8 @@ Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
 * [Dimension and Pinout](https://raw.github.com/watterott/MI0283QT-Adapter/master/hardware/MI0283QT_size.pdf)
 * [Schematics + Layout](https://github.com/watterott/MI0283QT-Adapter/tree/master/hardware)
 * [3D Model from MI0283QT-Adapter v2](http://grabcad.com/library/mi0283qt-adapter-2-8-240x320-display-with-touch-panel-1)
-* [Connecting Adapter to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
+* [Connecting to an Arduino](https://github.com/watterott/MI0283QT-Adapter/blob/master/Arduino-Connection.md)
+* [Hints about Displays (e.g. ghost images)](https://github.com/watterott/KnowledgeBase/wiki/Displays#hints-about-displays)
 
 
 ## Software
