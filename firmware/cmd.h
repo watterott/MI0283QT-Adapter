@@ -3,7 +3,8 @@
 
 
 /*
-  PARAMTER    - BIT SIZE
+  PARAMETER   - BIT SIZE
+  ----------------------
   color       - 16 bit
   x,y,z,w,h,r - 8 bit for screens < 255x255 pixel, otherwise 16 bit
   other       - 8 bit
