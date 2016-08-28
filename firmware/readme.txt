@@ -2,7 +2,7 @@ Display Firmware
 ================
 Visit https://github.com/watterott/MI0283QT-Adapter for updates.
 
-Supported IDEs: CrossWorks for ARM 2.3 and LPCXpresso 6.1
+Supported IDEs: CrossWorks for ARM and LPCXpresso 6.1
 
 
 Documentation
