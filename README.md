@@ -53,17 +53,17 @@ Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
 
 
 ## Projects
-* Arduino TouchLib: http://www.mafu-foto.de/elektronik/arduino
-* Arduino Touch Screen Lib: http://code.google.com/p/arduino-touch-gui
-* Arduino and chipKIT UTFT Lib: http://www.henningkarlsen.com/electronics/library.php?id=51
-* Arduino PrXoS + MI0283QT-2 Control Api: http://arduinoprx.de
-* Arduino DSO: http://code.google.com/p/simple-touch-screen-dso-software/ http://skyduino.wordpress.com/2011/07/08/arduinoscillo-news/
-* Misc Arduino Programs: http://www.mon-club-elec.fr/pmwiki_mon_club_elec/pmwiki.php?n=MAIN.ArduinoExpertTFTGraphCouleur240x320
-* Arduino Paint: http://www.youtube.com/watch?v=HHWH-YMrZZw http://nicksteen.webs.com/projects
-* Arduino Theremin: http://www.youtube.com/watch?v=D8QvrmUQdjI
-* InBetween: http://vimeo.com/24689680
-* mbed + MI0283QT-2: http://mbed.org/users/clemente/notebook/mi0283qt-library-and-program-demonstration/ http://circuitcellar.com/contests/nxpmbeddesignchallenge/winners/DE3803.htm
-* Raspberry Pi + MI0283QT-2: http://www.gallot.be/?p=197 http://lab.synoptx.net/2012/10/19/rasperry-pi-spi-touchscreen-x-server/ http://lallafa.de/blog/2013/03/watterott-display-on-raspberry-pi/
-* Raspberry Pi + MI0283QT-9A: http://lallafa.de/blog/2013/03/watterott-mi0283qt-9a-display-for-the-rasbperry-pi/ https://github.com/notro/fbtft
-* BeagleBone Black + MI0283QT-9A: http://noisezero.blogspot.it/2013/12/watterott-mi0283qt-9a-display-on.html http://papermint-designs.com/community/node/404
-* MI0283QT-Adapter v2 Firmware Compiling: http://zombofant.net/blog/2013/11/hacking-with-mi0283qt-adapter-setup
+* [Arduino TouchLib](http://www.mafu-foto.de/elektronik/arduino)
+* [Arduino Touch Screen Lib](http://code.google.com/p/arduino-touch-gui)
+* [Arduino+chipKIT UTFT Lib](http://www.rinkydinkelectronics.com/library.php?id=51)
+* [Arduino PrXoS + MI0283QT-2 Control Api](http://arduinoprx.de)
+* [Arduino DSO](http://skyduino.wordpress.com/2011/07/08/arduinoscillo-news/)
+* [Misc Arduino Programs](http://www.mon-club-elec.fr/pmwiki_mon_club_elec/pmwiki.php?n=MAIN.ArduinoExpertTFTGraphCouleur240x320)
+* [Arduino Paint](http://nicksteen.webs.com/projects)
+* [Arduino Theremin](http://www.youtube.com/watch?v=D8QvrmUQdjI)
+* [InBetween](http://vimeo.com/24689680)
+* [mbed + MI0283QT-2](http://mbed.org/users/clemente/notebook/mi0283qt-library-and-program-demonstration/)
+* [Raspberry Pi + MI0283QT-2](http://lallafa.de/blog/2013/03/watterott-display-on-raspberry-pi/)
+* [Raspberry Pi + MI0283QT-9A](http://lallafa.de/blog/2013/03/watterott-mi0283qt-9a-display-for-the-rasbperry-pi/)
+* [BeagleBone Black + MI0283QT-9A](http://noisezero.blogspot.it/2013/12/watterott-mi0283qt-9a-display-on.html)
+* [MI0283QT-Adapter v2 Firmware Compiling](http://zombofant.net/blog/2013/11/hacking-with-mi0283qt-adapter-setup)
