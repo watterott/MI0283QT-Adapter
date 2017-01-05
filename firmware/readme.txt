@@ -1,5 +1,6 @@
 Display Firmware
 ================
+Firmware for MI0283QT-Adapter v2 and GLCD-Shield (with LPC1114 ARM Cortex-M0).
 Visit https://github.com/watterott/MI0283QT-Adapter for updates.
 
 Supported IDEs: CrossWorks for ARM and LPCXpresso 6.1
