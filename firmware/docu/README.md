@@ -1,6 +1,6 @@
 # Display Firmware
 
-**Documentation for Firmware v0.06 and greater.**
+**Documentation for Firmware v0.06+**
 
 
 ## Firmware Update
@@ -89,7 +89,6 @@ General system settings/options. Parameter: 1 byte
 * ```CMD_CTRL_SYSCLOCK```  - Set system clock in MHz. Parameter: 1 byte (12, 16, 24, 32, 36, 48)
 * ```CMD_CTRL_FEATURES```  - Enable or disable features. Parameter: 1 byte (```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR```, ```FEATURE_IRQ```)
 
--
     CMD_PIN
 Set GPIO pin. Parameter: 1 byte (1=input, 2=read input, 3=output low, 4=output high, 5=IRQ output low active, 6=IRQ output high active)
 
@@ -117,7 +116,7 @@ Send raw data to the display controller. Parameter: 1 byte
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
 
-![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/fw/docu/orientation.jpg)
+![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/firmware/docu/orientation.jpg)
 
     CMD_LCD_WIDTH
 Get display width. Returns always 2 bytes = 16 bit.
