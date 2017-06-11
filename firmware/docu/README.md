@@ -79,6 +79,12 @@ Get status. A reading clears the interrupt output. Returns 1 byte with ```FEATUR
     CMD_FEATURES
 Get features. Returns 1 byte with ```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR```, ```FEATURE_IRQ``` set.
 
+    CMD_PIN
+Set GPIO pin. Parameter: 1 byte (1=input, 2=read input, 3=output low, 4=output high, 5=IRQ output low active, 6=IRQ output high active)
+
+    CMD_ADC
+Read ADC channel. Parameter: 1 byte (4, 5, 7 or 255 for LDR)
+
     CMD_CTRL
 General system settings/options. Parameter: 1 byte
 * ```CMD_CTRL_SAVE```      - Save current settings to flash (sysclock, backlight, interface, baud rate, address, byte order, fg color, bg color, touchpanel calibration).
@@ -88,12 +94,6 @@ General system settings/options. Parameter: 1 byte
 * ```CMD_CTRL_BYTEORDER``` - Set byte order. Parameter: 1 byte (0=big endian , 1=little endian)
 * ```CMD_CTRL_SYSCLOCK```  - Set system clock in MHz. Parameter: 1 byte (12, 16, 24, 32, 36, 48)
 * ```CMD_CTRL_FEATURES```  - Enable or disable features. Parameter: 1 byte (```FEATURE_LCD```, ```FEATURE_TP```, ```FEATURE_ENC```, ```FEATURE_NAV```, ```FEATURE_LDR```, ```FEATURE_IRQ```)
-
-    CMD_PIN
-Set GPIO pin. Parameter: 1 byte (1=input, 2=read input, 3=output low, 4=output high, 5=IRQ output low active, 6=IRQ output high active)
-
-    CMD_ADC
-Read ADC channel. Parameter: 1 byte (4, 5, 7 or 255 for LDR)
 
 
 ### Display Commands
