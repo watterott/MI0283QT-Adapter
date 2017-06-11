@@ -27,21 +27,18 @@ The current interface can be saved as default with the software command ```CMD_C
 
 **I2C activation:**
 
-    - Reset:    RST low -> wait 10 ms -> RST high
-    - Set I2C:  MOSI + RX high
-    - Activate: CS low -> wait 20 ms -> CS high
+    - Set MOSI high + RX high + CS low
+    - Reset: RST low -> wait 10 ms -> RST high
 
 **SPI activation:**
 
-    - Reset:    RST low -> wait 10 ms -> RST high
-    - Set SPI:  MOSI low (RX high)
-    - Activate: CS low -> wait 20 ms -> CS high
+    - Set MOSI low + RX high + CS low
+    - Reset: RST low -> wait 10 ms -> RST high
 
 **UART activation:**
 
-    - Reset:    RST low -> wait 10 ms -> RST high
-    - Set UART: RX low (MOSI high)
-    - Activate: CS low -> wait 20 ms -> CS high
+    - Set RX low + MOSI high + CS low
+    - Reset: RST low -> wait 10 ms -> RST high
 
 
 ## Examples
