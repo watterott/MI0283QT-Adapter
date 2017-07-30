@@ -10,7 +10,6 @@ Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
 * **MI0283QT-Adapter v1**
   * TI ADS7846/TSC2046 Touch-Controller
   * Interface: SPI/SSI (8-Bit or 9-Bit, up to 32MHz)
-
 * **MI0283QT-Adapter v2**
   * NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
   * Interface: UART, I2C, SPI/SSI (8-Bit, Mode 3, up to 4MHz)
