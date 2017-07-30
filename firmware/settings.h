@@ -6,11 +6,11 @@
 #define VERSION         "0.07"
 
 //LCD support (define only one)
-#define LCD_MI0283QT9
+#define LCD_MI0283QT9 //MI0283QT-9/-11 (ILI9341)
 //#define LCD_UG12D228AA
 
 #ifdef LCD_MI0283QT9
-#define TP_SUPPORT //touch panel support
+#define TP_SUPPORT //resistive touch panel support
 #endif
 
 #define DEFAULT_CLOCK   48000000UL    //Hz, 12 16* 24 32* 36 48* MHz (*crystal)

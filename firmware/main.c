@@ -51,7 +51,7 @@ typedef struct
 SETTINGS *usersettings = (SETTINGS*)(FLASH_BYTES-128); //last 128 bytes are for settings
 
 
-void SysTick_Handler(void) //1ms
+void SysTick_Handler(void) //runs every 1ms
 {
   ms_ticks++;
 
@@ -64,7 +64,7 @@ void SysTick_Handler(void) //1ms
 
   if(features & FEATURE_ENC)
   {
-    if(++enc_t == 5) //5ms
+    if(++enc_t == 5) //every 5ms
     {
       enc_t = 0;
 
@@ -84,7 +84,7 @@ void SysTick_Handler(void) //1ms
       dif = enc_last - n; //difference last - new
       if(dif & 1) //bit 0 = value (1)
       {               
-        enc_last = n; // store new as next last
+        enc_last = n; //store new as next last
         enc_delta += (dif & 2) - 1; //bit 1 = direction (+/-)
       }
 
@@ -110,7 +110,7 @@ void SysTick_Handler(void) //1ms
 
   if(features & FEATURE_NAV)
   {
-    if(++nav_t == 25) //25ms
+    if(++nav_t == 25) //every 25ms
     {
       nav_t = 0;
 
@@ -157,11 +157,11 @@ void SysTick_Handler(void) //1ms
       if((pin & (1<<NAV_SW)) == 0)
       {
         nav_sw_t++;
-        if(nav_sw_t >= (1000/25)) //1000ms
+        if(nav_sw_t >= (1000/25)) //long press: 1000ms
         {
           nav_sw |= 0x02;
         }
-        if(nav_sw_t >= (100/25)) //100ms
+        if(nav_sw_t >= (100/25)) //short press: 100ms
         {
           nav_sw |= 0x01;
         }
@@ -311,7 +311,7 @@ uint_least8_t ldr_service(uint_least8_t power_max)
          if(i > 800) i = 100;
     else if(i > 100) i /= 8;
     else             i = 10;
-    last += i; //add to last value
+    last += i; //add current to last value
     last /= 2; //div by 2 (do average)
     if(last > power_max)
     {
