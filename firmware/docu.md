@@ -1,13 +1,4 @@
-# Display Firmware
-
-**Documentation for Firmware v0.06+**
-
-
-## Firmware Update
-
-See [Firmware Update Guide](https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/update_guide/README.md).
-
-The source code can be compiled with [CrossWorks for ARM](http://www.rowley.co.uk/arm/index.htm) or [LPCXpresso](http://www.lpcware.com/lpcxpresso) (registered Free Edition).
+# Display Firmware Documentation
 
 
 ## Interfaces
@@ -39,11 +30,6 @@ The current interface can be saved as default with the software command ```CMD_C
 
     - Set RX low + MOSI high + CS low
     - Reset: RST low -> wait 10 ms -> RST high
-
-
-## Examples
-
-* [Arduino examples](https://github.com/watterott/MI0283QT-Adapter/tree/master/firmware/examples)
 
 
 ## Commands
@@ -112,8 +98,6 @@ Send raw data to the display controller. Parameter: 1 byte
     
     CMD_LCD_ORIENTATION
 Set display orientation. Parameter: 1 byte (0=0°, 9=90°, 18=180°, 27=270°)
-
-![Orientation dia](https://raw.github.com/watterott/MI0283QT-Adapter/master/firmware/docu/orientation.jpg)
 
     CMD_LCD_WIDTH
 Get display width. Returns always 2 bytes = 16 bit.
