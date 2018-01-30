@@ -8,8 +8,7 @@ Supported IDEs: CrossWorks for ARM and LPCXpresso 6.1
 
 Documentation
 -------------
-  See docu/README.md
-  https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/docu/README.md
+  See docu.md
 
 
 Third party software
@@ -21,7 +20,6 @@ Third party software
 License
 -------
   See license.txt
-  https://github.com/watterott/MI0283QT-Adapter/blob/master/firmware/license.txt
 
 
 History
