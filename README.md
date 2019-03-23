@@ -14,4 +14,5 @@ Adapter Board with 2.8" TFT-Display and Touchscreen/Touchpanel.
   * NXP LPC1114 ARM Cortex-M0 with Open-Source Firmware
   * Interface: UART, I2C, SPI/SSI (8-Bit, Mode 3, up to 4MHz)
   * Pin-compatible with MI0283QT-Adapter v1
-* **[Documentation on learn.watterott.com](http://learn.watterott.com/mi0283qt-adapter/)**
+* Open-Source and released under the [Creative Commons Attribution Share-Alike License](https://creativecommons.org/licenses/by-sa/4.0/).
+* **[Documentation on learn.watterott.com](https://learn.watterott.com)**
