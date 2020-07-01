@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.5.0">
+<eagle version="7.7.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -12596,10 +12596,10 @@ reflow soldering</description>
 </classes>
 <parts>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="U1" library="Voltage-Reg" deviceset="TS5204" device="" value="TS5204-3V3"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="VCC-3V3" library="jumper" deviceset="SJ" device=""/>
@@ -12612,7 +12612,7 @@ reflow soldering</description>
 <part name="C3" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
 <part name="C4" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
 <part name="C5" library="rcl" deviceset="C-EU" device="C0603" value="100nF"/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="47"/>
 <part name="P+1" library="supply1" deviceset="VCC" device=""/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
@@ -12637,10 +12637,10 @@ reflow soldering</description>
 <part name="CON2" library="con-lstb" deviceset="MA08-1" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
-<part name="R7" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R9" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="22"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="R0603" value="0"/>
+<part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="0"/>
+<part name="R9" library="rcl" deviceset="R-EU_" device="R0603" value="0"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="0"/>
 <part name="6-DTR" library="wirepad" deviceset="WIREPAD" device="SMD1,27-254"/>
 <part name="5-RXI" library="wirepad" deviceset="WIREPAD" device="SMD1,27-254"/>
 <part name="4-TXO" library="wirepad" deviceset="WIREPAD" device="SMD1,27-254"/>
