@@ -1599,9 +1599,15 @@ int main(void)
         break;
       case CMD_LCD_RAWCMD:
         lcd_wrcmd8(if_read8());
-         break;
+        break;
       case CMD_LCD_RAWDAT:
         lcd_wrdata8(if_read8());
+        break;
+      case CMD_LCD_ENABLE:
+        lcd_enable();
+        break;
+      case CMD_LCD_DISABLE:
+        lcd_disable();
         break;
 
       case CMD_LCD_ORIENTATION:
