@@ -3,7 +3,8 @@
 
 
 /*
-  PARAMTER    - BIT SIZE
+  PARAMETER   - BIT SIZE
+  ----------------------
   color       - 16 bit
   x,y,z,w,h,r - 8 bit for screens < 255x255 pixel, otherwise 16 bit
   other       - 8 bit
@@ -28,6 +29,8 @@ enum _COMMANDS
   CMD_LCD_POWER,             //display panel power: power (1byte 0=off, 1=on)
   CMD_LCD_RAWCMD,            //send raw command to display (1byte)
   CMD_LCD_RAWDAT,            //send raw data to display (1byte)
+  CMD_LCD_ENABLE,            //enable display communication (CS=0)
+  CMD_LCD_DISABLE,           //enable display communication (CS=1)
 
   CMD_LCD_ORIENTATION = 0x20,//orientation (1byte 0=0 9=90 18=180 27=270)
   CMD_LCD_WIDTH,             //get display width (always 16bit -> 2byte)
