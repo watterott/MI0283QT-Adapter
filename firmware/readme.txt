@@ -24,6 +24,8 @@ License
 
 History
 -------
+  Jan 26 2022  v0.08  Added CMD_LCD_ENABLE + CMD_LCD_DISABLE.
+
   Jun 30 2014  v0.07  Bugfix in set_pwm.
 
   Jun 08 2014  v0.06  Bugfix in CMD_LCD_ORIENTATION+CMD_LCD_DRAWTEXT.

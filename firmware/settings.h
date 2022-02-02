@@ -3,7 +3,7 @@
 
 
 //----- DEFINES -----
-#define VERSION         "0.07"
+#define VERSION         "0.08"
 
 //LCD support (define only one)
 #define LCD_MI0283QT9 //MI0283QT-9/-11 (ILI9341)
